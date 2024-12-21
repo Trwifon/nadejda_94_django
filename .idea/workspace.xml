@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="" />
+    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Trwifon&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Trwifon/nadejda_94_django.git&quot;,
+    &quot;accountId&quot;: &quot;c5fd02ee-d80a-4b27-b4b8-d30b67dc4422&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2qJGwd5S7Dol4w2sIDPyHuIsTkz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -21,12 +51,32 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Django Server.nadejda_94_django.executor": "Debug",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "git-widget-placeholder": "master",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/nadejda_94_django/nadejda_94_django",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\nadejda_94_django\nadejda_94_django" />
+      <recent name="D:\nadejda_94_django\nadejda_94_django\nadejda_94_django\static" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="nadejda_94_django" type="Python.DjangoServer" factoryName="Django server">
       <module name="nadejda_94_django" />
@@ -35,6 +85,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="nadejda_94_django.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -70,6 +121,8 @@
       <option name="presentableId" value="Default" />
       <updated>1734373504520</updated>
       <workItem from="1734373536271" duration="36000" />
+      <workItem from="1734537024712" duration="18682000" />
+      <workItem from="1734637997688" duration="24945000" />
     </task>
     <servers />
   </component>
