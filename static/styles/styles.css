@@ -4,8 +4,8 @@ body { background: #f4f4ed !important; }
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    width: 50%;
-    min-width: 300px;
+    width: 30%;
+    min-width: 400px;
     margin: 50px auto;
     padding: 20px 10px;
     text-align: center;
@@ -19,7 +19,7 @@ body { background: #f4f4ed !important; }
 .info {
     display: flex;
     align-items: center;
-    margin: 25px 10px;
+    margin: 25px 15px;
     font-size: 20px;
 }
 

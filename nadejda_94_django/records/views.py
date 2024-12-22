@@ -1,3 +1,7 @@
+from datetime import datetime
+
+import pandas as pd
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from nadejda_94_django.records.forms import RecordCreateForm
@@ -11,7 +15,6 @@ class RecordCreateView(CreateView):
     model = Record
     form_class = RecordCreateForm
     template_name = 'records/create_record.html'
-    # fields = ['order_type', 'amount', 'note']
 
     def get(self, request,  *args, **kwargs):
         form = RecordCreateForm()
@@ -26,7 +29,7 @@ class RecordCreateView(CreateView):
         return self.render_to_response({
                 'form': form,
                 'partner': current_partner,
-                'firm_report': firm_report,
+                'report': firm_report,
             })
 
     def post(self, request, *args, **kwargs):
@@ -61,7 +64,7 @@ class RecordCreateView(CreateView):
                 context = {
                     'form': form,
                     'partner': current_partner,
-                    'firm_report': firm_report,
+                    'report': firm_report,
                     'close_balance': record.balance,
                     'order': record.order,
                 }

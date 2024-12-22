@@ -2,4 +2,10 @@
 {% load static %}
 
 {% block content %}
+    <hr>
+    <h5 class="text-center m-3">Дневен отчет: {{ total_sum }}</h5>
+    <hr>
+    <div class="mx-5">
+        {% include 'common/report.html' %}
+    </div>
 {% endblock %}

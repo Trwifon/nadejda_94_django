@@ -1,0 +1,28 @@
+{% load static %}
+
+<table class="table table-striped table-hover">
+    <tr class="text-center">
+        <th>id</th>
+        <th>Дата</th>
+        <th>Фирма</th>
+        <th>Склад</th>
+        <th>Вид поръчка</th>
+        <th>Сума</th>
+        <th>Баланс</th>
+        <th>Поръчка</th>
+        <th>Забележка</th>
+    </tr>
+    {% for record in report %}
+    <tr class="text-center">
+        <th scope="row">{{record.id}}</th>
+        <td>{{record.created_at}}</td>
+        <td>{{record.partner.name}}</td>
+        <td>{{record.get_warehouse_display}}</td>
+        <td>{{record.get_order_type_display}}</td>
+        <td>{{record.amount}}</td>
+        <td>{{record.balance}}</td>
+        <td>{{record.order}}</td>
+        <td>{{record.note}}</td>
+    </tr>
+    {% endfor %}
+</table>

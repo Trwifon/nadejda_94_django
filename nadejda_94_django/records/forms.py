@@ -1,11 +1,10 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelMultipleChoiceField, ModelChoiceField
 from django import forms
 from .choices import WarehouseChoices, OrderTypeChoices, YearChoices, MonthChoices
 from .models import Record, Partner
 
 
 class RecordCreateForm(ModelForm):
-
     class Meta:
         model = Record
         fields = [
