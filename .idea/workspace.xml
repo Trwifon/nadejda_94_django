@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +119,7 @@
       <updated>1734373504520</updated>
       <workItem from="1734373536271" duration="36000" />
       <workItem from="1734537024712" duration="18682000" />
-      <workItem from="1734637997688" duration="24945000" />
+      <workItem from="1734637997688" duration="43099000" />
     </task>
     <servers />
   </component>
