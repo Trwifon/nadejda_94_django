@@ -1,0 +1,22 @@
+{% extends 'common/index.html' %}
+
+{% block content %}
+    <form method="post">
+        <div class="form-group">
+            <h4>Регистрирай потребител</h4>
+            <hr>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-space">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    <br>
+                    {{ field.help_text }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary">Регистрирай</button>
+        </div>
+    </form>
+{% endblock %}
+    

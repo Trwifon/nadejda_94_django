@@ -1,0 +1,19 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post">
+        <div class="form-group">
+            <h4>Изтриване на профил?</h4>
+            <hr>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-space">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary">Изтрий</button>
+        </div>
+    </form>
+{% endblock %}

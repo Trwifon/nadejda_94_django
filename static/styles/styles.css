@@ -1,0 +1,32 @@
+body { background: #f4f4ed !important; }
+
+.form-group {
+    border: 1px solid #58b0e8;
+    border-radius: 10px;
+    background-color:#cff4fc;
+    width: 50%;
+    min-width: 300px;
+    margin: 50px auto;
+    padding: 20px 10px;
+    text-align: center;
+    color: darkblue;
+}
+
+.form-space {
+    margin-bottom: 20px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    margin: 25px 10px;
+    font-size: 20px;
+}
+
+.form-container {
+  display: grid;
+  place-items: center;
+  padding: 50px 20px;
+}
+
+
