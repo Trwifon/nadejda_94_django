@@ -1,6 +1,7 @@
-from django.forms import ModelForm, ModelMultipleChoiceField, ModelChoiceField
+from datetime import datetime
+from django.forms import ModelForm
 from django import forms
-from .choices import WarehouseChoices, OrderTypeChoices, YearChoices, MonthChoices
+from .choices import WarehouseChoices, ReportChoices
 from .models import Record, Partner
 
 
@@ -40,21 +41,34 @@ class NewPartnerForm(ModelForm):
         }
 
 
-class WarehouseForm(forms.Form):
+class ReportsCreateForm(forms.Form):
+
+    report_field = forms.ChoiceField(
+        choices = ReportChoices.choices,
+        label='Вид отчет: '
+    )
+
+    firm_field = forms.ModelChoiceField(
+        queryset=Partner.objects.all().order_by('name'),
+        label='Фирма',
+        required=False,
+    )
+
     warehouse = forms.ChoiceField(
         choices=WarehouseChoices.choices,
-        label='Склад'
+        label='Склад: '
+    )
+
+    date_field = forms.DateField(
+        widget=forms.SelectDateWidget(),
+        label='Дата: '
     )
 
 
-class MonthWarehouseForm(WarehouseForm):
-    year = forms.ChoiceField(
-        choices=YearChoices.choices,
-        label='Година'
-    )
-
-    month = forms.ChoiceField(
-        choices=MonthChoices.choices,
-        label='Месец'
-    )
-
+    def __init__(self, *args, **kwargs):
+        initial = kwargs.get('initial', {})
+        initial.setdefault('report_field', 'FR')
+        initial.setdefault('date_field', datetime.now().date())
+        initial.setdefault('firm_field', Partner.objects.get(id=2))
+        super(ReportsCreateForm, self).__init__(*args, **kwargs)
+        self.initial = initial

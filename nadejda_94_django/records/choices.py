@@ -1,4 +1,8 @@
 from django.db import models
+from django.db.models import TextChoices
+
+
+users_dict = {'Trifon': 'M', 'Tsonka': 'O', 'Elena': 'A', 'Diana': 'P', 'Nadya': 'G'}
 
 
 class WarehouseChoices(models.TextChoices):
@@ -9,7 +13,7 @@ class WarehouseChoices(models.TextChoices):
     MANAGER = 'M', 'Управител'
 
 
-class OrderTypeChoices(models.TextChoices):
+class OrderTypeChoices(TextChoices):
     CASH = 'C', 'Каса'
     BANK = 'B', 'Банка'
     SELL = 'S', 'Продажба'
@@ -18,7 +22,7 @@ class OrderTypeChoices(models.TextChoices):
     ORDER_PVC = 'P', 'Поръчка PVC'
 
 
-class PartnerTypeChoices(models.TextChoices):
+class PartnerTypeChoices(TextChoices):
     SUPPLIER = 'S', 'Доставчик'
     FIRM = 'F', 'Фирма'
     RETAIL_CUSTOMER = 'RC', 'Клиент на дребно'
@@ -35,15 +39,22 @@ class YearChoices(models.IntegerChoices):
 
 
 class MonthChoices(models.IntegerChoices):
-    JANUARY = 1, '1'
-    FEBRUARY = 2, '2'
-    MARCH = 3, '3'
-    APRIL = 4, '4'
-    MAY = 5, '5'
-    JUNE = 6, '6'
-    JULY = 7, '7'
-    AUGUST = 8, '8'
-    SEPTEMBER = 9, '9'
-    OCTOBER = 10, '10'
-    NOVEMBER = 11, '11'
-    DECEMBER = 12, '12'
+    JANUARY = 1, 'Януари'
+    FEBRUARY = 2, 'Февруари'
+    MARCH = 3, 'Март'
+    APRIL = 4, 'Април'
+    MAY = 5, 'Май'
+    JUNE = 6, 'Юни'
+    JULY = 7, 'Юли'
+    AUGUST = 8, 'Август'
+    SEPTEMBER = 9, 'Септември'
+    OCTOBER = 10, 'Октомври'
+    NOVEMBER = 11, 'Ноември'
+    DECEMBER = 12, 'Декември'
+
+
+class ReportChoices(TextChoices):
+    FIRM_REPORT = 'FR', 'Фирмен отчет'
+    DAY_REPORT = 'DR', 'Дневен отчет'
+    MONTH_REPORT = 'MR', 'Месечен отчет'
+

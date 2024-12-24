@@ -3,9 +3,18 @@
 
 {% block content %}
     <hr>
-    <h5 class="text-center m-3">Дневен отчет: {{ total_sum }}</h5>
+    <h5 class="text-center m-3">
+        Дневен отчет: 
+        {% if total_sum %}
+            {{ total_sum }}
+        {% else %}
+            0
+        {% endif %}
+        лв
+    </h5>
+    
     <hr>
-    <div class="mx-5">
+    <div class="form-table">
         {% include 'common/report.html' %}
     </div>
 {% endblock %}

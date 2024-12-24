@@ -5,8 +5,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 from nadejda_94_django.common.forms import PartnerForm
+from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.models import Partner, Record
-from nadejda_94_django.records.views import users_dict
 
 
 class Dashboard(LoginRequiredMixin, TemplateView, FormView):
@@ -32,7 +32,6 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
         total_sum = day_report.filter(order_type='C').aggregate(Sum('amount'))
         context['total_sum'] = total_sum['amount__sum']
-
 
         return context
 
