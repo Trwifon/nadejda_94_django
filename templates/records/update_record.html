@@ -1,0 +1,20 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post" class="form-group">
+        <h4>Редакция на запис</h4>
+        <hr>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-space">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.error }}
+            </div>
+        {% endfor %}
+        <button class="btn btn-info">
+            Редактирай
+        </button>
+    </form>
+{% endblock %}  

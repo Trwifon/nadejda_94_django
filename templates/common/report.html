@@ -14,7 +14,11 @@
     </tr>
     {% for record in report %}
     <tr class="text-center">
-        <th scope="row">{{record.id}}</th>
+        <th scope="row">
+            <a href="{% url 'record_update' record.id  %}">
+              {{record.id}}
+            </a>
+        </th>
         <td>{{record.created_at}}</td>
         <td>{{record.partner.name}}</td>
         <td>{{record.get_warehouse_display}}</td>

@@ -21,14 +21,38 @@ class RecordCreateForm(ModelForm):
         }
 
 
-class PartnerForm(ModelForm):
-    partner = forms.ModelChoiceField(
-    queryset=Partner.objects.all().order_by('name'),
-    label='Фирма',
-    )
+class RecordUpdateForm(ModelForm):
     class Meta:
-        model = Partner
-        fields = ['partner']
+        model = Record
+        fields = [
+            'partner',
+            'warehouse',
+            'order_type',
+            'amount',
+            'balance',
+            'order',
+            'note',
+        ]
+
+        labels = {
+            'partner': 'Фирма',
+            'warehouse': 'Склад',
+            'order_type': 'Вид',
+            'amount': 'Сума',
+            'balance': 'Баланс',
+            'order': 'Поръчка',
+            'note': 'Забележка'
+        }
+
+
+# class PartnerForm(ModelForm):
+#     partner = forms.ModelChoiceField(
+#     queryset=Partner.objects.all().order_by('name'),
+#     label='Фирма',
+#     )
+#     class Meta:
+#         model = Partner
+#         fields = ['partner']
 
 
 class NewPartnerForm(ModelForm):
@@ -42,7 +66,6 @@ class NewPartnerForm(ModelForm):
 
 
 class ReportsCreateForm(forms.Form):
-
     report_field = forms.ChoiceField(
         choices = ReportChoices.choices,
         label='Вид отчет: '

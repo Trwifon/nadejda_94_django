@@ -5,25 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/common/export-to-excel.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/records/create_report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/records/show_report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/records/cash_report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/records/update_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/information_schema.FNRwLQ.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/pg_catalog.0S1ZNQ.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7a62b304-3fd5-45af-8312-39c6faddda27/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/public.abK9xQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/TODO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/accounts/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/accounts/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/styles/rooms.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/styles/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/common/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/common/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/common/nav_bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/nav_bar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/common/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/records/create_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/create_record.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +39,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="SQL File" />
         <option value="HTML File" />
       </list>
     </option>
@@ -140,7 +144,7 @@
       <updated>1734373504520</updated>
       <workItem from="1734373536271" duration="36000" />
       <workItem from="1734537024712" duration="18682000" />
-      <workItem from="1734637997688" duration="97672000" />
+      <workItem from="1734637997688" duration="128750000" />
     </task>
     <servers />
   </component>

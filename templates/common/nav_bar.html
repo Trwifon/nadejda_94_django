@@ -3,31 +3,41 @@
 
 <nav class="navbar navbar-expand-lg bg-info-subtle" style="background-color: rgba(2, 255, 209, 0.32);">
     <div class="container-fluid">
-        <a class="navbar-brand fw-medium fs-4 d-flex justify-content-center" href="{% url 'dashboard' %}">
-            Надежда
+        <a href="{% url 'dashboard' %}">
+            <img src="{% static 'logo-nadejda.bmp' %}" alt="logo" width="120" height="50" class="d-inline-block align-text-top">
+{#        <a class="navbar-brand fw-medium fs-4 d-flex justify-content-center" href="{% url 'dashboard' %}">#}
+{#            Надежда#}
         </a>
-
-        <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-            <ul class="navbar-nav fs-5">
+        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'create_report' %}">
+            Отчети
+        </a>
+    
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <ul class="navbar-nav fs-6">
                 <li  class="nav-item">
                     {% if current_path == '/' %}
                         <form class="d-flex" method="Post">
-                            <span class="form-control me-1 bg-info-subtle fs-5">
+                            <span class="form-control me-1 bg-info-subtle fs-6">
                                 {% csrf_token %}
                                 {{ form }}
                             </span>
-                            <button class="btn btn-info btn-sm mr-5 fs-5" type="submit">Избери</button>
+                            <button class="btn btn-info btn-sm mr-5 fs-6" type="submit">Избери</button>
                         </form>
                     {% endif %}
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{% url 'create_report' %}">Отчети</a>
-                </li>
             </ul>
         </div>
+    
         <div class="collapse navbar-collapse d-flex justify-content-end">
-            <ul class="navbar-nav fs-5">
+            <ul class="navbar-nav fs-6">
                 {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        {% if user.is_staff %}
+                            <a class="nav-link pt-2" href="{% url 'cash_report' %}">
+                              <span>Каса</span>
+                            </a>
+                        {% endif %}
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link pt-2" href="{% url 'profile_details' user.pk %}">
                           <span>{{ user.username }}</span>

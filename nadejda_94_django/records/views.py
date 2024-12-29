@@ -1,22 +1,25 @@
 from datetime import datetime
 import pandas as pd
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, TemplateView, FormView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, TemplateView, FormView, UpdateView
 from nadejda_94_django.records.choices import users_dict
-from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm
+from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm
 from nadejda_94_django.records.helpers import get_close_balance, get_order, update_order
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
 
 
-class RecordCreateView(CreateView):
+class RecordCreateView(PermissionRequiredMixin, CreateView):
     model = Record
     form_class = RecordCreateForm
     template_name = 'records/create_record.html'
     context_object_name = 'form'
+    permission_required = 'records.add_record'
 
     def get(self, request,  *args, **kwargs):
         form = RecordCreateForm()
@@ -62,7 +65,6 @@ class RecordCreateView(CreateView):
                 record.amount = -abs(record.amount)
 
             if 'bal' in request.POST:
-
                 context = {
                     'form': form,
                     'partner': current_partner,
@@ -84,9 +86,21 @@ class RecordCreateView(CreateView):
                 return redirect('dashboard')
 
 
-class ReportsCreateView(TemplateView, FormView):
+class RecordUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Record
+    template_name = 'records/update_record.html'
+    form_class = RecordUpdateForm
+    pk_url_kwarg = 'record_pk'
+    success_url = reverse_lazy('dashboard')
+
+    permission_required = 'records.change_record'
+    login_url = 'login'
+
+
+class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
     template_name = 'records/create_report.html'
     form_class = ReportsCreateForm
+    permission_required = 'records.change_record'
 
     def post(self, request, *args, **kwargs):
         form = ReportsCreateForm(request.POST)
@@ -115,6 +129,7 @@ class ReportsCreateView(TemplateView, FormView):
             elif current_report == 'DR':
                 day_report = (Record.objects
                               .filter(created_at=current_date)
+                              .exclude(warehouse='M')
                               .order_by('-pk'))
 
                 if current_warehouse != 'M':
@@ -178,8 +193,20 @@ class ReportShowView(TemplateView):
     template_name = 'records/show_report.html'
 
 
+class CashShowView(UserPassesTestMixin, TemplateView):
+    template_name = 'records/cash_report.html'
+    login_url = '/login'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
+        cash = Record.objects.filter(order_type='C').aggregate(total=Sum('amount'))
+        context['cash'] = cash
+
+        return context
+
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 
