@@ -1,0 +1,17 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-group mb-3 " method="post">
+        <h4>Създай нова фирма</h4>
+        <hr>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-4">
+                {{ field.label }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button name="display" class = "btn btn-info " type="submit">Създай фирма</button>
+    </form>
+{% endblock %}

@@ -55,7 +55,7 @@ class RecordUpdateForm(ModelForm):
 #         fields = ['partner']
 
 
-class NewPartnerForm(ModelForm):
+class CreatePartnerForm(ModelForm):
     class Meta:
         model = Partner
         exclude = ['type']

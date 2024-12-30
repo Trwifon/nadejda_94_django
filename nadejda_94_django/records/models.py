@@ -1,7 +1,5 @@
 from django.db import models
 
-from django.db import models
-
 # Create your models here.
 from nadejda_94_django.records.choices import WarehouseChoices, OrderTypeChoices, PartnerTypeChoices
 

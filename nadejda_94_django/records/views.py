@@ -6,8 +6,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, FormView, UpdateView
+
+from nadejda_94_django.common.forms import PartnerForm
 from nadejda_94_django.records.choices import users_dict
-from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm
+from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
 from nadejda_94_django.records.helpers import get_close_balance, get_order, update_order
 from nadejda_94_django.records.models import Record, Partner
 
@@ -208,6 +210,13 @@ class CashShowView(UserPassesTestMixin, TemplateView):
     def test_func(self):
         return self.request.user.is_staff
 
+
+class PartnerCreateView(PermissionRequiredMixin, CreateView):
+    model = Partner
+    form_class = CreatePartnerForm
+    template_name = 'records/partner_create.html'
+    success_url = reverse_lazy('dashboard')
+    permission_required = ('records.add_partner',)
 
 
 
