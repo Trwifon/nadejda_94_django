@@ -32,10 +32,15 @@
             <ul class="navbar-nav fs-6">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
+                        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'errors_test' %}">
+                            Тест
+                        </a>
+                    </li>                      
+                    <li class="nav-item">
                         <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'partner_create' %}">
                             Нова фирма
                         </a>
-                    </li>   
+                    </li>
                     <li class="nav-item">
                         {% if user.is_staff %}
                             <a class="nav-link pt-2" href="{% url 'cash_report' %}">

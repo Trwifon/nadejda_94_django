@@ -25,8 +25,16 @@
         <td>{{record.get_order_type_display}}</td>
         <td>{{record.amount}}</td>
         <td>{{record.balance}}</td>
-        <td>{{record.order}}</td>
-        <td>{{record.note}}</td>
+        <td>
+            {% if record.order %}
+                {{record.order}}
+            {% endif %}
+        </td>
+        <td>
+           {% if record.note %}
+               {{record.note}}
+           {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>

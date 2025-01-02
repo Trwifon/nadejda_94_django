@@ -1,0 +1,11 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <p class = "d-flex justify-content-center mt-3">
+        {% for partner_result in errors_test %}
+            {{ partner_result }}
+            <br>
+        {% endfor %}
+    </p>
+{% endblock %}

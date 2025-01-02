@@ -1,4 +1,6 @@
 from datetime import datetime
+from lib2to3.fixes.fix_input import context
+
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
@@ -10,7 +12,7 @@ from django.views.generic import CreateView, TemplateView, FormView, UpdateView
 from nadejda_94_django.common.forms import PartnerForm
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
-from nadejda_94_django.records.helpers import get_close_balance, get_order, update_order
+from nadejda_94_django.records.helpers import get_close_balance, get_order, update_order, errors_test
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
@@ -219,4 +221,13 @@ class PartnerCreateView(PermissionRequiredMixin, CreateView):
     permission_required = ('records.add_partner',)
 
 
+class ErrorTestView(PermissionRequiredMixin, TemplateView):
+    model = Record
+    template_name = 'records/errors_test.html'
+    permission_required = ('records.add_partner',)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['errors_test'] = errors_test()
+
+        return context
