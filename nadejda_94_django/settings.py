@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'nadejda_94_django.accounts',
     'nadejda_94_django.common',
     'nadejda_94_django.records',
+    'nadejda_94_django.glasses',
 ]
 
 MIDDLEWARE = [
