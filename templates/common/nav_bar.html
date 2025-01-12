@@ -21,7 +21,8 @@
                                 {% csrf_token %}
                                 {{ form }}
                             </span>
-                            <button class="btn btn-info btn-sm mr-5 fs-6" type="submit">Избери</button>
+                            <button name="choice" class="btn btn-info btn-sm mr-5 mx-3 fs-6" type="submit">Избери</button>
+                            <button name="glass" class="btn btn-info btn-sm mr-5 fs-6" type="submit">Стъкла</button>
                         </form>
                     {% endif %}
                 </li>

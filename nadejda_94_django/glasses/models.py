@@ -37,11 +37,14 @@ class Glasses(models.Model):
         validators=[MinValueValidator(8), MaxValueValidator(3210)],
     )
 
-    number = models.IntegerField()
+    number = models.PositiveIntegerField(
+        validators=[MinValueValidator(1)],
+    )
 
     unit_price = models.DecimalField(
         max_digits=5,
         decimal_places=2,
+        validators=[MinValueValidator(5)],
     )
 
     created_at = models.DateTimeField(
@@ -71,3 +74,16 @@ class Glasses(models.Model):
         on_delete=models.DO_NOTHING,
     )
 
+    price = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+    )
+
+
+    def calculate_price(self):
+        area = self.width * self.height / 1000000
+        area = 0.3 if area < 0.3 else area
+
+        price = self.unit_price * area * self.number
+
+        return price

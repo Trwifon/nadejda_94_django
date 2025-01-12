@@ -1,0 +1,54 @@
+{% extends 'common/index.html' %}
+{% load static %}    
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <div class="row">
+        
+            <div class="col-4">
+                <div class="form-group">
+                    <div class="mb-3">
+                        <h4>{{ partner.name }}</h4>
+                        <hr>
+                        <h5>Баланс: {{ partner.balance }} лв</h5>
+                        {% if close_balance %}
+                            <h5>Нов баланс: {{ close_balance }} лв</h5>
+                        {% endif %}
+                        {% if order %}
+                            <h5>Поръчка: {{ order }}</h5>
+                        {% endif %}
+                    </div>
+                
+                    <script>
+                        window.onload = function() {
+                        document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
+                         };
+                    </script>
+                
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-space">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {{ field.help_text }}
+                                {{ field.error }}
+                                <br>
+                            </div>
+                        {% endfor %}
+                        <button  name="bal" class="btn btn-info mt-1 mx-1">Поръчка</button>
+                        <button name="save" class="btn btn-info mt-1">Запис</button>
+                    </form>
+                </div>
+            </div>
+        
+            <div class="col-8 border">
+                <div class="form-table">
+                    {% block table %}
+                    {% endblock table %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

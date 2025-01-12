@@ -45,16 +45,6 @@ class RecordUpdateForm(ModelForm):
         }
 
 
-# class PartnerForm(ModelForm):
-#     partner = forms.ModelChoiceField(
-#     queryset=Partner.objects.all().order_by('name'),
-#     label='Фирма',
-#     )
-#     class Meta:
-#         model = Partner
-#         fields = ['partner']
-
-
 class CreatePartnerForm(ModelForm):
     class Meta:
         model = Partner
@@ -83,10 +73,9 @@ class ReportsCreateForm(forms.Form):
     )
 
     date_field = forms.DateField(
-        widget=forms.SelectDateWidget(),
+        widget=forms.DateInput(attrs={'type': 'date'}),
         label='Дата: '
     )
-
 
     def __init__(self, *args, **kwargs):
         initial = kwargs.get('initial', {})
