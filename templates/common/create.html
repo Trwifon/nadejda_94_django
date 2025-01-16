@@ -11,12 +11,6 @@
                         <h4>{{ partner.name }}</h4>
                         <hr>
                         <h5>Баланс: {{ partner.balance }} лв</h5>
-                        {% if close_balance %}
-                            <h5>Нов баланс: {{ close_balance }} лв</h5>
-                        {% endif %}
-                        {% if order %}
-                            <h5>Поръчка: {{ order }}</h5>
-                        {% endif %}
                     </div>
                 
                     <script>
@@ -36,7 +30,8 @@
                                 <br>
                             </div>
                         {% endfor %}
-                        <button  name="bal" class="btn btn-info mt-1 mx-1">Поръчка</button>
+                        {% block extra_buttons %}
+                        {% endblock %}
                         <button name="save" class="btn btn-info mt-1">Запис</button>
                     </form>
                 </div>

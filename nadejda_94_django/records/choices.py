@@ -6,11 +6,11 @@ users_dict = {'Trifon': 'M', 'Tsonka': 'O', 'Elena': 'A', 'Diana': 'P', 'Nadya':
 
 
 class WarehouseChoices(models.TextChoices):
-    ALUMINUM = 'A', 'Алуминий'
-    GLASS = 'G', 'Стъклопакети'
-    PVC = 'P', 'PVC'
-    ORDERS = 'O', 'Поръчки'
-    MANAGER = 'M', 'Управител'
+    Elena = 'A', 'Алуминий'
+    Nadya = 'G', 'Стъклопакети'
+    Diana = 'P', 'PVC'
+    Tsonka = 'O', 'Поръчки'
+    Trifon = 'M', 'Управител'
 
 
 class OrderTypeChoices(TextChoices):

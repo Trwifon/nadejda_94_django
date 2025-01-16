@@ -5,21 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/common/create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c7fb04ca-ce93-4e70-b84a-3a048949098d.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c7fb04ca-ce93-4e70-b84a-3a048949098d/storage_v2/_src_/database/nadejda_94_django.M3AYnA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c7fb04ca-ce93-4e70-b84a-3a048949098d/storage_v2/_src_/database/nadejda_94_django.M3AYnA/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c7fb04ca-ce93-4e70-b84a-3a048949098d/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c7fb04ca-ce93-4e70-b84a-3a048949098d/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/helpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/styles/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/create.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/common/nav_bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/nav_bar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/records/create_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/create_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_table.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +146,8 @@
       <workItem from="1734637997688" duration="138418000" />
       <workItem from="1735819734529" duration="14001000" />
       <workItem from="1736162400107" duration="17658000" />
-      <workItem from="1736368826244" duration="48445000" />
+      <workItem from="1736368826244" duration="89072000" />
+      <workItem from="1737022578827" duration="2980000" />
     </task>
     <servers />
   </component>
@@ -159,5 +164,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/nadejda_94_django/records/helpers.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
