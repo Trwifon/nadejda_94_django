@@ -53,7 +53,7 @@ class RecordCreateView(OrderCreateView):
 
             if record.order_type == 'G':
                 note = record.note
-                return redirect('glass_create', partner_pk=current_pk)
+                return redirect('glass_create', partner_pk=current_pk, note=note)
 
             record.warehouse = users_dict[request.user.username]
             record.balance = get_close_balance(

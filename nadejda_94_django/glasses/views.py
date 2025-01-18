@@ -1,4 +1,3 @@
-from django.contrib.messages import success
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView
@@ -16,14 +15,33 @@ class GlassCreateView(OrderCreateView):
     model = Glasses
     template_name = 'glasses/create_glass.html'
     permission_required = 'glasses.add_glasses'
-    form_class = GlassCreateForm
     success_url = reverse_lazy('dashboard')
     ALL_ORDERS = []
 
+    def get_context_data(self, **kwargs):
+        form = GlassCreateForm(self.request.POST)
+        note = self.kwargs.get('note')
+        current_pk = self.kwargs.get('partner_pk')
+        current_partner = Partner.objects.get(pk=current_pk)
+
+        context = {
+            'form': form,
+            'note': note,
+            'partner': current_partner,
+        }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        return render(request, 'glasses/create_glass.html', context)
+
     def post(self, request, *args, **kwargs):
         form = GlassCreateForm(request.POST)
-        current_pk = kwargs.get('partner_pk')
+        current_pk = self.kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
+
+        context = self.get_context_data()
 
         if form.is_valid():
             current_order = form.cleaned_data
@@ -37,10 +55,7 @@ class GlassCreateView(OrderCreateView):
             if 'order' in request.POST:
                 ALL_ORDERS.append(current_order)
 
-                context = {
-                    'form': form,
-                    'all_orders': ALL_ORDERS,
-                }
+                context['all_orders'] = ALL_ORDERS
 
                 return render(request, 'glasses/create_glass.html', context)
 
@@ -55,7 +70,7 @@ class GlassCreateView(OrderCreateView):
                     amount = current_amount,
                     balance = get_close_balance(current_pk, 'G', current_amount),
                     order = order,
-                    note = 'test',
+                    note = context['note'],
                     partner = current_partner
                 )
                 current_partner.balance = record.balance

@@ -4,8 +4,8 @@
     <tr class="text-center">
         <th>id</th>
         <th>Дата</th>
-        <th>Фирма</th>
         <th>Склад</th>
+        <th>Фирма</th>
         <th>Вид поръчка</th>
         <th>Сума</th>
         <th>Баланс</th>
@@ -20,8 +20,8 @@
             </a>
         </th>
         <td>{{record.created_at}}</td>
-        <td>{{record.partner.name}}</td>
         <td>{{record.get_warehouse_display}}</td>
+        <td>{{record.partner.name}}</td>
         <td>{{record.get_order_type_display}}</td>
         <td>{{record.amount}}</td>
         <td>{{record.balance}}</td>
