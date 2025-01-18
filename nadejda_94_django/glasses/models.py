@@ -79,10 +79,3 @@ class Glasses(models.Model):
     )
 
 
-    def calculate_price(self):
-        area = self.width * self.height / 1000000
-        area = 0.3 if area < 0.3 else area
-
-        price = self.unit_price * area * self.number
-
-        return price

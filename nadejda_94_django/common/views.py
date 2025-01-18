@@ -20,8 +20,6 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
         if 'choice' in request.POST:
             return redirect('record_create', pk)
-        else:
-            return redirect('glass_create', pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

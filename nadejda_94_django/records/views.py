@@ -42,7 +42,6 @@ class RecordCreateView(OrderCreateView):
         form = RecordCreateForm(request.POST)
         current_pk = kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
-        open_balance = current_partner.balance
 
         if current_pk in (1, 2):
             firm_report = []
@@ -53,13 +52,13 @@ class RecordCreateView(OrderCreateView):
             record = form.save(commit=False)
 
             if record.order_type == 'G':
+                note = record.note
                 return redirect('glass_create', partner_pk=current_pk)
 
             record.warehouse = users_dict[request.user.username]
             record.balance = get_close_balance(
                 current_pk,
                 record.order_type,
-                open_balance,
                 record.amount
                 )
             record.order = get_order(record.order_type)

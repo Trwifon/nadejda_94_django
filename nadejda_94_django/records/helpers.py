@@ -48,7 +48,9 @@ def update_order(order_type):
     return
 
 
-def get_close_balance(partner_id, order_type, open_balance, amount):
+def get_close_balance(partner_id, order_type, amount):
+    open_balance = Partner.objects.get(id=partner_id).balance
+
     if partner_id == 1 or partner_id == 2:
         return 0
 
