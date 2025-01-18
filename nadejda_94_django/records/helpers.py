@@ -28,6 +28,8 @@ def get_order(order_type):
         orders.save()
         counter = 1
 
+    update_order(order_type)
+
     return f"{order_type}-{current_month}-{counter}"
 
 
@@ -36,15 +38,19 @@ def update_order(order_type):
 
     if order_type == 'A':
         orders.al_counter += 1
-    elif order_type == 'G':
+    elif order_type == 'C':
         orders.glass_counter += 1
     elif order_type == 'P':
         orders.pvc_counter += 1
 
     orders.save()
 
+    return
 
-def get_close_balance(partner_id, order_type, open_balance, amount):
+
+def get_close_balance(partner_id, order_type, amount):
+    open_balance = Partner.objects.get(id=partner_id).balance
+
     if partner_id == 1 or partner_id == 2:
         return 0
 
@@ -60,34 +66,35 @@ def errors_test():
     partners = Partner.objects.all().order_by('name')
 
     for partner in partners:
-        partner_records = Record.objects.filter(partner=partner).order_by('pk')
+        if partner.id not in (1, 2):
+            partner_records = Record.objects.filter(partner=partner).order_by('pk')
 
-        if partner_records:
-            current_balance = partner_records[0].balance
-            record_error = 0
-            last_record_and_partner_error = 0
-            total_error = 0
+            if partner_records:
+                current_balance = partner_records[0].balance
+                record_error = 0
+                last_record_and_partner_error = 0
+                total_error = 0
 
-            for record in partner_records[1:]:
-                if record.order_type in ('C', 'B'):
-                    current_balance += record.amount
-                else:
-                    current_balance -= record.amount
+                for record in partner_records[1:]:
+                    if record.order_type in ('C', 'B'):
+                        current_balance += record.amount
+                    else:
+                        current_balance -= record.amount
 
-                if record.balance != current_balance:
-                    record_error += 1
+                    if record.balance != current_balance:
+                        record_error += 1
 
-            if partner.balance != partner_records.last().balance:
-                last_record_and_partner_error += 1
+                if partner.balance != partner_records.last().balance:
+                    last_record_and_partner_error += 1
 
-            if partner.balance != current_balance:
-                total_error += 1
+                if partner.balance != current_balance:
+                    total_error += 1
 
-            if record_error != 0 or last_record_and_partner_error != 0 or total_error != 0:
-                test_result.append(f"{partner.name}: "
-                   f"(Грешки в баланса на запис: {record_error}, "
-                   f"Разлика между балансите в последния запис и фирмата: {last_record_and_partner_error}, "
-                   f"Разлика между сумата от вички записи и фирмата: {total_error})")
+                if record_error != 0 or last_record_and_partner_error != 0 or total_error != 0:
+                    test_result.append(f"{partner.name}: "
+                       f"(Грешки в баланса на запис: {record_error}, "
+                       f"Разлика между балансите в последния запис и фирмата: {last_record_and_partner_error}, "
+                       f"Разлика между сумата от вички записи и фирмата: {total_error})")
     end_time = datetime.now()
     test_time = end_time - start_time
     print(test_time.microseconds/1000000)

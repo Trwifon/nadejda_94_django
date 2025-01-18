@@ -5,8 +5,6 @@
     <div class="container-fluid">
         <a href="{% url 'dashboard' %}">
             <img src="{% static 'logo-nadejda.bmp' %}" alt="logo" width="120" height="50" class="d-inline-block align-text-top">
-{#        <a class="navbar-brand fw-medium fs-4 d-flex justify-content-center" href="{% url 'dashboard' %}">#}
-{#            Надежда#}
         </a>
         <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'create_report' %}">
             Отчети
@@ -21,7 +19,7 @@
                                 {% csrf_token %}
                                 {{ form }}
                             </span>
-                            <button class="btn btn-info btn-sm mr-5 fs-6" type="submit">Избери</button>
+                            <button name="choice" class="btn btn-info btn-sm mr-5 mx-3 fs-6" type="submit">Избери</button>
                         </form>
                     {% endif %}
                 </li>

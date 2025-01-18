@@ -50,7 +50,9 @@ class Record(models.Model):
         choices=OrderTypeChoices.choices
     )
 
-    amount = models.IntegerField()
+    amount = models.IntegerField(
+        default=0
+    )
 
     balance = models.IntegerField()
 

@@ -1,6 +1,4 @@
 from datetime import datetime
-from lib2to3.fixes.fix_input import context
-
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
@@ -8,29 +6,22 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, FormView, UpdateView
-
-from nadejda_94_django.common.forms import PartnerForm
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
-from nadejda_94_django.records.helpers import get_close_balance, get_order, update_order, errors_test
+from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
 
-
-class RecordCreateView(PermissionRequiredMixin, CreateView):
-    model = Record
-    form_class = RecordCreateForm
-    template_name = 'records/create_record.html'
+class OrderCreateView(PermissionRequiredMixin, CreateView):
     context_object_name = 'form'
-    permission_required = 'records.add_record'
 
     def get(self, request,  *args, **kwargs):
-        form = RecordCreateForm()
+        form = self.get_form()
         current_pk = kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
 
-        if current_pk == 1:
+        if current_pk in (1, 2):
             firm_report = []
         else:
             firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
@@ -41,25 +32,33 @@ class RecordCreateView(PermissionRequiredMixin, CreateView):
                 'report': firm_report,
             })
 
+class RecordCreateView(OrderCreateView):
+    model = Record
+    template_name = 'records/create_record.html'
+    form_class = RecordCreateForm
+    permission_required = 'records.add_record'
+
     def post(self, request, *args, **kwargs):
         form = RecordCreateForm(request.POST)
         current_pk = kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
-        open_balance = current_partner.balance
 
-        if current_pk == 1:
+        if current_pk in (1, 2):
             firm_report = []
         else:
             firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
 
-
         if form.is_valid():
             record = form.save(commit=False)
+
+            if record.order_type == 'G':
+                note = record.note
+                return redirect('glass_create', partner_pk=current_pk)
+
             record.warehouse = users_dict[request.user.username]
             record.balance = get_close_balance(
                 current_pk,
                 record.order_type,
-                open_balance,
                 record.amount
                 )
             record.order = get_order(record.order_type)
@@ -68,26 +67,17 @@ class RecordCreateView(PermissionRequiredMixin, CreateView):
             if record.partner_id == 1:
                 record.amount = -abs(record.amount)
 
-            if 'bal' in request.POST:
-                context = {
-                    'form': form,
-                    'partner': current_partner,
-                    'report': firm_report,
-                    'close_balance': record.balance,
-                    'order': record.order,
-                }
+            context = {
+                'form': form,
+                'partner': current_partner,
+                'report': firm_report,
+            }
 
-                return render(request, 'records/create_record.html', context)
+            current_partner.balance = record.balance
+            current_partner.save()
+            record.save()
 
-
-            elif 'save' in request.POST:
-                update_order(record.order_type)
-
-                current_partner.balance = record.balance
-                current_partner.save()
-
-                record.save()
-                return redirect('dashboard')
+            return render(request, 'records/create_record.html', context)
 
 
 class RecordUpdateView(PermissionRequiredMixin, UpdateView):
@@ -158,7 +148,6 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                 turnover = month_report.filter(order_type='C').aggregate(total=Sum('amount'))
                 name_report = (f"Отчет за месец {current_date.month} с касов оборот "
                                f"{turnover['total'] if turnover['total'] is not None else 0} лв")
-
                 context['report'] = month_report
 
             context['name_report'] = name_report

@@ -6,14 +6,14 @@ body { background: rgba(92, 239, 208, 0.13) !important; }
     background-color:#cff4fc;
     width: 30%;
     min-width: 400px;
-    margin: 50px auto;
-    padding: 20px 10px;
+    margin: 20px auto;
+    padding: 10px 10px;
     text-align: center;
     color: darkblue;
 }
 
 .form-space {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .info {
@@ -26,7 +26,7 @@ body { background: rgba(92, 239, 208, 0.13) !important; }
 .form-table {
   display: grid;
   place-items: center;
-  padding: 30px 30px;
+  padding: 20px 30px;
 }
 
 

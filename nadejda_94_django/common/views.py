@@ -18,7 +18,8 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
     def post(self, request, *args, **kwargs):
         pk = request.POST.get('partner')
 
-        return redirect('record_create', pk)
+        if 'choice' in request.POST:
+            return redirect('record_create', pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,7 +28,7 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
         day_report = (Record.objects.filter(created_at=date.today())
                       .filter(warehouse=users_dict[self.request.user.username])
-                      .order_by('id'))
+                      .order_by('-id'))
         context['report'] = day_report
 
         total_sum = day_report.filter(order_type='C').aggregate(Sum('amount'))
