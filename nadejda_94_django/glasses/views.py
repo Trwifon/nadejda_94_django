@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView
-from nadejda_94_django.glasses.forms import GlassCreateForm
+from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm
 from nadejda_94_django.glasses.helpers import calculate_price
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
@@ -89,26 +89,33 @@ class GlassCreateView(OrderCreateView):
                 return render(request, 'common/dashboard.html')
 
 
-
-
-
-
-
-
-
-
-
-
 class GlassListView(ListView):
-    pass
+    model = Glasses
+    template_name = 'glasses/details_glass.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = {}
+        record_pk = self.kwargs.get('record_pk')
+
+        all_orders = Glasses.objects.filter(order=record_pk)
+        context['all_orders'] = all_orders
+
+        partner = all_orders.first().partner.name
+        context['partner'] = partner
+
+        glass_order = all_orders.first().order
+        context['glass_order'] = glass_order.order
+        context['record_pk'] = glass_order.id
+
+        return context
 
 
-class GlassDetailsView(DetailView):
-    pass
+class GlassUpdateView(DetailView):
+    model = Glasses
+    template_name = 'glasses/update_glass.html'
+    form_class = GlassUpdateForm
 
 
-class GlassUpdateView(UpdateView):
-    pass
 
 
 class GlassDeleteView(DeleteView):

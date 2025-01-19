@@ -24,9 +24,15 @@ body { background: rgba(92, 239, 208, 0.13) !important; }
 }
 
 .form-table {
-  display: grid;
-  place-items: center;
-  padding: 20px 30px;
+    display: grid;
+    place-items: center;
+    padding: 20px 30px;
 }
 
-
+.form-table-glass {
+    display: grid;
+    align-items: center;
+    margin: auto;
+    padding: 20px 30px;
+    width: 50%;
+}

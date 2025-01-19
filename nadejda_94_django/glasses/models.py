@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from nadejda_94_django.glasses.choices import GlassChoices, ThicknessChoices
+from nadejda_94_django.records.helpers import month_dict
 from nadejda_94_django.records.models import Partner, Order, Record
 
 
@@ -78,4 +79,7 @@ class Glasses(models.Model):
         decimal_places=2,
     )
 
+    # def create_glass_order(self):
+    #     month = month_dict[self.created_at.month]
+    #     order = f"C-{month}-"
 

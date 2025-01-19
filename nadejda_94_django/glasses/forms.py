@@ -1,10 +1,8 @@
 from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.forms import modelformset_factory
 from nadejda_94_django.glasses.models import Glasses
 
 
-class GlassCreateForm(forms.ModelForm):
+class GlassBaseForm(forms.ModelForm):
     class Meta:
         model = Glasses
         fields = [
@@ -29,11 +27,19 @@ class GlassCreateForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(GlassCreateForm, self).__init__(*args, **kwargs)
+        super(GlassBaseForm, self).__init__(*args, **kwargs)
         self.fields['unit_price'].widget.attrs['min'] = 5
         self.fields['width'].widget.attrs['min'] = 8
         self.fields['width'].widget.attrs['max'] = 3210
         self.fields['height'].widget.attrs['min'] = 8
         self.fields['height'].widget.attrs['max'] = 3210
         self.fields['number'].widget.attrs['min'] = 1
+
+
+class GlassCreateForm(GlassBaseForm):
+    pass
+
+
+class GlassUpdateForm(GlassBaseForm):
+    pass
 

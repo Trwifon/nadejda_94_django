@@ -1,13 +1,13 @@
 from datetime import datetime
 from nadejda_94_django.records.models import Order, Partner, Record
-
+month_dict = {1: "I", 2: "II", 3: "III",
+              4: "IV", 5: "V", 6: "VI",
+              7: "VII", 8: "VIII", 9: "IX",
+              10: "X", 11: "XI", 12: "XII"}
 
 def get_order(order_type):
     orders = Order.objects.first()
-
     date = datetime.now().month
-    month_dict = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI",
-                  7: "VII", 8: "VIII", 9: "IX", 10: "X", 11: "XI", 12: "XII"}
     current_month = month_dict[date]
     db_month = orders.month
 

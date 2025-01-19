@@ -1,6 +1,7 @@
+{% load custom_filters %}
 {% load static %}
 
-<table class="table table-striped table-hover border=" border="2">
+<table class="table table-striped table-hover table-sm" border="2">
     <tr class="text-center">
         <th>id</th>
         <th>Дата</th>
@@ -15,7 +16,7 @@
     {% for record in report %}
     <tr class="text-center">
         <th scope="row">
-            <a href="{% url 'record_update' record.id  %}">
+            <a href="{% url 'record_update' record.id %}">
               {{record.id}}
             </a>
         </th>
@@ -27,7 +28,13 @@
         <td>{{record.balance}}</td>
         <td>
             {% if record.order %}
-                {{record.order}}
+                {% if record.order|startswith:"C" %}
+                    <a href='{% url 'glass_details' record.id %}'>
+                        {{record.order}}
+                    </a>
+                {% else %}
+                    {{record.order}}
+                {% endif %}
             {% endif %}
         </td>
         <td>
