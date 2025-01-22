@@ -1,0 +1,11 @@
+<table class="table table-striped table-hover table-sm" border="2">
+    <tr class="text-center">
+        <th>Фирма</th>
+        <th>Баланс</th>
+    </tr>
+    {% for partner in report %}
+    <tr class="text-center">
+        <td>{{partner.name}}</td>
+        <td>{{partner.balance}}</td>
+    {% endfor %}
+</table>
