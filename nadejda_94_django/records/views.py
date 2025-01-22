@@ -53,7 +53,7 @@ class RecordCreateView(OrderCreateView):
 
             if record.order_type == 'G':
                 note = record.note
-                return redirect('glass_create', partner_pk=current_pk)
+                return redirect('glass_create', current_pk, note)
 
             record.warehouse = users_dict[request.user.username]
             record.balance = get_close_balance(
@@ -114,10 +114,16 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
             if current_report == 'FR':
                 current_partner = form.cleaned_data['firm_field']
                 balance = current_partner.balance
+
+                if current_partner.id == 2:
+                    firm_report = Partner.objects.all().order_by('balance')
+                    context['report'] = firm_report
+
+                    return render(request, 'records/firm_report.html', context)
+
                 name_report = (f"Отчет за фирма {current_partner}"
                                f" с баланс: {balance if balance is not None else 0} лв")
                 firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')[:MAX_ROWS]
-
                 context['report'] = firm_report
 
             elif current_report == 'DR':

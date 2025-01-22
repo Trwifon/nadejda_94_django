@@ -1,0 +1,51 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <div class="row">
+
+            <div class="col-4">
+                <h5>Редакция на поръчка за стъклопакети</h5>
+                <div class="form-group">
+                    <div class="mb-3">
+                        <h4>{{ orders.first.order.partner }}</h4>
+                        <hr>
+                        <h5>Поръчка: {{ orders.first.order.order }}</h5>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-space">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {{ field.help_text }}
+                                {{ field.error }}
+                                <br>
+                            </div>
+                        {% endfor %}
+                        {% if prev_order %}
+                            <a href="{% url 'glass_update' orders.first.order.id prev_order %}">
+                                Предишен
+                            </a>
+                        {% endif %}
+                        {% if next_order %}
+                            <a href="{% url 'glass_update' orders.first.order.id next_order %}">
+                                Следващ
+                            </a>    
+                        {% endif %}
+                        <button name="save" class="btn btn-info mt-1 mx-3">Запис</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-8 border">
+                <div class="form-table">
+                    {% include 'glasses/glass_table.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

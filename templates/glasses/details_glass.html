@@ -1,0 +1,12 @@
+{% extends 'common/index.html' %} 
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <h5 class="text-center mt-4">Фирма: {{ partner }}, Поръчка: {{ glass_order }}</h5>
+        <a href="{% url 'glass_update' record_pk pk %}">
+            <button class="btn btn-info my-3">Редактирай</button>
+        </a>
+    </div>
+    {% include 'glasses/glass_table.html' %}
+{% endblock content %}

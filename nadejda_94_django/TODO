@@ -1,16 +1,12 @@
+remove partner from glass order and record instead order
+
 setup choices
 
 records - amount -zero - required
 
+create glass and list glass how to inherit
+
+thickness - required
+
 reset pass
-
-
-
-thickness
-width
-height
-unit_price
-number
-partner
-order
 
