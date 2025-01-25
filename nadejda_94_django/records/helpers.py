@@ -51,7 +51,7 @@ def update_order(order_type):
 def get_close_balance(partner_id, order_type, amount):
     open_balance = Partner.objects.get(id=partner_id).balance
 
-    if partner_id == 1 or partner_id == 2:
+    if partner_id in (1, 2):
         return 0
 
     if order_type in ['C', 'B']:
@@ -100,6 +100,21 @@ def errors_test():
     print(test_time.microseconds/1000000)
     return test_result
 
+
+def create_firm_report(current_partner):
+    firm_report = (Record.objects.filter(partner=current_partner).order_by('pk'))
+
+    cumulative_sum = 0
+
+    for record in firm_report:
+        if record.order_type in ['C', 'B']:
+            cumulative_sum += record.amount
+        else:
+            cumulative_sum -= record.amount
+        record.balance = cumulative_sum
+        record.save()
+
+    return firm_report.reverse()
 
 
 

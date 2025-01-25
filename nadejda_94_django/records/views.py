@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, FormView, UpdateView
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
-from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test
+from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test, create_firm_report
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
@@ -24,7 +24,7 @@ class OrderCreateView(PermissionRequiredMixin, CreateView):
         if current_pk in (1, 2):
             firm_report = []
         else:
-            firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
+            firm_report = create_firm_report(current_partner)
 
         return self.render_to_response({
                 'form': form,
@@ -37,6 +37,7 @@ class RecordCreateView(OrderCreateView):
     template_name = 'records/create_record.html'
     form_class = RecordCreateForm
     permission_required = 'records.add_record'
+    success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
         form = RecordCreateForm(request.POST)
@@ -56,28 +57,22 @@ class RecordCreateView(OrderCreateView):
                 return redirect('glass_create', current_pk, note)
 
             record.warehouse = users_dict[request.user.username]
-            record.balance = get_close_balance(
-                current_pk,
-                record.order_type,
-                record.amount
-                )
             record.order = get_order(record.order_type)
             record.partner_id = current_pk
 
             if record.partner_id == 1:
                 record.amount = -abs(record.amount)
 
-            context = {
-                'form': form,
-                'partner': current_partner,
-                'report': firm_report,
-            }
-
-            current_partner.balance = record.balance
-            current_partner.save()
             record.save()
 
-            return render(request, 'records/create_record.html', context)
+            current_partner.balance = get_close_balance(
+                current_pk,
+                record.order_type,
+                record.amount
+            )
+            current_partner.save()
+
+            return redirect(self.success_url)
 
 
 class RecordUpdateView(PermissionRequiredMixin, UpdateView):
@@ -123,8 +118,9 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
 
                 name_report = (f"Отчет за фирма {current_partner}"
                                f" с баланс: {balance if balance is not None else 0} лв")
-                firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')[:MAX_ROWS]
-                context['report'] = firm_report
+
+                context['report'] = create_firm_report(current_partner)[:MAX_ROWS]
+
 
             elif current_report == 'DR':
                 day_report = (Record.objects

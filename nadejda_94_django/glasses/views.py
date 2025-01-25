@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm
-from nadejda_94_django.glasses.helpers import calculate_price
+from nadejda_94_django.glasses.helpers import calculate_price, get_glass_update_record
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
@@ -117,12 +117,14 @@ class GlassUpdateView(TemplateView):
         context = super().get_context_data(**kwargs)
         orders = Glasses.objects.filter(order=self.kwargs.get('record_pk')).order_by('pk')
         context['orders'] = orders
-        form = GlassUpdateForm(instance=orders[0])
+
+        current_index = kwargs.get('pk')
+        current_order = [el for el in orders if el.pk == current_index]
+
+        form = GlassUpdateForm(instance=current_order[0])
         context['form'] = form
 
         order_list = [order.pk for order in orders]
-
-        current_index = order_list[0]
 
         if current_index > order_list[0]:
             context['prev_order'] = current_index - 1
@@ -131,14 +133,28 @@ class GlassUpdateView(TemplateView):
 
         return context
 
-    def post(self, request, record_pk, pk, *args, **kwargs):
+    def post(self, request, record_pk, pk):
         order = get_object_or_404(Glasses, pk=pk)
         form = GlassUpdateForm(request.POST, instance=order)
-        record_pk = 24527
-        print(request)
-        print(record_pk)
+
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.price = calculate_price(
+                instance.width,
+                instance.height,
+                float(instance.unit_price),
+                instance.number
+            )
+            instance.save()
+
+            if 'Next' in request.POST:
+                pk += 1
+            elif 'Previous' in request.POST:
+                pk -= 1
+            # else:
+            #     record = get_glass_update_record(?)??????
+
+
             return redirect('glass_update', record_pk=record_pk, pk=pk)
 
         return render(request, 'common/dashboard.html')

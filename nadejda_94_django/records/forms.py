@@ -29,7 +29,6 @@ class RecordUpdateForm(ModelForm):
             'warehouse',
             'order_type',
             'amount',
-            'balance',
             'order',
             'note',
         ]
@@ -39,7 +38,6 @@ class RecordUpdateForm(ModelForm):
             'warehouse': 'Склад',
             'order_type': 'Вид',
             'amount': 'Сума',
-            'balance': 'Баланс',
             'order': 'Поръчка',
             'note': 'Забележка'
         }
@@ -51,7 +49,6 @@ class CreatePartnerForm(ModelForm):
         exclude = ['type']
         labels = {
             'name': 'Име',
-            'balance': 'Салдо',
         }
 
 

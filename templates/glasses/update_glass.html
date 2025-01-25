@@ -27,14 +27,19 @@
                         {% endfor %}
                         {% if prev_order %}
                             <a href="{% url 'glass_update' orders.first.order.id prev_order %}">
-                                Предишен
+                                <button name="Previous" class="btn btn-info">
+                                    Предишен
+                                </button>
                             </a>
                         {% endif %}
                         {% if next_order %}
                             <a href="{% url 'glass_update' orders.first.order.id next_order %}">
-                                Следващ
+                                <button name="Next" class="btn btn-info">
+                                    Следващ
+                                </button>
                             </a>    
                         {% endif %}
+                        <br>
                         <button name="save" class="btn btn-info mt-1 mx-3">Запис</button>
                     </form>
                 </div>
