@@ -11,5 +11,4 @@ create glass and list glass how to inherit
 reset pass
 
 
-glass create and update and delete
-remove record.balance in glass create
+glass delete

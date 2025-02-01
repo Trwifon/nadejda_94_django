@@ -7,8 +7,8 @@
         <hr>
         {% if current_record %}
             <h5>Фирмa: {{ current_record.partner.name }}</h5>
-            <h5>Склад: {{ current_record.warehouse }}</h5>
-            <h5>Вид: {{ current_record.order_type }}</h5>
+            <h5>Склад: {{ current_record.get_warehouse_display }}</h5>
+            <h5>Вид: {{ current_record.get_order_type_display }}</h5>
             <h5>Поръчка: {{ current_record.order }}</h5>
         {% endif %}
         <br>

@@ -9,26 +9,34 @@
         <th>Фирма</th>
         <th>Вид поръчка</th>
         <th>Сума</th>
-        <th>Баланс</th>
+        {% if report.first.balance %}
+           <th>Баланс</th> 
+        {% endif %}
         <th>Поръчка</th>
         <th>Забележка</th>
     </tr>
     {% for record in report %}
     <tr class="text-center">
         <th scope="row">
-            <a href="{% url 'record_update' record.id %}">
-              {{record.id}}
-            </a>
+            {% if record.order|startswith:"C" %}
+               {{record.id}}
+            {% else %}            
+                <a href="{% url 'record_update' record.id %}">
+                  {{record.id}}
+                </a>
+            {% endif %}
         </th>
         <td>{{record.created_at}}</td>
         <td>{{record.get_warehouse_display}}</td>
         <td>{{record.partner.name}}</td>
         <td>{{record.get_order_type_display}}</td>
         <td>{{record.amount}}</td>
-        <td>{{record.balance}}</td>
+        {% if record.balance %}
+           <td>{{record.balance}}</td>
+        {% endif %}
         <td>
             {% if record.order %}
-                {% if record.order|startswith:"C" %}
+                {% if record.order|startswith:"C" and record.amount != 0 %}
                     <a href='{% url 'glass_details' record.id %}'>
                         {{record.order}}
                     </a>

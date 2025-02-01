@@ -1,3 +1,4 @@
+from audioop import reverse
 from datetime import datetime
 from nadejda_94_django.records.models import Order, Partner, Record
 month_dict = {1: "I", 2: "II", 3: "III",
@@ -73,7 +74,7 @@ def errors_test():
 
             if partner.balance != record_balance:
                test_result.append(f"Гр"
-                                  f"ешка в баланса на {partner.name}")
+                                  f"Грешка в баланса на {partner.name}")
 
     if not test_result:
         test_result.append('Няма грешки')
@@ -84,19 +85,18 @@ def errors_test():
 
 
 def create_firm_report(current_partner):
-    firm_report = (Record.objects.filter(partner=current_partner).order_by('pk'))
-
+    firm_report = (Record.objects.filter(partner=current_partner).order_by('-pk'))
     cumulative_sum = 0
 
-    for record in firm_report:
+    for record in reversed(firm_report):
         if record.order_type in ['C', 'B']:
             cumulative_sum += record.amount
         else:
             cumulative_sum -= record.amount
-        record.balance = cumulative_sum
-        record.save()
 
-    return firm_report.reverse()
+        record.balance = cumulative_sum
+
+    return firm_report
 
 
 

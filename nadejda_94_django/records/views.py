@@ -15,6 +15,7 @@ from nadejda_94_django.records.helpers import get_close_balance, get_order, erro
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
+SUPPLIER = 1
 
 class OrderCreateView(PermissionRequiredMixin, CreateView):
     context_object_name = 'form'
@@ -58,7 +59,7 @@ class RecordCreateView(OrderCreateView):
             record.order = get_order(record.order_type)
             record.partner_id = current_pk
 
-            if record.partner_id == 1:
+            if record.partner_id == SUPPLIER:
                 record.amount = -abs(record.amount)
             record.save()
 
@@ -85,8 +86,6 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
         context = {}
 
         current_record = Record.objects.get(pk=self.kwargs['record_pk'])
-        current_record.warehouse = current_record.get_warehouse_display()
-        current_record.order_type = current_record.get_order_type_display()
         context['current_record'] = current_record
 
         form = RecordUpdateForm(instance=self.object)
@@ -118,29 +117,37 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
 class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
     model = Record
     template_name = 'glasses/delete_glass_record.html'
-    pk_url_kwarg = 'record_pk'
     success_url = reverse_lazy('dashboard')
+
     permission_required = 'records.change_record'
     login_url = 'login'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {}
 
-        record_pk = self.pk_url_kwarg
+        record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
-        orders = Glasses.objects.filter(record=record_pk).order_by('pk')
-        context['orders'] = orders
-
-        glass_order = orders.first()
-
-        context['partner'] = glass_order.record.partner
-        context['glass_order'] = glass_order.record.order
-        context['pk'] = glass_order.id
+        context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
 
         return context
 
     def post(self, request, *args, **kwargs):
-        record = Record.objects.get(pk=self.pk_url_kwarg)
+        record_pk = self.kwargs['record_pk']
+        record = Record.objects.get(pk=record_pk)
+
+        partner = Partner.objects.get(pk=record.partner_id)
+        partner.balance += record.amount
+        partner.save()
+
+        record.amount = 0
+        record.note = 'Изтрита поръчка'
+        record.save()
+
+        glass_orders = Glasses.objects.filter(record=record_pk)
+        for order in glass_orders:
+            order.delete()
+
+        return redirect(self.success_url)
 
 
 class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
@@ -168,8 +175,8 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                 balance = current_partner.balance
 
                 if current_partner.id == 2:
-                    firm_report = Partner.objects.all().order_by('balance')
-                    context['report'] = firm_report
+                    all_firms_report = Partner.objects.all().order_by('balance')
+                    context['report'] = all_firms_report
 
                     return render(request, 'records/firm_report.html', context)
 
@@ -177,7 +184,6 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                                f" с баланс: {balance if balance is not None else 0} лв")
 
                 context['report'] = create_firm_report(current_partner)[:MAX_ROWS]
-
 
             elif current_report == 'DR':
                 day_report = (Record.objects
@@ -271,6 +277,7 @@ class PartnerCreateView(PermissionRequiredMixin, CreateView):
 
 class ErrorTestView(PermissionRequiredMixin, TemplateView):
     model = Record
+
     template_name = 'records/errors_test.html'
     permission_required = ('records.add_partner',)
 

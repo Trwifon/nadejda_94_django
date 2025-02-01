@@ -26,10 +26,6 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
                       .filter(warehouse=users_dict[self.request.user.username])
                       .order_by('-id'))
 
-        for record in day_report:
-            record.balance = 0
-            record.save()
-
         context['report'] = day_report
 
         total_sum = day_report.filter(order_type='C').aggregate(Sum('amount'))

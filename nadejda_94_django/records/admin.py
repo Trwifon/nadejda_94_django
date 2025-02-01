@@ -5,7 +5,7 @@ from nadejda_94_django.records.models import Record, Order, Partner
 
 @admin.register(Record)
 class RecordAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'created_at', 'warehouse', 'order_type', 'amount', 'balance', 'order', 'note')
+    list_display = ('pk', 'created_at', 'warehouse', 'order_type', 'amount', 'order', 'note')
     search_fields = ('pk',)
     list_filter = ('partner__name',)
     ordering = ('pk',)

@@ -69,12 +69,11 @@ class GlassCreateView(OrderCreateView):
                     warehouse = users_dict[request.user.username],
                     order_type = 'G',
                     amount = current_amount,
-                    balance = get_close_balance(current_pk, 'G', current_amount),
                     order = order,
                     note = context['note'],
                     partner = current_partner
                 )
-                current_partner.balance = record.balance
+                current_partner.balance = get_close_balance(current_pk, 'G', current_amount)
                 current_partner.save()
                 record.save()
 
@@ -95,17 +94,10 @@ class GlassListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {}
-        record_pk = self.kwargs.get('record_pk')
+
+        record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
-
-        orders = Glasses.objects.filter(record=record_pk).order_by('pk')
-        context['orders'] = orders
-
-        glass_order = orders.first()
-
-        context['partner'] = glass_order.record.partner
-        context['glass_order'] = glass_order.record.order
-        context['pk'] = glass_order.id
+        context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
 
         return context
 
