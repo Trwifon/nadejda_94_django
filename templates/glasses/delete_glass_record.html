@@ -1,0 +1,16 @@
+{% extends 'common/index.html' %} 
+{% load static %}
+
+{% block content %}
+    
+    <div class="container-fluid text-center">
+        <h5 class="text-center mt-4">Ще изтриете поръчка {{ glass_order }} на фирма: {{ partner }}</h5>
+        <a href="{% url 'record_glass_delete' record_pk%}">
+            <button class="btn btn-info my-3">Изтрий</button>
+        </a>
+        <a href="{% url 'dashboard' %}">
+            <button class="text-right btn btn-info my-3">Откажи</button>
+        </a>
+    </div>
+    {% include 'glasses/glass_table.html' %}
+{% endblock content %}

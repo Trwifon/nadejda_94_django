@@ -1,6 +1,6 @@
 from django.urls import path, include
 from nadejda_94_django.records.views import RecordCreateView, ReportsCreateView, ReportShowView, CashShowView, \
-    RecordUpdateView, PartnerCreateView, ErrorTestView
+    RecordUpdateView, PartnerCreateView, ErrorTestView, RecordGlassDeleteView
 
 urlpatterns = [
     path('create-report/', ReportsCreateView.as_view(), name='create_report'),
@@ -11,4 +11,5 @@ urlpatterns = [
 
     path('<int:partner_pk>/create/', RecordCreateView.as_view(), name='record_create'),
     path('<int:record_pk>/update/', RecordUpdateView.as_view(), name='record_update'),
+        path('<int:record_pk>/delete/', RecordGlassDeleteView.as_view(), name='record_glass_delete'),
     ]

@@ -25,22 +25,34 @@ class RecordUpdateForm(ModelForm):
     class Meta:
         model = Record
         fields = [
-            'partner',
-            'warehouse',
-            'order_type',
+            # 'partner',
+            # 'warehouse',
+            # 'order_type',
             'amount',
-            'order',
+            # 'order',
             'note',
         ]
 
         labels = {
-            'partner': 'Фирма',
-            'warehouse': 'Склад',
-            'order_type': 'Вид',
+            # 'partner': 'Фирма',
+            # 'warehouse': 'Склад',
+            # 'order_type': 'Вид',
             'amount': 'Сума',
-            'order': 'Поръчка',
+            # 'order': 'Поръчка',
             'note': 'Забележка'
         }
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #
+    #
+    #
+    #     if self.instance and self.instance.pk:
+    #         self.fields['partner'].widget = forms.TextInput(attrs=)
+    #         self.fields['partner'].widget.attrs['readonly'] = True
+    #         self.fields['warehouse'].widget.attrs['readonly'] = True
+    #         self.fields['order_type'].widget.attrs['readonly'] = True
+    #         self.fields['order'].widget.attrs['readonly'] = True
 
 
 class CreatePartnerForm(ModelForm):

@@ -5,6 +5,13 @@
     <form method="post" class="form-group">
         <h4>Редакция на запис</h4>
         <hr>
+        {% if current_record %}
+            <h5>Фирмa: {{ current_record.partner.name }}</h5>
+            <h5>Склад: {{ current_record.warehouse }}</h5>
+            <h5>Вид: {{ current_record.order_type }}</h5>
+            <h5>Поръчка: {{ current_record.order }}</h5>
+        {% endif %}
+        <br>
         {% csrf_token %}
         {% for field in form %}
             <div class="form-space">

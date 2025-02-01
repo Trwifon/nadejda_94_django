@@ -2,10 +2,14 @@
 {% load static %}
 
 {% block content %}
+    
     <div class="container-fluid text-center">
         <h5 class="text-center mt-4">Фирма: {{ partner }}, Поръчка: {{ glass_order }}</h5>
         <a href="{% url 'glass_update' record_pk pk %}">
             <button class="btn btn-info my-3">Редактирай</button>
+        </a>
+        <a href="{% url 'record_glass_delete' record_pk %}">
+            <button class="text-right btn btn-info my-3">Изтрий</button>
         </a>
     </div>
     {% include 'glasses/glass_table.html' %}

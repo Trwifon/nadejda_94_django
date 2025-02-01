@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="form-table-glass">
-    <table class="table table-striped table-hover table-sm px-2" border="2" >
+    <table>
         <tr class="text-center">
             <th>Първо стъкло</th>
             <th>Второ стъкло</th>
@@ -14,7 +14,7 @@
             <th>Сума</th>
         </tr>
         {% for order in orders %}
-            <tr class="text-center">
+            <tr class="{% if order.id == pk %}highlight{% endif %}">
                 <td>{{order.first_glass}}</td>
                 <td>{{order.second_glass}}</td>
                 <td>{{order.third_glass}}</td>

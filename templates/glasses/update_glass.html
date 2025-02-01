@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+    
     <div class="container-fluid text-center">
         <div class="row">
 
@@ -9,9 +10,9 @@
                 <h5>Редакция на поръчка за стъклопакети</h5>
                 <div class="form-group">
                     <div class="mb-3">
-                        <h4>{{ orders.first.order.partner }}</h4>
+                        <h4>{{ orders.first.record.partner }}</h4>
                         <hr>
-                        <h5>Поръчка: {{ orders.first.order.order }}</h5>
+                        <h5>Поръчка: {{ orders.first.record.order }}</h5>
                     </div>
 
                     <form method="post">
@@ -26,14 +27,14 @@
                             </div>
                         {% endfor %}
                         {% if prev_order %}
-                            <a href="{% url 'glass_update' orders.first.order.id prev_order %}">
+                            <a href="{% url 'glass_update' orders.first.record.id prev_order %}">
                                 <button name="Previous" class="btn btn-info">
                                     Предишен
                                 </button>
                             </a>
                         {% endif %}
                         {% if next_order %}
-                            <a href="{% url 'glass_update' orders.first.order.id next_order %}">
+                            <a href="{% url 'glass_update' orders.first.record.id next_order %}">
                                 <button name="Next" class="btn btn-info">
                                     Следващ
                                 </button>
@@ -46,9 +47,7 @@
             </div>
 
             <div class="col-8 border">
-                <div class="form-table">
-                    {% include 'glasses/glass_table.html' %}
-                </div>
+                {% include 'glasses/glass_table.html' %}
             </div>
         </div>
     </div>

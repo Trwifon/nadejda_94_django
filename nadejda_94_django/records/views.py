@@ -1,11 +1,14 @@
 from datetime import datetime
+from lib2to3.fixes.fix_input import context
+
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, FormView, UpdateView
+from django.views.generic import CreateView, TemplateView, FormView, UpdateView, DeleteView
+from nadejda_94_django.glasses.models import Glasses
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
 from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test, create_firm_report
@@ -44,11 +47,6 @@ class RecordCreateView(OrderCreateView):
         current_pk = kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
 
-        if current_pk in (1, 2):
-            firm_report = []
-        else:
-            firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
-
         if form.is_valid():
             record = form.save(commit=False)
 
@@ -62,7 +60,6 @@ class RecordCreateView(OrderCreateView):
 
             if record.partner_id == 1:
                 record.amount = -abs(record.amount)
-
             record.save()
 
             current_partner.balance = get_close_balance(
@@ -81,9 +78,69 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = RecordUpdateForm
     pk_url_kwarg = 'record_pk'
     success_url = reverse_lazy('dashboard')
-
     permission_required = 'records.change_record'
     login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
+        current_record.warehouse = current_record.get_warehouse_display()
+        current_record.order_type = current_record.get_order_type_display()
+        context['current_record'] = current_record
+
+        form = RecordUpdateForm(instance=self.object)
+        context['form'] = form
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = RecordUpdateForm(request.POST)
+        self.object = self.get_object()
+        partner_pk = self.object.partner_id
+        order_type = self.object.order_type
+        old_amount = self.object.amount
+
+        if form.is_valid():
+            new_amount = form.cleaned_data['amount']
+            difference = new_amount - old_amount
+
+            current_partner = Partner.objects.get(pk=partner_pk)
+            current_partner.balance = get_close_balance(partner_pk, order_type, difference)
+            current_partner.save()
+
+            self.object.amount = new_amount
+            self.object.save()
+
+        return super().post(request, *args, **kwargs)
+
+
+class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
+    model = Record
+    template_name = 'glasses/delete_glass_record.html'
+    pk_url_kwarg = 'record_pk'
+    success_url = reverse_lazy('dashboard')
+    permission_required = 'records.change_record'
+    login_url = 'login'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = {}
+
+        record_pk = self.pk_url_kwarg
+        context['record_pk'] = record_pk
+        orders = Glasses.objects.filter(record=record_pk).order_by('pk')
+        context['orders'] = orders
+
+        glass_order = orders.first()
+
+        context['partner'] = glass_order.record.partner
+        context['glass_order'] = glass_order.record.order
+        context['pk'] = glass_order.id
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        record = Record.objects.get(pk=self.pk_url_kwarg)
 
 
 class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):

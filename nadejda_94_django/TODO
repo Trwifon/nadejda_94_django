@@ -1,3 +1,5 @@
+highlight details record
+
 remove partner from glass order and record instead order
 
 setup choices
@@ -6,7 +8,8 @@ records - amount -zero - required
 
 create glass and list glass how to inherit
 
-thickness - required
-
 reset pass
 
+
+glass create and update and delete
+remove record.balance in glass create

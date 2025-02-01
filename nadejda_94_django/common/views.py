@@ -31,7 +31,6 @@ class Dashboard(LoginRequiredMixin, TemplateView, FormView):
             record.save()
 
         context['report'] = day_report
-        print(context['report'])
 
         total_sum = day_report.filter(order_type='C').aggregate(Sum('amount'))
         context['total_sum'] = total_sum['amount__sum']
