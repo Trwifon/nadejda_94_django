@@ -64,12 +64,12 @@ class Glasses(models.Model):
         blank=True
     )
 
-    partner = models.ForeignKey(
-        to=Partner,
-        on_delete=models.DO_NOTHING,
-    )
+    # partner = models.ForeignKey(
+    #     to=Partner,
+    #     on_delete=models.DO_NOTHING,
+    # )
 
-    order = models.ForeignKey(
+    record = models.ForeignKey(
         to=Record,
         on_delete=models.DO_NOTHING,
     )

@@ -2,18 +2,17 @@
 {% load static %}
 
 {% block content %}
+    
     <div class="container-fluid text-center">
         <div class="row">
-
             <div class="col-4">
                 <h5>Редакция на поръчка за стъклопакети</h5>
                 <div class="form-group">
                     <div class="mb-3">
-                        <h4>{{ orders.first.order.partner }}</h4>
+                        <h4>{{ orders.first.record.partner }}</h4>
                         <hr>
-                        <h5>Поръчка: {{ orders.first.order.order }}</h5>
+                        <h5>Поръчка: {{ orders.first.record.order }}</h5>
                     </div>
-
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -26,26 +25,27 @@
                             </div>
                         {% endfor %}
                         {% if prev_order %}
-                            <a href="{% url 'glass_update' orders.first.order.id prev_order %}">
-                                Предишен
+                            <a href="{% url 'glass_update' orders.first.record.id prev_order %}">
+                                <button name="Previous" class="btn btn-info">
+                                    Предишен
+                                </button>
                             </a>
                         {% endif %}
                         {% if next_order %}
-                            <a href="{% url 'glass_update' orders.first.order.id next_order %}">
-                                Следващ
+                            <a href="{% url 'glass_update' orders.first.record.id next_order %}">
+                                <button name="Next" class="btn btn-info">
+                                    Следващ
+                                </button>
                             </a>    
                         {% endif %}
+                        <br>
                         <button name="save" class="btn btn-info mt-1 mx-3">Запис</button>
                     </form>
                 </div>
             </div>
-
             <div class="col-8 border">
-                <div class="form-table">
-                    {% include 'glasses/glass_table.html' %}
-                </div>
+                {% include 'glasses/glass_table.html' %}
             </div>
         </div>
     </div>
-
 {% endblock content %}

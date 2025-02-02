@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView
@@ -68,25 +69,23 @@ class GlassCreateView(OrderCreateView):
                     warehouse = users_dict[request.user.username],
                     order_type = 'G',
                     amount = current_amount,
-                    balance = get_close_balance(current_pk, 'G', current_amount),
                     order = order,
                     note = context['note'],
                     partner = current_partner
                 )
-                current_partner.balance = record.balance
+                current_partner.balance = get_close_balance(current_pk, 'G', current_amount)
                 current_partner.save()
                 record.save()
 
                 for element in ALL_ORDERS:
-                    element['order'] = record
-                    element['partner'] = current_partner
+                    element['record'] = record
 
                 element_instances = [Glasses(**element) for element in ALL_ORDERS]
                 Glasses.objects.bulk_create(element_instances)
 
                 ALL_ORDERS.clear()
 
-                return render(request, 'common/dashboard.html')
+                return redirect(self.success_url)
 
 
 class GlassListView(ListView):
@@ -95,34 +94,28 @@ class GlassListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {}
-        record_pk = self.kwargs.get('record_pk')
+
+        record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
-
-        orders = Glasses.objects.filter(order=record_pk).order_by('pk')
-        context['orders'] = orders
-
-        glass_order = orders.first()
-
-        context['partner'] = glass_order.partner.name
-        context['glass_order'] = glass_order.order.order
-        context['pk'] = glass_order.id
+        context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
 
         return context
-
 
 class GlassUpdateView(TemplateView):
     template_name = 'glasses/update_glass.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = Glasses.objects.filter(order=self.kwargs.get('record_pk')).order_by('pk')
+        orders = Glasses.objects.filter(record=self.kwargs.get('record_pk')).order_by('pk')
         context['orders'] = orders
-        form = GlassUpdateForm(instance=orders[0])
+
+        current_index = kwargs.get('pk')
+        current_order = [el for el in orders if el.pk == current_index]
+
+        form = GlassUpdateForm(instance=current_order[0])
         context['form'] = form
 
         order_list = [order.pk for order in orders]
-
-        current_index = order_list[0]
 
         if current_index > order_list[0]:
             context['prev_order'] = current_index - 1
@@ -131,21 +124,39 @@ class GlassUpdateView(TemplateView):
 
         return context
 
-    def post(self, request, record_pk, pk, *args, **kwargs):
+    def post(self, request, record_pk, pk):
         order = get_object_or_404(Glasses, pk=pk)
         form = GlassUpdateForm(request.POST, instance=order)
-        record_pk = 24527
-        print(request)
-        print(record_pk)
+
         if form.is_valid():
-            form.save()
-            return redirect('glass_update', record_pk=record_pk, pk=pk)
+            instance = form.save(commit=False)
+            instance.price = calculate_price(
+                instance.width,
+                instance.height,
+                float(instance.unit_price),
+                instance.number
+            )
+            instance.save()
 
-        return render(request, 'common/dashboard.html')
+            current_record = Record.objects.get(pk=record_pk)
+            old_total_price = current_record.amount
+            new_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
+            difference = old_total_price - new_total_price['amount']
 
+            current_record.amount = new_total_price['amount']
+            current_record.save()
 
+            partner = Partner.objects.get(pk=current_record.partner.pk)
+            partner.balance += difference
+            partner.save()
 
+            if 'Next' in request.POST:
+                return redirect('glass_update', record_pk=record_pk, pk=pk+1)
 
+            elif 'Previous' in request.POST:
+                return redirect('glass_update', record_pk=record_pk, pk=pk-1)
+
+        return redirect('dashboard')
 
 
 class GlassDeleteView(DeleteView):

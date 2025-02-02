@@ -25,22 +25,12 @@ class RecordUpdateForm(ModelForm):
     class Meta:
         model = Record
         fields = [
-            'partner',
-            'warehouse',
-            'order_type',
             'amount',
-            'balance',
-            'order',
             'note',
         ]
 
         labels = {
-            'partner': 'Фирма',
-            'warehouse': 'Склад',
-            'order_type': 'Вид',
             'amount': 'Сума',
-            'balance': 'Баланс',
-            'order': 'Поръчка',
             'note': 'Забележка'
         }
 
@@ -51,7 +41,6 @@ class CreatePartnerForm(ModelForm):
         exclude = ['type']
         labels = {
             'name': 'Име',
-            'balance': 'Салдо',
         }
 
 

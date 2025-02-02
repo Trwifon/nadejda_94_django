@@ -1,17 +1,21 @@
 from datetime import datetime
+from lib2to3.fixes.fix_input import context
+
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, FormView, UpdateView
+from django.views.generic import CreateView, TemplateView, FormView, UpdateView, DeleteView
+from nadejda_94_django.glasses.models import Glasses
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.forms import RecordCreateForm, ReportsCreateForm, RecordUpdateForm, CreatePartnerForm
-from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test
+from nadejda_94_django.records.helpers import get_close_balance, get_order, errors_test, create_firm_report
 from nadejda_94_django.records.models import Record, Partner
 
 MAX_ROWS = 200
+SUPPLIER = 1
 
 class OrderCreateView(PermissionRequiredMixin, CreateView):
     context_object_name = 'form'
@@ -24,7 +28,7 @@ class OrderCreateView(PermissionRequiredMixin, CreateView):
         if current_pk in (1, 2):
             firm_report = []
         else:
-            firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
+            firm_report = create_firm_report(current_partner)
 
         return self.render_to_response({
                 'form': form,
@@ -37,16 +41,12 @@ class RecordCreateView(OrderCreateView):
     template_name = 'records/create_record.html'
     form_class = RecordCreateForm
     permission_required = 'records.add_record'
+    success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
         form = RecordCreateForm(request.POST)
         current_pk = kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
-
-        if current_pk in (1, 2):
-            firm_report = []
-        else:
-            firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')
 
         if form.is_valid():
             record = form.save(commit=False)
@@ -56,28 +56,21 @@ class RecordCreateView(OrderCreateView):
                 return redirect('glass_create', current_pk, note)
 
             record.warehouse = users_dict[request.user.username]
-            record.balance = get_close_balance(
-                current_pk,
-                record.order_type,
-                record.amount
-                )
             record.order = get_order(record.order_type)
             record.partner_id = current_pk
 
-            if record.partner_id == 1:
+            if record.partner_id == SUPPLIER:
                 record.amount = -abs(record.amount)
-
-            context = {
-                'form': form,
-                'partner': current_partner,
-                'report': firm_report,
-            }
-
-            current_partner.balance = record.balance
-            current_partner.save()
             record.save()
 
-            return render(request, 'records/create_record.html', context)
+            current_partner.balance = get_close_balance(
+                current_pk,
+                record.order_type,
+                record.amount
+            )
+            current_partner.save()
+
+            return redirect(self.success_url)
 
 
 class RecordUpdateView(PermissionRequiredMixin, UpdateView):
@@ -86,9 +79,75 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = RecordUpdateForm
     pk_url_kwarg = 'record_pk'
     success_url = reverse_lazy('dashboard')
+    permission_required = 'records.change_record'
+    login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
+        context['current_record'] = current_record
+
+        form = RecordUpdateForm(instance=self.object)
+        context['form'] = form
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = RecordUpdateForm(request.POST)
+        self.object = self.get_object()
+        partner_pk = self.object.partner_id
+        order_type = self.object.order_type
+        old_amount = self.object.amount
+
+        if form.is_valid():
+            new_amount = form.cleaned_data['amount']
+            difference = new_amount - old_amount
+
+            current_partner = Partner.objects.get(pk=partner_pk)
+            current_partner.balance = get_close_balance(partner_pk, order_type, difference)
+            current_partner.save()
+
+            self.object.amount = new_amount
+            self.object.save()
+
+        return super().post(request, *args, **kwargs)
+
+
+class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
+    model = Record
+    template_name = 'glasses/delete_glass_record.html'
+    success_url = reverse_lazy('dashboard')
 
     permission_required = 'records.change_record'
     login_url = 'login'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = {}
+
+        record_pk = self.kwargs['record_pk']
+        context['record_pk'] = record_pk
+        context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        record_pk = self.kwargs['record_pk']
+        record = Record.objects.get(pk=record_pk)
+
+        partner = Partner.objects.get(pk=record.partner_id)
+        partner.balance += record.amount
+        partner.save()
+
+        record.amount = 0
+        record.note = 'Изтрита поръчка'
+        record.save()
+
+        glass_orders = Glasses.objects.filter(record=record_pk)
+        for order in glass_orders:
+            order.delete()
+
+        return redirect(self.success_url)
 
 
 class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
@@ -116,15 +175,15 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                 balance = current_partner.balance
 
                 if current_partner.id == 2:
-                    firm_report = Partner.objects.all().order_by('balance')
-                    context['report'] = firm_report
+                    all_firms_report = Partner.objects.all().order_by('balance')
+                    context['report'] = all_firms_report
 
                     return render(request, 'records/firm_report.html', context)
 
                 name_report = (f"Отчет за фирма {current_partner}"
                                f" с баланс: {balance if balance is not None else 0} лв")
-                firm_report = Record.objects.filter(partner=current_partner).order_by('-pk')[:MAX_ROWS]
-                context['report'] = firm_report
+
+                context['report'] = create_firm_report(current_partner)[:MAX_ROWS]
 
             elif current_report == 'DR':
                 day_report = (Record.objects
@@ -218,6 +277,7 @@ class PartnerCreateView(PermissionRequiredMixin, CreateView):
 
 class ErrorTestView(PermissionRequiredMixin, TemplateView):
     model = Record
+
     template_name = 'records/errors_test.html'
     permission_required = ('records.add_partner',)
 

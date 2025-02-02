@@ -43,3 +43,8 @@ class GlassCreateForm(GlassBaseForm):
 class GlassUpdateForm(GlassBaseForm):
     pass
 
+
+class GlassDeleteForm(GlassBaseForm):
+    class Meta:
+        model = Glasses
+        fields = []

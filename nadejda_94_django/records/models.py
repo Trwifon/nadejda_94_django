@@ -54,8 +54,6 @@ class Record(models.Model):
         default=0
     )
 
-    balance = models.IntegerField()
-
     order = models.CharField(
         max_length=11,
         null=True,

@@ -35,4 +35,9 @@ body { background: rgba(92, 239, 208, 0.13) !important; }
     margin: auto;
     padding: 20px 30px;
     width: 50%;
+    text-align: center;
+}
+
+.highlight {
+    background-color: lightgray;
 }

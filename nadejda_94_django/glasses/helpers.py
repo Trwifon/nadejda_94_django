@@ -7,3 +7,10 @@ def calculate_price(width, height, unit_price, number):
     price = round((unit_price * area * number),2)
 
     return price
+
+
+
+
+
+
+

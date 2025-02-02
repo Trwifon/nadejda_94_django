@@ -1,0 +1,27 @@
+{% extends 'common/index.html' %} 
+{% load static %}
+
+{% block content %}
+    
+    <div class="container-fluid text-center">
+        <h5 class="text-center mt-4">
+            Ще изтриете следната поръчка:
+        </h5>
+        <div class="form-group">
+            <div class="mb-3">
+                <h4>{{ orders.first.record.partner }}</h4>
+                <hr>
+                <h5>Поръчка: {{ orders.first.record.order }}</h5>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <button name="Delete" class="btn btn-danger mx-3">Изтрий</button>
+                <a href="{% url 'dashboard' %}">
+                    <button class="text-right btn btn-info my-3">Откажи</button>
+                </a>
+            </form>
+        </div>
+    </div>
+    {% include 'glasses/glass_table.html' %}
+{% endblock content %}
