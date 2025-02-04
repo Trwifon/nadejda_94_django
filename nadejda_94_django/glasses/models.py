@@ -64,11 +64,6 @@ class Glasses(models.Model):
         blank=True
     )
 
-    # partner = models.ForeignKey(
-    #     to=Partner,
-    #     on_delete=models.DO_NOTHING,
-    # )
-
     record = models.ForeignKey(
         to=Record,
         on_delete=models.DO_NOTHING,
@@ -79,7 +74,6 @@ class Glasses(models.Model):
         decimal_places=2,
     )
 
-    # def create_glass_order(self):
-    #     month = month_dict[self.created_at.month]
-    #     order = f"C-{month}-"
+    def __str__(self):
+        return self.record.order
 

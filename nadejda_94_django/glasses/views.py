@@ -1,16 +1,17 @@
+from random import choices
+
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView
-from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm
-from nadejda_94_django.glasses.helpers import calculate_price
+from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView, FormView
+from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm
+from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
 from nadejda_94_django.records.views import OrderCreateView
 
 ALL_ORDERS = []
-
 
 class GlassCreateView(OrderCreateView):
     model = Glasses
@@ -161,3 +162,64 @@ class GlassUpdateView(TemplateView):
 
 class GlassDeleteView(DeleteView):
     pass
+
+
+class GlassProductionView(FormView):
+    template_name = 'glasses/glass_production.html'
+    form_class = GlassProductionForm
+    success_url = '/glasses/glass_production.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        c_orders = Glasses.objects.filter(prepared_for_working=False).order_by('pk')
+        c_labels = sorted(set([label.record.order for label in c_orders]))
+        c_choices = [(el, el) for el in c_labels]
+
+        c_form = GlassProductionForm()
+        c_form.fields['order_choice'].choices = c_choices
+        context['c_form'] = c_form
+
+        for order in c_orders:
+            order.kind = get_glass_kind(order)
+
+        context['c_orders'] = c_orders
+
+        production_orders = Glasses.objects.filter(prepared_for_working=True).order_by('pk')
+        production_labels = sorted(set([label.record.order for label in production_orders]))
+        production_choices = [(el, el) for el in production_labels]
+
+        production_form = GlassProductionForm()
+        production_form.fields['order_choice'].choices = production_choices
+        context['production_form'] = production_form
+
+        for order in production_orders:
+            order.kind = get_glass_kind(order)
+
+        context['production_orders'] = production_orders
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        c_form = GlassProductionForm(request.POST)
+        production_form = GlassProductionForm(request.POST)
+
+        if 'c_glass_submit' in request.POST:
+            choice = request.POST['order_choice']
+            orders = Glasses.objects.filter(record__order=choice).order_by('pk')
+
+            for order in orders:
+                order.prepared_for_working = True
+                order.save()
+
+            return redirect('glass_production')
+
+        if 'production_submit' in request.POST:
+            choice = request.POST['order_choice']
+            orders = Glasses.objects.filter(record__order=choice).order_by('pk')
+
+            for order in orders:
+                order.prepared_for_working = False
+                order.save()
+
+        return redirect('glass_production')

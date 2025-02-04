@@ -1,6 +1,6 @@
 from django.urls import path, include
 from nadejda_94_django.glasses.views import GlassCreateView, GlassUpdateView, GlassDeleteView, \
-    GlassListView
+    GlassListView, GlassProductionView
 
 urlpatterns = [
     path('<int:partner_pk>/<str:note>/create/', GlassCreateView.as_view(), name='glass_create'),
@@ -9,4 +9,5 @@ urlpatterns = [
         path('update/<int:pk>', GlassUpdateView.as_view(), name='glass_update'),
         path('delete/', GlassDeleteView.as_view(), name='glass_delete'),
     ])),
+    path('production/', GlassProductionView.as_view(), name='glass_production'),
 ]

@@ -5,22 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_production.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_table_production.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_table_production_fill.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/TODO" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/helpers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/styles/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/nav_bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/nav_bar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/common/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/glasses/delete_glass_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/delete_glass_record.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/details_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/details_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/update_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/update_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/records/update_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/update_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_table.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +174,7 @@
       <workItem from="1735819734529" duration="14001000" />
       <workItem from="1736162400107" duration="17658000" />
       <workItem from="1736368826244" duration="89072000" />
-      <workItem from="1737022578827" duration="226003000" />
+      <workItem from="1737022578827" duration="268117000" />
     </task>
     <servers />
   </component>

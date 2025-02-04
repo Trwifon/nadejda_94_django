@@ -16,9 +16,9 @@
 
             <form method="post">
                 {% csrf_token %}
-                <button name="Delete" class="btn btn-danger mx-3">Изтрий</button>
+                <button name="delete" class="btn btn-danger mx-3">Изтрий</button>
                 <a href="{% url 'dashboard' %}">
-                    <button class="text-right btn btn-info my-3">Откажи</button>
+                    <div class="text-right btn btn-info my-3">Откажи</div>
                 </a>
             </form>
         </div>

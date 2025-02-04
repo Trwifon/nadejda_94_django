@@ -48,3 +48,10 @@ class GlassDeleteForm(GlassBaseForm):
     class Meta:
         model = Glasses
         fields = []
+
+
+class GlassProductionForm(forms.Form):
+    order_choice = forms.ChoiceField(
+        widget=forms.RadioSelect,
+    )
+

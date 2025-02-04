@@ -9,9 +9,7 @@
         <th>Фирма</th>
         <th>Вид поръчка</th>
         <th>Сума</th>
-        {% if report.first.balance %}
-           <th>Баланс</th> 
-        {% endif %}
+        <th>Баланс</th>
         <th>Поръчка</th>
         <th>Забележка</th>
     </tr>
@@ -31,9 +29,7 @@
         <td>{{record.partner.name}}</td>
         <td>{{record.get_order_type_display}}</td>
         <td>{{record.amount}}</td>
-        {% if record.balance %}
-           <td>{{record.balance}}</td>
-        {% endif %}
+        <td>{{record.balance}}</td>
         <td>
             {% if record.order %}
                 {% if record.order|startswith:"C" and record.amount != 0 %}
@@ -46,7 +42,7 @@
             {% endif %}
         </td>
         <td>
-           {% if record.note %}
+           {% if record.note != 'None' %}
                {{record.note}}
            {% endif %}
         </td>

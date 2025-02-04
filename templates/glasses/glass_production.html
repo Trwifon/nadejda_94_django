@@ -1,0 +1,52 @@
+{% extends 'common/index.html' %} 
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-1 border">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ c_form.as_p }}
+                    <button type="submit" name="c_glass_submit">За производство</button>
+                </form>
+            </div>
+            <div class="col-5 border">
+                <div class="mt-2">
+                    <h5>C-пакети</h5>
+                </div>
+                <div class='production-table-glass'>
+                    <table>
+                        {% include 'glasses/glass_table_production.html' %}
+                        {% for order in c_orders %}
+                            {% include 'glasses/glass_table_production_fill.html' %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        
+            <div class="col-5 border">
+                <div class="mt-2">
+                    <h5>За производство</h5>
+                </div>
+                <div class='production-table-glass'>
+                    <table>
+                        {% include 'glasses/glass_table_production.html' %}
+                        {% for order in production_orders %}
+                            {% include 'glasses/glass_table_production_fill.html' %}
+                        {% endfor %}
+                    </table>
+                </div>  
+            </div>
+            <div class="col-1 border">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ production_form.as_p }}
+                    <button type="submit" name="production_submit">Върни</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+{% endblock content %}
