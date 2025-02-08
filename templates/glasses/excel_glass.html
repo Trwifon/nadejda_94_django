@@ -2,6 +2,13 @@
 {% load static %}    
 
 {% block content %}
-    <h4>Excel</h4>
-    <h4>{{ order }}</h4>
+    <form class="form-group" method="post">
+        <h4>Прехвърляне в Excel</h4>
+        <h4>на файл за производство от</h4>
+        <h4>{{ sent_pk }}</h4>
+        {% csrf_token %}
+        {{ c_form.as_p }}
+        <button class="btn btn-info mt-3" type="submit" name="excel">Excel</button>
+        <button class="btn btn-info mt-3" type="submit" name="dashboard">Отказ</button>
+    </form>
 {% endblock content %}

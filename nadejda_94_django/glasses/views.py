@@ -1,7 +1,7 @@
-from datetime import datetime
-from lib2to3.fixes.fix_input import context
-
+from datetime import datetime, timedelta
+import pandas as pd
 from django.db.models import Sum
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView, FormView
@@ -207,29 +207,16 @@ class GlassProductionView(FormView):
         production_form = GlassProductionForm(request.POST)
 
         if 'ok' in request.POST:
-            glasses = Glasses.objects.filter(prepared_for_working=True).order_by('pk')
+            glasses = (Glasses.objects
+                       .filter(prepared_for_working=True)
+                       .filter(sent_for_working=None)
+                       .order_by('pk'))
 
-            # glass_order = []
-            # for glass in glasses:
-            #     glass_order.append({
-            #         'Поръчка': glass.record.order,
-            #         'Фирма': glass.record.partner.name,
-            #         'Вид': get_glass_kind(glass),
-            #         'Ширина': glass.width,
-            #         'Височина': glass.height,
-            #         'Брой': glass.number,
-            #     })
-            #
-            # df = pd.DataFrame(list(glass_order))
-            # name = f"Order - {datetime.now().date()} - {datetime.now().hour} - {datetime.now().minute}"
-            #
-            # response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            # response['Content-Disposition'] = f"attachment; filename={name}.xlsx"
-            # df.to_excel(response, index=False, engine='openpyxl')
+
             sent_pk = ''
 
             for glass in glasses:
-                glass.sent_for_working = datetime.now()
+                glass.sent_for_working = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 glass.save()
                 sent_pk = glass.sent_for_working
 
@@ -245,15 +232,51 @@ class GlassProductionView(FormView):
             return redirect('glass_production')
 
 
-
-
 class ExcelGlassView(TemplateView):
     template_name = 'glasses/excel_glass.html'
     success_url = '/glasses/dashboard.html'
+    form_class = GlassProductionForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        order = Glasses.objects.last().sent_for_working
-        context['order'] = order
-        return context
+    def post(self, request, *args, **kwargs):
+        sent_pk_str = kwargs['sent_pk']
+        sent_pk = datetime.strptime(sent_pk_str, '%Y-%m-%d %H:%M:%S')
+        glasses = (Glasses.objects
+                  .filter(sent_for_working__lte=sent_pk)
+                  .filter(sent_for_working__gt=sent_pk-timedelta(seconds=5))
+                  .order_by('pk'))
+
+        glass_order = []
+        row = 0
+        old_order = ''
+
+        for glass in glasses:
+            current_order = glass.record.order
+            quantity = glasses.filter(record__order=current_order).count()
+            if current_order == old_order:
+                row += 1
+            else:
+                row = 1
+
+            old_order = current_order
+
+            glass_order.append([
+                f"{glass.record.partner.name} / {glass.record.note} / {quantity}",
+                f"{current_order} {row}",
+                glass.width,
+                glass.height,
+                'R',
+                glass.number,
+                glass.number,
+                get_glass_kind(glass),
+            ])
+
+        df = pd.DataFrame(glass_order)
+        name = f"Order - {sent_pk}"
+
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f"attachment; filename={name}.xlsx"
+        df.to_excel(response, index=False, engine='openpyxl')
+
+        return response
+
 

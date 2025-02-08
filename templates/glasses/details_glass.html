@@ -14,7 +14,7 @@
                 <button class="text-right btn btn-info my-3">Изтрий</button>
             </a>
         {% else %}
-            <h5>В производство: {{ orders.first.sent_for_working }}</h5>
+            <h5>В производство: {{ orders.first.sent_for_working|date:"Y-m-d H:i:s" }}</h5>
         {% endif %}
     </div>
     {% include 'glasses/glass_table.html' %}
