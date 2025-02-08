@@ -6,12 +6,16 @@
         <h5 class="text-center mt-4">
             Фирма: {{ orders.first.record.partner }}, Поръчка: {{ orders.first.record.order }}
         </h5>
-        <a href="{% url 'glass_update' record_pk orders.first.pk %}">
-            <button class="btn btn-info my-3">Редактирай</button>
-        </a>
-        <a href="{% url 'record_glass_delete' record_pk %}">
-            <button class="text-right btn btn-info my-3">Изтрий</button>
-        </a>
+        {% if not orders.first.sent_for_working %}
+            <a href="{% url 'glass_update' record_pk orders.first.pk %}">
+                <button class="btn btn-info my-3">Редактирай</button>
+            </a>
+            <a href="{% url 'record_glass_delete' record_pk %}">
+                <button class="text-right btn btn-info my-3">Изтрий</button>
+            </a>
+        {% else %}
+            <h5>В производство: {{ orders.first.sent_for_working }}</h5>
+        {% endif %}
     </div>
     {% include 'glasses/glass_table.html' %}
 {% endblock content %}

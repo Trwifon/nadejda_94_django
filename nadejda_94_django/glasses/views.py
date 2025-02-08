@@ -1,4 +1,5 @@
-from random import choices
+from datetime import datetime
+from lib2to3.fixes.fix_input import context
 
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
@@ -83,10 +84,11 @@ class GlassCreateView(OrderCreateView):
 
                 element_instances = [Glasses(**element) for element in ALL_ORDERS]
                 Glasses.objects.bulk_create(element_instances)
-
                 ALL_ORDERS.clear()
 
-                return redirect(self.success_url)
+                glass_pk = Glasses.objects.filter(record=record).first().pk
+
+                return redirect('glass_update', record_pk=record.pk, pk=glass_pk)
 
 
 class GlassListView(ListView):
@@ -185,7 +187,7 @@ class GlassProductionView(FormView):
 
         context['c_orders'] = c_orders
 
-        production_orders = Glasses.objects.filter(prepared_for_working=True).order_by('pk')
+        production_orders = Glasses.objects.filter(prepared_for_working=True).filter(sent_for_working = None).order_by('pk')
         production_labels = sorted(set([label.record.order for label in production_orders]))
         production_choices = [(el, el) for el in production_labels]
 
@@ -204,22 +206,54 @@ class GlassProductionView(FormView):
         c_form = GlassProductionForm(request.POST)
         production_form = GlassProductionForm(request.POST)
 
-        if 'c_glass_submit' in request.POST:
+        if 'ok' in request.POST:
+            glasses = Glasses.objects.filter(prepared_for_working=True).order_by('pk')
+
+            # glass_order = []
+            # for glass in glasses:
+            #     glass_order.append({
+            #         'Поръчка': glass.record.order,
+            #         'Фирма': glass.record.partner.name,
+            #         'Вид': get_glass_kind(glass),
+            #         'Ширина': glass.width,
+            #         'Височина': glass.height,
+            #         'Брой': glass.number,
+            #     })
+            #
+            # df = pd.DataFrame(list(glass_order))
+            # name = f"Order - {datetime.now().date()} - {datetime.now().hour} - {datetime.now().minute}"
+            #
+            # response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            # response['Content-Disposition'] = f"attachment; filename={name}.xlsx"
+            # df.to_excel(response, index=False, engine='openpyxl')
+            sent_pk = ''
+
+            for glass in glasses:
+                glass.sent_for_working = datetime.now()
+                glass.save()
+                sent_pk = glass.sent_for_working
+
+            return redirect('glass_excel', sent_pk=sent_pk)
+
+        if 'c_glass_submit' or 'production_glass_submit' in request.POST:
             choice = request.POST['order_choice']
             orders = Glasses.objects.filter(record__order=choice).order_by('pk')
-
             for order in orders:
-                order.prepared_for_working = True
+                order.prepared_for_working = True if 'c_glass_submit' in request.POST else False
                 order.save()
 
             return redirect('glass_production')
 
-        if 'production_submit' in request.POST:
-            choice = request.POST['order_choice']
-            orders = Glasses.objects.filter(record__order=choice).order_by('pk')
 
-            for order in orders:
-                order.prepared_for_working = False
-                order.save()
 
-        return redirect('glass_production')
+
+class ExcelGlassView(TemplateView):
+    template_name = 'glasses/excel_glass.html'
+    success_url = '/glasses/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = Glasses.objects.last().sent_for_working
+        context['order'] = order
+        return context
+

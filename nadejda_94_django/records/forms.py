@@ -25,12 +25,16 @@ class RecordUpdateForm(ModelForm):
     class Meta:
         model = Record
         fields = [
+            'order_type',
             'amount',
+            'order',
             'note',
         ]
 
         labels = {
+            'order_type': 'Вид',
             'amount': 'Сума',
+            'order': 'Поръчка',
             'note': 'Забележка'
         }
 

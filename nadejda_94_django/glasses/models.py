@@ -59,7 +59,7 @@ class Glasses(models.Model):
         default=False
     )
 
-    sent_for_working = models.DateField(
+    sent_for_working = models.DateTimeField(
         null=True,
         blank=True
     )
