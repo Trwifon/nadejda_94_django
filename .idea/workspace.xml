@@ -7,8 +7,8 @@
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/glasses/details_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/details_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/excel_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/excel_glass.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +92,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="nadejda_94_django.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nadejda_94_django/records" />
@@ -134,6 +134,10 @@
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Django Server.nadejda_94_django" />
+      <item itemvalue="Python.views" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.views" />
@@ -162,7 +166,7 @@
       <workItem from="1735819734529" duration="14001000" />
       <workItem from="1736162400107" duration="17658000" />
       <workItem from="1736368826244" duration="89072000" />
-      <workItem from="1737022578827" duration="313920000" />
+      <workItem from="1737022578827" duration="327181000" />
     </task>
     <servers />
   </component>
@@ -180,7 +184,18 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/nadejda_94_django/glasses/views.py</url>
+          <line>269</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/nadejda_94_django$views.coverage" NAME="views Coverage Results" MODIFIED="1738402881559" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nadejda_94_django/records" />
+    <SUITE FILE_PATH="coverage/nadejda_94_django$views.coverage" NAME="views Coverage Results" MODIFIED="1739103926824" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nadejda_94_django/records" />
   </component>
 </project>

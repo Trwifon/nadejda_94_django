@@ -238,12 +238,19 @@ class ExcelGlassView(TemplateView):
     form_class = GlassProductionForm
 
     def post(self, request, *args, **kwargs):
+        if 'dashboard' in request.POST:
+            return redirect('dashboard')
+
         sent_pk_str = kwargs['sent_pk']
         sent_pk = datetime.strptime(sent_pk_str, '%Y-%m-%d %H:%M:%S')
-        glasses = (Glasses.objects
-                  .filter(sent_for_working__lte=sent_pk)
-                  .filter(sent_for_working__gt=sent_pk-timedelta(seconds=5))
-                  .order_by('pk'))
+
+        glasses = Glasses.objects.filter(sent_for_working__in=[
+            sent_pk - timedelta(seconds=2),
+            sent_pk - timedelta(seconds=1),
+            sent_pk,
+            sent_pk + timedelta(seconds=1),
+            sent_pk + timedelta(seconds=2),
+        ]).order_by('pk')
 
         glass_order = []
         row = 0
@@ -260,7 +267,9 @@ class ExcelGlassView(TemplateView):
             old_order = current_order
 
             glass_order.append([
-                f"{glass.record.partner.name} / {glass.record.note} / {quantity}",
+                f"{glass.record.partner.name} / {glass.record.note} / {quantity}"
+                if glass.record.note is not None else
+                f"{glass.record.partner.name} / {quantity}",
                 f"{current_order} {row}",
                 glass.width,
                 glass.height,
