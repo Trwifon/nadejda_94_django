@@ -71,10 +71,12 @@ def errors_test():
             firm_report = create_firm_report(partner)
             if firm_report:
                 record_balance = firm_report.first().balance
+                print(record_balance)
+                print(partner.balance)
+                print(partner.balance != record_balance)
 
-            if partner.balance != record_balance:
-               test_result.append(f"Гр"
-                                  f"Грешка в баланса на {partner.name}")
+                if partner.balance != record_balance:
+                   test_result.append(f"Грешка в баланса на {partner.name}")
 
     if not test_result:
         test_result.append('Няма грешки')
@@ -82,6 +84,8 @@ def errors_test():
     end_time = datetime.now()
     test_time = end_time - start_time
     print(test_time.microseconds/1000000)
+
+    return test_result
 
 
 def create_firm_report(current_partner):

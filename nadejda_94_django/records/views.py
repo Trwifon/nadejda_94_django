@@ -237,7 +237,7 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                     })
 
                 df = pd.DataFrame(list(result))
-                name = f"Отчет - {datetime.today().date()}"
+                name = f"Report - {datetime.today().now()}"
 
                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 response['Content-Disposition'] = f'attachment; filename={name}.xlsx'
@@ -277,7 +277,6 @@ class PartnerCreateView(PermissionRequiredMixin, CreateView):
 
 class ErrorTestView(PermissionRequiredMixin, TemplateView):
     model = Record
-
     template_name = 'records/errors_test.html'
     permission_required = ('records.add_partner',)
 

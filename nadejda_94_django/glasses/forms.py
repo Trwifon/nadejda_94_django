@@ -22,7 +22,7 @@ class GlassBaseForm(forms.ModelForm):
             'thickness': 'Дебелина',
             'unit_price': 'Единична цена',
             'width': 'Първи размер',
-            'height': 'Втори рзамер',
+            'height': 'Втори размер',
             'number': 'Брой',
         }
 
@@ -40,6 +40,10 @@ class GlassCreateForm(GlassBaseForm):
     pass
 
 
+class PGlassCreateForm(GlassBaseForm):
+    pass
+
+
 class GlassUpdateForm(GlassBaseForm):
     pass
 
@@ -48,3 +52,11 @@ class GlassDeleteForm(GlassBaseForm):
     class Meta:
         model = Glasses
         fields = []
+
+
+class GlassProductionForm(forms.Form):
+    order_choice = forms.ChoiceField(
+        label='Избери поръчка',
+        widget=forms.RadioSelect,
+    )
+

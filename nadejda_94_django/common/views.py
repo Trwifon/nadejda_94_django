@@ -4,8 +4,6 @@ from django.db.models import Sum
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-from pandas.core.computation.align import reconstruct_object
-
 from nadejda_94_django.common.forms import PartnerForm
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.models import Partner, Record

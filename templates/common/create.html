@@ -6,11 +6,15 @@
         <div class="row">
         
             <div class="col-4">
+                <h5>Поръчка на стъклопакети</h5>
                 <div class="form-group">
                     <div class="mb-3">
                         <h4>{{ partner.name }}</h4>
-                        <hr>
                         <h5>Баланс: {{ partner.balance }} лв</h5>
+                        {% if record.order %}
+                            <h5>По поръчка {{ record.order }}</h5>                            
+                        {% endif %}
+                        <hr>
                     </div>
                 
                     <script>
