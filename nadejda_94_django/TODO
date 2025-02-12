@@ -1,5 +1,3 @@
-highlight details record
-
 setup choices
 
 records - amount -zero - required
@@ -8,7 +6,10 @@ create glass and list glass how to inherit
 
 reset pass
 
-glass delete
+find on record.note
 
+
+Price in p glasses?
+Unit_price disabled
 
 

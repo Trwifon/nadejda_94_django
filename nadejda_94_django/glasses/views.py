@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 import pandas as pd
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView, DetailView, View, TemplateView, FormView
-from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm
-from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind
+from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
+from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
+from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
@@ -57,14 +58,12 @@ class GlassCreateView(OrderCreateView):
 
             if 'order' in request.POST:
                 ALL_ORDERS.append(current_order)
-
                 context['orders'] = ALL_ORDERS
 
                 return render(request, 'glasses/create_glass.html', context)
 
             if 'save' in request.POST:
                 order = get_order('G')
-
                 current_amount = sum(item['price'] for item in ALL_ORDERS)
 
                 record = Record(
@@ -91,6 +90,70 @@ class GlassCreateView(OrderCreateView):
                 return redirect('glass_update', record_pk=record.pk, pk=glass_pk)
 
 
+class PGlassCreateView(PermissionRequiredMixin, CreateView):
+    model = Glasses
+    template_name = 'glasses/create_glass.html'
+    permission_required = 'glasses.add_glasses'
+    success_url = reverse_lazy('dashboard')
+    form_class = PGlassCreateForm
+    ALL_ORDERS = []
+
+    def get(self, request, *args, **kwargs):
+        record_pk = self.kwargs.get('record_pk')
+        glass = Glasses.objects.filter(record_id=record_pk).first()
+
+        if glass:
+            return redirect('glass_details', record_pk=record_pk)
+
+        return render(request, 'glasses/create_glass.html', self.get_context_data())
+
+    def get_context_data(self, **kwargs):
+        form = PGlassCreateForm(self.request.POST)
+        note = self.kwargs.get('note')
+        record_pk = self.kwargs.get('record_pk')
+        record = Record.objects.get(pk=record_pk)
+        partner = record.partner
+
+        context = {
+            'form': form,
+            'note': note,
+            'record': record,
+            'partner': partner,
+        }
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = GlassCreateForm(request.POST)
+
+        context = self.get_context_data()
+
+        if form.is_valid():
+            current_order = form.cleaned_data
+
+            if 'order' in request.POST:
+                ALL_ORDERS.append(current_order)
+                context['orders'] = ALL_ORDERS
+
+                return render(request, 'glasses/create_glass.html', context)
+
+            if 'save' in request.POST:
+                record_pk = self.kwargs.get('record_pk')
+                record = Record.objects.get(pk=record_pk)
+
+                for element in ALL_ORDERS:
+                    element['record'] = record
+                    element['price'] = 1
+
+                element_instances = [Glasses(**element) for element in ALL_ORDERS]
+                Glasses.objects.bulk_create(element_instances)
+                ALL_ORDERS.clear()
+
+                glass_pk = Glasses.objects.filter(record=record).first().pk
+
+                return redirect('glass_update', record_pk=record.pk, pk=glass_pk)
+
+
 class GlassListView(ListView):
     model = Glasses
     template_name = 'glasses/details_glass.html'
@@ -103,6 +166,7 @@ class GlassListView(ListView):
         context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
 
         return context
+
 
 class GlassUpdateView(TemplateView):
     template_name = 'glasses/update_glass.html'
@@ -166,15 +230,16 @@ class GlassDeleteView(DeleteView):
     pass
 
 
-class GlassProductionView(FormView):
+class GlassProductionView(PermissionRequiredMixin, FormView):
     template_name = 'glasses/glass_production.html'
     form_class = GlassProductionForm
     success_url = '/glasses/glass_production.html'
+    permission_required = 'glasses.add_glasses'
 
     def get_context_data(self, **kwargs):
         context = {}
 
-        c_orders = Glasses.objects.filter(prepared_for_working=False).order_by('pk')
+        c_orders = Glasses.objects.filter(prepared_for_working=False).order_by('record__order', 'pk')
         c_labels = sorted(set([label.record.order for label in c_orders]))
         c_choices = [(el, el) for el in c_labels]
 
@@ -203,16 +268,11 @@ class GlassProductionView(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        c_form = GlassProductionForm(request.POST)
-        production_form = GlassProductionForm(request.POST)
-
         if 'ok' in request.POST:
             glasses = (Glasses.objects
                        .filter(prepared_for_working=True)
                        .filter(sent_for_working=None)
                        .order_by('pk'))
-
-
             sent_pk = ''
 
             for glass in glasses:
@@ -252,6 +312,9 @@ class ExcelGlassView(TemplateView):
             sent_pk + timedelta(seconds=2),
         ]).order_by('pk')
 
+        number_of_glasses = glasses.aggregate(sum=Sum('number'))
+        total_area = 0.0
+
         glass_order = []
         row = 0
         old_order = ''
@@ -266,10 +329,13 @@ class ExcelGlassView(TemplateView):
 
             old_order = current_order
 
+            if glass.record.note == 'None' or not glass.record.note :
+                first_column = f"{glass.record.partner.name} / {quantity}"
+            else:
+                first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity}"
+
             glass_order.append([
-                f"{glass.record.partner.name} / {glass.record.note} / {quantity}"
-                if glass.record.note is not None else
-                f"{glass.record.partner.name} / {quantity}",
+                first_column,
                 f"{current_order} {row}",
                 glass.width,
                 glass.height,
@@ -279,12 +345,22 @@ class ExcelGlassView(TemplateView):
                 get_glass_kind(glass),
             ])
 
+            total_area += calculate_area(glass.width, glass.height, glass.number)
+
+        glass_order[0].extend([
+            'Брой:',
+            number_of_glasses['sum'],
+            'Площ:',
+            total_area,
+            'кв.м'
+        ])
+
         df = pd.DataFrame(glass_order)
         name = f"Order - {sent_pk}"
 
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = f"attachment; filename={name}.xlsx"
-        df.to_excel(response, index=False, engine='openpyxl')
+        df.to_excel(response, index=False, header=False, engine='openpyxl')
 
         return response
 

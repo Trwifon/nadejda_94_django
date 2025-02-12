@@ -1,7 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from nadejda_94_django.glasses.choices import GlassChoices, ThicknessChoices
-from nadejda_94_django.records.helpers import month_dict
 from nadejda_94_django.records.models import Partner, Order, Record
 
 

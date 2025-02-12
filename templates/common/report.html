@@ -32,19 +32,27 @@
         <td>{{record.balance}}</td>
         <td>
             {% if record.order %}
-                {% if record.order|startswith:"C" and record.amount != 0 %}
-                    <a href='{% url 'glass_details' record.id %}'>
+                {% if record.order|startswith:"C" %}
+                    {% if record.amount != 0 %}
+                        <a href='{% url 'glass_details' record.id %}'>
+                            {{record.order}}
+                        </a>
+                    {% else %}    
+                        {{record.order}}
+                    {% endif %}
+                {% else %}
+                    <a href='{% url 'p_glass_create' record.pk record.note %}'>
                         {{record.order}}
                     </a>
-                {% else %}
-                    {{record.order}}
                 {% endif %}
             {% endif %}
         </td>
         <td>
-           {% if record.note != 'None' %}
-               {{record.note}}
-           {% endif %}
+            {% if record.note != 'None'  %}
+               {% if record.note is not None %}
+                   {{record.note}}
+                {% endif %}
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
