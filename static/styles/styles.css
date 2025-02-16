@@ -1,4 +1,6 @@
-body { background: rgba(92, 239, 208, 0.13) !important; }
+body {
+    background: rgba(92, 239, 208, 0.13) !important;
+}
 
 .form-group {
     border: 1px solid #58b0e8;

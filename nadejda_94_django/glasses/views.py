@@ -239,18 +239,18 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = {}
 
-        c_orders = Glasses.objects.filter(prepared_for_working=False).order_by('record__order', 'pk')
-        c_labels = sorted(set([label.record.order for label in c_orders]))
-        c_choices = [(el, el) for el in c_labels]
+        orders = Glasses.objects.filter(prepared_for_working=False).order_by('record__order', 'pk')
+        labels = sorted(set([label.record.order for label in orders]))
+        choices = [(el, el) for el in labels]
 
-        c_form = GlassProductionForm()
-        c_form.fields['order_choice'].choices = c_choices
-        context['c_form'] = c_form
+        form = GlassProductionForm()
+        form.fields['order_choice'].choices = choices
+        context['form'] = form
 
-        for order in c_orders:
+        for order in orders:
             order.kind = get_glass_kind(order)
 
-        context['c_orders'] = c_orders
+        context['orders'] = orders
 
         production_orders = Glasses.objects.filter(prepared_for_working=True).filter(sent_for_working = None).order_by('pk')
         production_labels = sorted(set([label.record.order for label in production_orders]))
@@ -273,14 +273,14 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
                        .filter(prepared_for_working=True)
                        .filter(sent_for_working=None)
                        .order_by('pk'))
-            sent_pk = ''
+            sent_time = ''
 
             for glass in glasses:
                 glass.sent_for_working = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 glass.save()
-                sent_pk = glass.sent_for_working
+                sent_time = glass.sent_for_working
 
-            return redirect('glass_excel', sent_pk=sent_pk)
+            return redirect('glass_excel', sent_time=sent_time)
 
         if 'c_glass_submit' or 'production_glass_submit' in request.POST:
             choice = request.POST['order_choice']
@@ -294,22 +294,22 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
 
 class ExcelGlassView(TemplateView):
     template_name = 'glasses/excel_glass.html'
-    success_url = '/glasses/dashboard.html'
+    success_url = reverse_lazy('/glasses/dashboard.html')
     form_class = GlassProductionForm
 
     def post(self, request, *args, **kwargs):
         if 'dashboard' in request.POST:
             return redirect('dashboard')
 
-        sent_pk_str = kwargs['sent_pk']
-        sent_pk = datetime.strptime(sent_pk_str, '%Y-%m-%d %H:%M:%S')
+        sent_time_str = kwargs['sent_time']
+        sent_time = datetime.strptime(sent_time_str, '%Y-%m-%d %H:%M:%S')
 
         glasses = Glasses.objects.filter(sent_for_working__in=[
-            sent_pk - timedelta(seconds=2),
-            sent_pk - timedelta(seconds=1),
-            sent_pk,
-            sent_pk + timedelta(seconds=1),
-            sent_pk + timedelta(seconds=2),
+            sent_time - timedelta(seconds=2),
+            sent_time - timedelta(seconds=1),
+            sent_time,
+            sent_time + timedelta(seconds=1),
+            sent_time + timedelta(seconds=2),
         ]).order_by('pk')
 
         number_of_glasses = glasses.aggregate(sum=Sum('number'))
@@ -321,7 +321,7 @@ class ExcelGlassView(TemplateView):
 
         for glass in glasses:
             current_order = glass.record.order
-            quantity = glasses.filter(record__order=current_order).count()
+            quantity = glasses.filter(record__order=current_order).aggregate(sum=Sum('number'))
             if current_order == old_order:
                 row += 1
             else:
@@ -329,10 +329,10 @@ class ExcelGlassView(TemplateView):
 
             old_order = current_order
 
-            if glass.record.note == 'None' or not glass.record.note :
-                first_column = f"{glass.record.partner.name} / {quantity}"
+            if glass.record.note == 'None' or not glass.record.note:
+                first_column = f"{glass.record.partner.name} / {quantity['sum']}"
             else:
-                first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity}"
+                first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity['sum']}"
 
             glass_order.append([
                 first_column,
@@ -356,8 +356,8 @@ class ExcelGlassView(TemplateView):
         ])
 
         df = pd.DataFrame(glass_order)
-        str_sent_pk = str(sent_pk).replace(':', '_')
-        name = f"d:/paketi/Линия {str_sent_pk}.xlsx"
+        str_sent_time = str(sent_time).replace(':', '_')
+        name = f"d:/paketi/Линия {str_sent_time}.xlsx"
 
         df.to_excel(name, index=False, header=False)
 

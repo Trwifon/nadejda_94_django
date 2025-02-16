@@ -7,8 +7,8 @@
             <div class="col-1 border">
                 <form method="post">
                     {% csrf_token %}
-                    {{ c_form.as_p }}
-                    {% if c_orders %}
+                    {{ form.as_p }}
+                    {% if orders %}
                         <button class="btn btn-info" type="submit" name="c_glass_submit">За цеха</button>
                     {% endif %}
                 </form>
@@ -20,7 +20,7 @@
                 <div class='production-table-glass'>
                     <table>
                         {% include 'glasses/glass_table_production.html' %}
-                        {% for order in c_orders %}
+                        {% for order in orders %}
                             {% include 'glasses/glass_table_production_fill.html' %}
                         {% endfor %}
                     </table>
