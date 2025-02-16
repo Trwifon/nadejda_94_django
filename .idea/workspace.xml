@@ -7,18 +7,13 @@
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/TODO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/common/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/common/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/mixins.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/mixins.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/common/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/common/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/nav_bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/nav_bar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/details_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/details_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_production.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_production.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/records/update_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/update_record.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +173,8 @@
       <workItem from="1736162400107" duration="17658000" />
       <workItem from="1736368826244" duration="89072000" />
       <workItem from="1737022578827" duration="340597000" />
-      <workItem from="1739130334545" duration="42939000" />
+      <workItem from="1739130334545" duration="45988000" />
+      <workItem from="1739450969163" duration="29866000" />
     </task>
     <servers />
   </component>

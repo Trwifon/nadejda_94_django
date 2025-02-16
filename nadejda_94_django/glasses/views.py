@@ -356,12 +356,12 @@ class ExcelGlassView(TemplateView):
         ])
 
         df = pd.DataFrame(glass_order)
-        name = f"Order - {sent_pk}"
+        str_sent_pk = str(sent_pk).replace(':', '_')
+        name = f"d:/paketi/Линия {str_sent_pk}.xlsx"
 
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f"attachment; filename={name}.xlsx"
-        df.to_excel(response, index=False, header=False, engine='openpyxl')
+        df.to_excel(name, index=False, header=False)
 
-        return response
+        return redirect('dashboard')
+
 
 
