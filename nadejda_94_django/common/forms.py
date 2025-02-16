@@ -12,3 +12,12 @@ class PartnerForm(ModelForm):
     class Meta:
         model = Partner
         fields = ['partner']
+
+
+class SearchForm(forms.Form):
+    search_field = forms.CharField(
+        max_length=50,
+        label= '',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'забележка или поръчка'
+        }))

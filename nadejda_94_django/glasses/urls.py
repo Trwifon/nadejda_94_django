@@ -11,6 +11,6 @@ urlpatterns = [
         path('delete/', GlassDeleteView.as_view(), name='glass_delete'),
     ])),
     path('production/', GlassProductionView.as_view(), name='glass_production'),
-    path('excel/<str:sent_pk>/', ExcelGlassView.as_view(), name='glass_excel'),
+    path('excel/<str:sent_time>/', ExcelGlassView.as_view(), name='glass_excel'),
 ]
 

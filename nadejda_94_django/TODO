@@ -1,15 +1,11 @@
-setup choices
-
 records - amount -zero - required
-
-create glass and list glass how to inherit
 
 reset pass
 
-find on record.note
+Price in p glasses, unit_price disabled
+remove client from partner in glass production
+add new value to choice field?
+scroll in glasses
 
-
-Price in p glasses?
-Unit_price disabled
 
 

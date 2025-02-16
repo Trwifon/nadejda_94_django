@@ -14,19 +14,28 @@
         </a>
     
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-            <ul class="navbar-nav fs-6">
-                <li  class="nav-item">
-                    {% if current_path == '/' %}
+            {% if current_path == '/' %}
+                <ul class="navbar-nav fs-6">
+                    <li  class="nav-item px-5">
                         <form class="d-flex" method="Post">
                             <span class="form-control me-1 bg-info-subtle fs-6">
                                 {% csrf_token %}
-                                {{ form }}
+                                {{ create_form }}
                             </span>
-                            <button name="choice" class="btn btn-info btn-sm mr-5 mx-3 fs-6" type="submit">Избери</button>
+                            <button name="create" class="btn btn-info btn-sm mx-1 fs-6" type="submit">Избери</button>
                         </form>
-                    {% endif %}
-                </li>
-            </ul>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex" method="Post">
+                            <span class="form-control me-1 bg-info-subtle fs-6">
+                                {% csrf_token %}
+                                {{ search_form }}
+                            </span>
+                            <button name="search" class="btn btn-info btn-sm mx-1 fs-6" type="submit">Търси</button>
+                        </form>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     
         <div class="collapse navbar-collapse d-flex justify-content-end">
