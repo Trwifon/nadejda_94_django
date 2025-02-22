@@ -9,7 +9,7 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     {% if orders %}
-                        <button class="btn btn-info" type="submit" name="c_glass_submit">За цеха</button>
+                        <button class="btn btn-info" type="submit" name="glass_submit">За цеха</button>
                     {% endif %}
                 </form>
             </div>
@@ -19,9 +19,28 @@
                 </div>
                 <div class='production-table-glass'>
                     <table>
-                        {% include 'glasses/glass_table_production.html' %}
+                        <tr class="text-center">
+                            <th>Поръчка</th>
+                            <th>Фирма</th>
+                            <th>Вид стъклопакет</th>
+                            <th>Ширина</th>
+                            <th>Височина</th>
+                            <th>Количество</th>
+                        </tr>
                         {% for order in orders %}
-                            {% include 'glasses/glass_table_production_fill.html' %}
+                            <tr class="{% if order.id == pk %}highlight{% endif %}">
+                                <td>{{order.record.order}}</td>
+                                <td>{{order.record.partner.name}}</td>
+                                <td>{{order.kind}}</td>
+                                <td>{{order.width}}</td>
+                                <td>{{order.height}}</td>
+                                <td>{{order.number}}</td>
+                            </tr>
+                            
+                            
+                            
+                            
+                            
                         {% endfor %}
                     </table>
                 </div>

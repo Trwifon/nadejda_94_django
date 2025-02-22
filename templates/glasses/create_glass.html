@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block table %}
+    <p style="font-size:1.2em; font-weight:600">
+        <span>Брой: {{ glass_data.total_number }}</span>
+        <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
+        <span>Сума: {{ glass_data.total_price }} лв.</span>
+    </p>
     <table class="table table-striped table-sm table-hover border=" border="2">
         <tr class="text-center">
             <th>Първо стъкло</th>
@@ -26,5 +31,6 @@
 
 {% block extra_buttons %}
     <button name="order" class="btn btn-info mt-1">Поръчка</button>
+    <button name="cancel" class="btn btn-info mt-1">Отказ</button>
 {% endblock extra_buttons%}
 

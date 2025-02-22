@@ -60,3 +60,6 @@ class GlassProductionForm(forms.Form):
         widget=forms.RadioSelect,
     )
 
+
+class RecordsPriceIncrease(forms.Form):
+    pass

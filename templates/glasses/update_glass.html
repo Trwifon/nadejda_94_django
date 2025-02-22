@@ -43,7 +43,14 @@
                 </div>
             </div>
             <div class="col-8 border">
-                {% include 'glasses/glass_table.html' %}
+                <p style="font-size:1.2em; font-weight:600">
+                    <span>Брой: {{ glass_data.total_number }}</span>
+                    <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
+                    <span>Сума: {{ glass_data.total_price }} лв.</span>
+                </p>
+                <div style="padding-left: 60px">
+                    {% include 'glasses/glass_table.html' %}
+                </div>
             </div>
         </div>
     </div>

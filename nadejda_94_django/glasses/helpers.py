@@ -10,12 +10,31 @@ def calculate_area(width, height, number):
     return round(area, 2)
 
 
-def calculate_price(width, height, unit_price, number):
-    area = calculate_area(width, height, number)
-
+def calculate_price(area, unit_price):
     price = round((unit_price * area),2)
+    # price = unit_price * area
 
     return price
+
+def calculate_glass_data(ALL_ORDERS):
+    glass_data = {
+        'total_number': 0,
+        'total_area': 0,
+        'total_price': 0,
+    }
+
+    for order in ALL_ORDERS:
+        area = calculate_area(order['width'], order['height'], order['number'])
+        order['price'] = calculate_price(area, float(order['unit_price']))
+
+        glass_data['total_number'] += order['number']
+        glass_data['total_area'] += area
+        glass_data['total_price'] += order['price']
+
+    return glass_data
+
+
+
 
 
 def get_glass_kind(order):
