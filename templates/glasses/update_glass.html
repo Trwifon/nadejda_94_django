@@ -24,14 +24,14 @@
                             </div>
                         {% endfor %}
                         {% if prev_order %}
-                            <a href="{% url 'glass_update' orders.first.record.id prev_order %}">
+                            <a href="{% url 'glass_update' orders.first.record.id prev_order old_total%}">
                                 <button name="Previous" class="btn btn-info">
                                     Предишен
                                 </button>
                             </a>
                         {% endif %}
                         {% if next_order %}
-                            <a href="{% url 'glass_update' orders.first.record.id next_order %}">
+                            <a href="{% url 'glass_update' orders.first.record.id next_order old_total%}">
                                 <button name="Next" class="btn btn-info">
                                     Следващ
                                 </button>

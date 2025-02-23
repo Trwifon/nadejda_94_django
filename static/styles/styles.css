@@ -6,7 +6,7 @@ body {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    width: 30%;
+    width: 40%;
     min-width: 400px;
     margin: 20px auto;
     padding: 10px 10px;
@@ -44,7 +44,12 @@ body {
     font-size: 14px;
 }
 
-
 .highlight {
     background-color: lightgray;
 }
+
+.message {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+

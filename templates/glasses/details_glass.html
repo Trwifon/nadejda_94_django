@@ -7,7 +7,7 @@
             Фирма: {{ orders.first.record.partner }}, Поръчка: {{ orders.first.record.order }}
         </h5>
         {% if not orders.first.sent_for_working %}
-            <a href="{% url 'glass_update' record_pk orders.first.pk %}">
+            <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
                 <button class="btn btn-info my-3">Редактирай</button>
             </a>
             <a href="{% url 'record_glass_delete' record_pk %}">

@@ -77,11 +77,11 @@ class GlassCreateView(OrderCreateView):
 
                 element_instances = [Glasses(**element) for element in ALL_ORDERS]
                 Glasses.objects.bulk_create(element_instances)
-                ALL_ORDERS.clear()
-
                 glass_pk = Glasses.objects.filter(record=record).first().pk
 
-                return redirect('glass_update', record_pk=record.pk, pk=glass_pk)
+                ALL_ORDERS.clear()
+
+                return redirect('glass_update', record_pk=record.pk, pk=glass_pk, old_total=int(current_amount))
 
             if 'cancel' in request.POST:
                 ALL_ORDERS.clear()
@@ -129,23 +129,18 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
 
         if form.is_valid():
             current_order = form.cleaned_data
-            current_order['price'] = calculate_price(
-                current_order['width'],
-                current_order['height'],
-                float(current_order['unit_price']),
-                current_order['number'],
-            )
 
             if 'order' in request.POST:
                 ALL_ORDERS.append(current_order)
                 context['orders'] = ALL_ORDERS
+                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
 
                 return render(request, 'glasses/create_glass.html', context)
 
             if 'save' in request.POST:
                 record_pk = self.kwargs.get('record_pk')
                 record = Record.objects.get(pk=record_pk)
-                current_amount = sum(item['price'] for item in ALL_ORDERS)
+                # current_amount = sum(item['price'] for item in ALL_ORDERS)
 
                 for element in ALL_ORDERS:
                     element['record'] = record
@@ -173,7 +168,12 @@ class GlassListView(ListView):
 
         record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
-        context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
+
+        orders = Glasses.objects.filter(record=record_pk).order_by('pk')
+        context['orders'] = orders
+
+        old_total_price = orders.aggregate(amount=Sum('price'))['amount']
+        context['old_total'] = int(old_total_price)
 
         return context
 
@@ -221,8 +221,9 @@ class GlassUpdateView(TemplateView):
 
         return context
 
-    def post(self, request, record_pk, pk):
+    def post(self, request, record_pk, pk, **kwargs):
         order = get_object_or_404(Glasses, pk=pk)
+        old_total_price = kwargs.get('old_total')
         form = GlassUpdateForm(request.POST, instance=order)
 
         if form.is_valid():
@@ -236,25 +237,43 @@ class GlassUpdateView(TemplateView):
 
             instance.save()
 
+            if 'Next' in request.POST:
+                return redirect('glass_update', record_pk=record_pk, pk=pk+1, old_total=old_total_price)
+            elif 'Previous' in request.POST:
+                return redirect('glass_update', record_pk=record_pk, pk=pk-1, old_total=old_total_price)
+
             current_record = Record.objects.get(pk=record_pk)
-            old_total_price = current_record.amount
+            partner = Partner.objects.get(pk=current_record.partner.pk)
+            old_total_price = kwargs.get('old_total')
             new_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
             difference = old_total_price - new_total_price['amount']
 
-            current_record.amount = new_total_price['amount']
-            current_record.save()
+            if current_record.order.startswith('C'):
+                current_record.amount = new_total_price['amount']
+                current_record.save()
 
-            partner = Partner.objects.get(pk=current_record.partner.pk)
-            partner.balance += difference
-            partner.save()
+                partner.balance += difference
+                partner.save()
 
-            if 'Next' in request.POST:
-                return redirect('glass_update', record_pk=record_pk, pk=pk+1)
+                return redirect('dashboard')
 
-            elif 'Previous' in request.POST:
-                return redirect('glass_update', record_pk=record_pk, pk=pk-1)
+            else:
+                context = {
+                    'record': current_record,
+                    'partner': partner,
+                    'difference': difference,
+                    'message': f"Искате ли да добавите сумата {difference} към поръчка {current_record.order}?"
+                }
+                return render(request, 'glasses/record_price_increase.html', context)
 
-        return redirect('dashboard')
+
+class RecordsPriceIncreaseView(TemplateView):
+    template_name = 'glasses/record_price_increase.html'
+
+    def get(self, **kwargs):
+        price = kwargs['price']
+
+        return render(request, self.template_name, {'price': price})
 
 
 class GlassDeleteView(DeleteView):
@@ -398,13 +417,7 @@ class ExcelGlassView(TemplateView):
         return redirect('dashboard')
 
 
-class RecordsPriceIncreaseView(TemplateView):
-    template_name = 'glasses/record_price_increse.html'
 
-    def get(self, **kwargs):
-        price = kwargs['price']
-
-        return render(request, self.template_name, {'price': price})
 
 
 
