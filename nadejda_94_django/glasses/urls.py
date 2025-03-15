@@ -1,7 +1,6 @@
 from django.urls import path, include, re_path
 from nadejda_94_django.glasses.views import (GlassCreateView, GlassUpdateView, GlassDeleteView, \
-    GlassListView, GlassProductionView, ExcelGlassView, PGlassCreateView, RecordPriceIncreaseView, \
-    GlassAdditionalPriceView)
+    GlassListView, GlassProductionView, ExcelGlassView, PGlassCreateView, RecordPriceIncreaseView,)
 
 urlpatterns = [
     path('<int:partner_pk>/<str:note>/create/', GlassCreateView.as_view(), name='glass_create'),

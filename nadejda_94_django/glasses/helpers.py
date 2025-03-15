@@ -37,19 +37,22 @@ def get_glass_kind(order):
         kind = (f"{order.first_glass}"
                 f"+{order.second_glass}"
                 f"+{order.third_glass}"
-                f"/{order.thickness} "
-                f"{order.module}")
+                f"/{order.thickness} ")
+                # f"{order.module}")
 
     elif order.second_glass:
         kind = (f"{order.first_glass}"
                 f"+{order.second_glass}"
-                f"/{order.thickness} "
-                f"{order.module}")
+                f"/{order.thickness} ")
+                # f"{order.module}")
 
     else:
         kind = (f"ед.стъкло"
-                f"-{order.first_glass} "
-                f"{order.module}")
+                f"-{order.first_glass} ")
+                # f"{order.module}")
+
+    if order.module:
+        kind += f"{order.module}"
 
     return kind
 

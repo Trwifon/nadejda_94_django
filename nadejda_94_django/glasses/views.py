@@ -5,6 +5,7 @@ from django.db.models import Sum, F, ExpressionWrapper, FloatField, Case, When
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
+from openpyxl.styles.builtins import total
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
@@ -320,7 +321,13 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
 
         context['orders'] = orders
 
-        production_orders = Glasses.objects.filter(prepared_for_working=True).filter(sent_for_working = None).order_by('pk')
+        production_orders = (Glasses.objects
+                             .filter(prepared_for_working=True)
+                             .filter(sent_for_working = None)
+                             .order_by('pk'))
+        total_number = production_orders.aggregate(numbers=Sum('number'))['numbers']
+        context['total_number'] = total_number
+
         production_labels = sorted(set([label.record.order for label in production_orders]))
         production_choices = [(el, el) for el in production_labels]
 
@@ -336,28 +343,29 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
         return context
 
     def post(self, request, *args, **kwargs):
+        glasses_to_produce = (Glasses.objects
+                   .filter(prepared_for_working=True)
+                   .filter(sent_for_working=None)
+                   .order_by('pk'))
+
         if 'ok' in request.POST:
-            glasses = (Glasses.objects
-                       .filter(prepared_for_working=True)
-                       .filter(sent_for_working=None)
-                       .order_by('pk'))
             sent_time = ''
 
-            for glass in glasses:
+            for glass in glasses_to_produce:
                 glass.sent_for_working = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 glass.save()
                 sent_time = glass.sent_for_working
 
             return redirect('glass_excel', sent_time=sent_time)
 
-        if 'glass_submit' or 'production_glass_submit' in request.POST:
-            choice = request.POST['order_choice']
-            orders = Glasses.objects.filter(record__order=choice).order_by('pk')
-            for order in orders:
-                order.prepared_for_working = True if 'glass_submit' in request.POST else False
-                order.save()
+        # if 'glass_submit' or 'production_glass_submit' in request.POST:
+        choice = request.POST['order_choice']
+        orders = Glasses.objects.filter(record__order=choice).order_by('pk')
+        for order in orders:
+            order.prepared_for_working = True if 'glass_submit' in request.POST else False
+            order.save()
 
-            return redirect('glass_production')
+        return redirect('glass_production')
 
 
 class ExcelGlassView(TemplateView):
@@ -373,11 +381,13 @@ class ExcelGlassView(TemplateView):
         sent_time = datetime.strptime(sent_time_str, '%Y-%m-%d %H:%M:%S')
 
         glasses = Glasses.objects.filter(sent_for_working__in=[
+            sent_time - timedelta(seconds=3),
             sent_time - timedelta(seconds=2),
             sent_time - timedelta(seconds=1),
             sent_time,
             sent_time + timedelta(seconds=1),
             sent_time + timedelta(seconds=2),
+            sent_time + timedelta(seconds=3),
         ]).order_by('pk')
 
         number_of_glasses = glasses.aggregate(sum=Sum('number'))
@@ -435,16 +445,16 @@ class ExcelGlassView(TemplateView):
         return redirect('dashboard')
 
 
-class GlassAdditionalPriceView(TemplateView):
-    template_name = 'glasses/glass_additional_price.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        current_record = Record.objects.get(pk=context['record_pk'])
-        context['record'] = current_record
-
-        return context
+# class GlassAdditionalPriceView(TemplateView):
+#     template_name = 'glasses/glass_additional_price.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         current_record = Record.objects.get(pk=context['record_pk'])
+#         context['record'] = current_record
+#
+#         return context
 
 
 
