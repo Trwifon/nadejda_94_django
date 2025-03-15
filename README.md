@@ -7,3 +7,12 @@ put .env and .ignore in manage.py directory
 in .env or settings.py setup db and allowed hosts
 pip install -r requirements.txt
 python manage.py runserver 'myhost':8000
+
+
+get last version to server
+
+git pull origin master
+git stash
+git pull origin master
+:qa
+python manage.py migrate
