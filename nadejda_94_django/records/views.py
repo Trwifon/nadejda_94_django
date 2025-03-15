@@ -253,7 +253,6 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
 class ReportShowView(TemplateView):
     template_name = 'records/show_report.html'
 
-
 class CashShowView(UserPassesTestMixin, TemplateView):
     template_name = 'records/cash_report.html'
     login_url = '/login'

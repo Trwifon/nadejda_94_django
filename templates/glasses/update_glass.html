@@ -3,15 +3,41 @@
 
 {% block content %}
     <div class="container-fluid text-center">
+        <script>
+            // JavaScript function to move to the next input field
+            function handleEnter(event) {
+                // Check if Enter key (key code 13) is pressed
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent form submission
+                    let form = event.target.form; // Get the form element
+                    let index = Array.prototype.indexOf.call(form, event.target); // Find the current field index
+                    let nextField = form.elements[index + 1]; // Move to the next field
+                    if (nextField) {
+                        nextField.focus();
+                        if (nextField.tagName === 'INPUT' || nextField.tagName === 'TEXTAREA') {
+                            nextField.select(); // Select the text inside the input/textarea
+                        }
+                    }
+                }
+            }
+        </script>   
+    
         <div class="row">
             <div class="col-4">
                 <h5>Редакция на поръчка за стъклопакети</h5>
                 <div class="form-group">
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <h4>{{ orders.first.record.partner }}</h4>
-                        <hr>
                         <h5>Поръчка: {{ orders.first.record.order }}</h5>
                     </div>
+                    <hr>
+                
+                    <script>
+                        window.onload = function() {
+                        document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
+                         };
+                    </script>
+                
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -23,23 +49,27 @@
                                 <br>
                             </div>
                         {% endfor %}
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            {% if prev_order %}
-                                <a href="{% url 'glass_update' record_pk prev_order old_total %}">
-                                    <button name="Previous" class="btn btn-info me-md-5">
-                                        Предишен
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if next_order %}
-                                <a href="{% url 'glass_update' record_pk next_order old_total %}">
-                                    <button name="Next" class="btn btn-info">
-                                        Следващ
-                                    </button>
-                                </a>
-                            {% endif %}
+                        <div class="row justify-content-center">
+                            <div class="col-4">
+                                {% if prev_order %}
+                                    <a href="{% url 'glass_update' record_pk prev_order old_total %}">
+                                        <button name="Previous" class="btn btn-info">
+                                            Предишен
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="col-4">
+                                {% if next_order %}
+                                    <a href="{% url 'glass_update' record_pk next_order old_total %}">
+                                        <button name="Next" class="btn btn-info">
+                                            Следващ
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <button name="save" class="btn btn-info mt-4 mx-3">Запис</button>
+                        <button name="save" class="btn btn-info mt-4">Запис</button>
                     </form>
                 </div>
             </div>
@@ -55,4 +85,11 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        document.querySelectorAll('input, textarea').forEach(field => {
+            field.addEventListener('keydown', handleEnter);
+        });
+    </script>    
+    
 {% endblock content %}

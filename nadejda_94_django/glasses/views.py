@@ -3,12 +3,8 @@ import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum, F, ExpressionWrapper, FloatField, Case, When
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.base import kwarg_re
-from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
-from openpyxl.styles.builtins import total
-
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
@@ -103,9 +99,9 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         record_pk = self.kwargs.get('record_pk')
-        glass = Glasses.objects.filter(record_id=record_pk).first()
+        orders = Glasses.objects.filter(record_id=record_pk)
 
-        if glass:
+        if orders:
             return redirect('glass_details', record_pk=record_pk)
 
         return render(request, 'glasses/create_glass.html', self.get_context_data())
@@ -175,6 +171,9 @@ class GlassListView(ListView):
 
         orders = Glasses.objects.filter(record=record_pk).order_by('pk')
         context['orders'] = orders
+        ALL_ORDERS = list(orders.values())
+        glass_data = calculate_glass_data(ALL_ORDERS)
+        context['glass_data'] = glass_data
 
         old_total_price = Record.objects.get(pk=record_pk).amount
         context['old_total'] = int(old_total_price)
@@ -184,6 +183,7 @@ class GlassListView(ListView):
 
 class GlassUpdateView(TemplateView):
     template_name = 'glasses/update_glass.html'
+    permission_required = 'glasses.add_glasses'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -254,6 +254,7 @@ class GlassUpdateView(TemplateView):
 
 class RecordPriceIncreaseView(TemplateView):
     template_name = 'glasses/record_price_increase.html'
+    permission_required = 'glasses.add_glasses'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
