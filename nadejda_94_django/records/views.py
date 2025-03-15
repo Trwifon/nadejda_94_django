@@ -85,11 +85,11 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = {}
 
-        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
-        context['current_record'] = current_record
-
         form = RecordUpdateForm(instance=self.object)
+        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
+
         context['form'] = form
+        context['current_record'] = current_record
 
         return context
 
@@ -118,13 +118,11 @@ class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
     model = Record
     template_name = 'glasses/delete_glass_record.html'
     success_url = reverse_lazy('dashboard')
-
     permission_required = 'records.change_record'
     login_url = 'login'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {}
-
         record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
         context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')

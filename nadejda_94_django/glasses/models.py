@@ -73,6 +73,17 @@ class Glasses(models.Model):
         decimal_places=2,
     )
 
+    module = models.PositiveIntegerField(
+        validators=[MinValueValidator(1),],
+        null=True,
+        blank=True,
+    )
+
+    supplement = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         return self.record.order
 

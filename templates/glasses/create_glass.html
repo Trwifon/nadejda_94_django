@@ -8,24 +8,7 @@
         <span>Сума: {{ glass_data.total_price }} лв.</span>
     </p>
     <table class="table table-striped table-sm table-hover border=" border="2">
-        <tr class="text-center">
-            <th>Първо стъкло</th>
-            <th>Второ стъкло</th>
-            <th>Трето стъкло</th>
-            <th>Дебелина</th>
-            <th>Цена</th>
-            <th>Широчина</th>
-            <th>Височина</th>
-            <th>Количество</th>
-            <th>Сума</th>
-        </tr>
-        {% for current_order in orders %}
-            <tr class="text-center">
-                {% for value in current_order.values %}
-                    <td>{{value}}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
+        {% include 'glasses/glass_table.html' %}
     </table>
 {% endblock table%}
 

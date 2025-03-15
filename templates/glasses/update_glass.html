@@ -23,22 +23,23 @@
                                 <br>
                             </div>
                         {% endfor %}
-                        {% if prev_order %}
-                            <a href="{% url 'glass_update' orders.first.record.id prev_order old_total%}">
-                                <button name="Previous" class="btn btn-info">
-                                    Предишен
-                                </button>
-                            </a>
-                        {% endif %}
-                        {% if next_order %}
-                            <a href="{% url 'glass_update' orders.first.record.id next_order old_total%}">
-                                <button name="Next" class="btn btn-info">
-                                    Следващ
-                                </button>
-                            </a>    
-                        {% endif %}
-                        <br>
-                        <button name="save" class="btn btn-info mt-1 mx-3">Запис</button>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            {% if prev_order %}
+                                <a href="{% url 'glass_update' record_pk prev_order old_total %}">
+                                    <button name="Previous" class="btn btn-info me-md-5">
+                                        Предишен
+                                    </button>
+                                </a>
+                            {% endif %}
+                            {% if next_order %}
+                                <a href="{% url 'glass_update' record_pk next_order old_total %}">
+                                    <button name="Next" class="btn btn-info">
+                                        Следващ
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <button name="save" class="btn btn-info mt-4 mx-3">Запис</button>
                     </form>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                 <p style="font-size:1.2em; font-weight:600">
                     <span>Брой: {{ glass_data.total_number }}</span>
                     <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
-                    <span>Сума: {{ glass_data.total_price }} лв.</span>
+                    <span>Стойност на стъклопакетите: {{ glass_data.total_price }} лв</span>
                 </p>
                 <div style="padding-left: 60px">
                     {% include 'glasses/glass_table.html' %}

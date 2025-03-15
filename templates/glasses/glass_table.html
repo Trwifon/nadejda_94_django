@@ -16,8 +16,16 @@
         {% for order in orders %}
             <tr class="{% if order.id == pk %}highlight{% endif %}">
                 <td>{{order.first_glass}}</td>
-                <td>{{order.second_glass}}</td>
-                <td>{{order.third_glass}}</td>
+                {% if order.second_glass %}
+                    <td>{{order.second_glass}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if order.third_glass %}
+                    <td>{{order.third_glass}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td>{{order.thickness}}</td>
                 <td>{{order.unit_price}}</td>
                 <td>{{order.width}}</td>

@@ -1,5 +1,8 @@
 from django import forms
+from django.core.validators import MinValueValidator
+from django.forms import ChoiceField
 from nadejda_94_django.glasses.models import Glasses
+from .choices import ThicknessChoices, GlassChoices
 
 
 class GlassBaseForm(forms.ModelForm):
@@ -46,6 +49,7 @@ class PGlassCreateForm(GlassBaseForm):
 
 class GlassUpdateForm(GlassBaseForm):
     pass
+
 
 
 class GlassDeleteForm(GlassBaseForm):

@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container-fluid text-center">
         <h5 class="text-center mt-4">
-            Фирма: {{ orders.first.record.partner }}, Поръчка: {{ orders.first.record.order }}
+            Детайли на поръчка за стъклопакети {{ orders.first.record.order }} на фирма {{ orders.first.record.partner }}
         </h5>
         {% if not orders.first.sent_for_working %}
             <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
@@ -19,5 +19,7 @@
             </a>
         {% endif %}
     </div>
-    {% include 'glasses/glass_table.html' %}
+    <div style = "display: flex; justify-content: center">
+        {% include 'glasses/glass_table.html' %}
+    </div>
 {% endblock content %}
