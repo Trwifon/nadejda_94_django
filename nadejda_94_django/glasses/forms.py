@@ -48,8 +48,20 @@ class PGlassCreateForm(GlassBaseForm):
 
 
 class GlassUpdateForm(GlassBaseForm):
-    pass
 
+    class Meta(GlassBaseForm.Meta):
+        fields = GlassBaseForm.Meta.fields + [
+            'module',
+            'supplement',
+        ]
+        labels = GlassBaseForm.Meta.labels | {
+            'module': 'Модул',
+            'supplement': 'Добавка',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(GlassBaseForm, self).__init__(*args, **kwargs)
+        self.fields['number'].widget.attrs['min'] = 0
 
 
 class GlassDeleteForm(GlassBaseForm):

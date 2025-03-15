@@ -132,16 +132,21 @@ class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         record_pk = self.kwargs['record_pk']
         record = Record.objects.get(pk=record_pk)
-
         partner = Partner.objects.get(pk=record.partner_id)
-        partner.balance += record.amount
+        glass_orders = Glasses.objects.filter(record=record_pk)
+        all_glass_price = glass_orders.aggregate(Sum('price'))['price__sum']
+
+        partner.balance += all_glass_price
         partner.save()
 
-        record.amount = 0
-        record.note = 'Изтрита поръчка'
+        record.amount -= all_glass_price
+
+        if record.order.startswith('C'):
+            record.note = 'Изтрита поръчка'
+
         record.save()
 
-        glass_orders = Glasses.objects.filter(record=record_pk)
+
         for order in glass_orders:
             order.delete()
 

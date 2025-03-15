@@ -37,7 +37,7 @@ class Glasses(models.Model):
     )
 
     number = models.PositiveIntegerField(
-        validators=[MinValueValidator(1)],
+        validators=[MinValueValidator(0)],
     )
 
     unit_price = models.DecimalField(
