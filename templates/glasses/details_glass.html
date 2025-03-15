@@ -4,10 +4,15 @@
 {% block content %}
     <div class="container-fluid text-center">
         <h5 class="text-center mt-4">
-            Фирма: {{ orders.first.record.partner }}, Поръчка: {{ orders.first.record.order }}
+            Детайли на поръчка за стъклопакети {{ orders.first.record.order }} на фирма {{ orders.first.record.partner }}
         </h5>
+        <p style="font-size:1.2em; font-weight:600">
+            <span>Брой: {{ glass_data.total_number }}</span>
+            <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
+            <span>Стойност на стъклопакетите: {{ glass_data.total_price }} лв</span>
+        </p>
         {% if not orders.first.sent_for_working %}
-            <a href="{% url 'glass_update' record_pk orders.first.pk %}">
+            <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
                 <button class="btn btn-info my-3">Редактирай</button>
             </a>
             <a href="{% url 'record_glass_delete' record_pk %}">
@@ -19,5 +24,7 @@
             </a>
         {% endif %}
     </div>
-    {% include 'glasses/glass_table.html' %}
+    <div style = "display: flex; justify-content: center">
+        {% include 'glasses/glass_table.html' %}
+    </div>
 {% endblock content %}

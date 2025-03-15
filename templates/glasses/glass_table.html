@@ -3,26 +3,40 @@
 <div class="table-glass">
     <table>
         <tr class="text-center">
-            <th>Първо стъкло</th>
-            <th>Второ стъкло</th>
-            <th>Трето стъкло</th>
-            <th>Дебелина</th>
-            <th>Цена</th>
-            <th>Широчина</th>
-            <th>Височина</th>
-            <th>Количество</th>
-            <th>Сума</th>
+            <th class="table-columns">Стъкло I</th>
+            <th class="table-columns">Стъкло II</th>
+            <th class="table-columns">Стъкло III</th>
+            <th class="table-columns">Дебелина</th>
+            <th class="table-columns">Цена</th>
+            <th class="table-columns">Широчина</th>
+            <th class="table-columns">Височина</th>
+            <th class="table-columns">Количество</th>
+            <th class="table-columns">Добавка</th>
+            <th class="table-columns">Сума</th>
         </tr>
         {% for order in orders %}
             <tr class="{% if order.id == pk %}highlight{% endif %}">
                 <td>{{order.first_glass}}</td>
-                <td>{{order.second_glass}}</td>
-                <td>{{order.third_glass}}</td>
+                {% if order.second_glass %}
+                    <td>{{order.second_glass}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if order.third_glass %}
+                    <td>{{order.third_glass}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td>{{order.thickness}}</td>
                 <td>{{order.unit_price}}</td>
                 <td>{{order.width}}</td>
                 <td>{{order.height}}</td>
                 <td>{{order.number}}</td>
+                {% if order.supplement %}
+                    <td>{{order.supplement}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 <td>{{order.price}}</td>
             </tr>
         {% endfor %}

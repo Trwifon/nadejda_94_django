@@ -1,0 +1,22 @@
+{% extends 'common/index.html' %} 
+{% load static %}
+
+{% block content %}
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            <span class="message">
+                Искате ли да добавите сумата 1000 към цената на поръчка {{ record.order }}
+            </span>
+            <input>
+            <p>
+                <button name="ok" class="btn btn-info mt-3 mx-3">
+                    Да
+                </button>
+                <button name="cancel" class="btn btn-info mt-3 mx-3">
+                    Не
+                </button>
+            </p>
+        </form>
+    </div>
+{% endblock content %}

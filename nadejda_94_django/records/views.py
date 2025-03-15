@@ -85,11 +85,11 @@ class RecordUpdateView(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = {}
 
-        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
-        context['current_record'] = current_record
-
         form = RecordUpdateForm(instance=self.object)
+        current_record = Record.objects.get(pk=self.kwargs['record_pk'])
+
         context['form'] = form
+        context['current_record'] = current_record
 
         return context
 
@@ -118,13 +118,11 @@ class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
     model = Record
     template_name = 'glasses/delete_glass_record.html'
     success_url = reverse_lazy('dashboard')
-
     permission_required = 'records.change_record'
     login_url = 'login'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {}
-
         record_pk = self.kwargs['record_pk']
         context['record_pk'] = record_pk
         context['orders'] = Glasses.objects.filter(record=record_pk).order_by('pk')
@@ -134,16 +132,21 @@ class RecordGlassDeleteView(PermissionRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         record_pk = self.kwargs['record_pk']
         record = Record.objects.get(pk=record_pk)
-
         partner = Partner.objects.get(pk=record.partner_id)
-        partner.balance += record.amount
+        glass_orders = Glasses.objects.filter(record=record_pk)
+        all_glass_price = glass_orders.aggregate(Sum('price'))['price__sum']
+
+        partner.balance += all_glass_price
         partner.save()
 
-        record.amount = 0
-        record.note = 'Изтрита поръчка'
+        record.amount -= all_glass_price
+
+        if record.order.startswith('C'):
+            record.note = 'Изтрита поръчка'
+
         record.save()
 
-        glass_orders = Glasses.objects.filter(record=record_pk)
+
         for order in glass_orders:
             order.delete()
 
@@ -249,7 +252,6 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
 
 class ReportShowView(TemplateView):
     template_name = 'records/show_report.html'
-
 
 class CashShowView(UserPassesTestMixin, TemplateView):
     template_name = 'records/cash_report.html'

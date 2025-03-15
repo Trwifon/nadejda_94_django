@@ -71,10 +71,6 @@ def errors_test():
             firm_report = create_firm_report(partner)
             if firm_report:
                 record_balance = firm_report.first().balance
-                print(record_balance)
-                print(partner.balance)
-                print(partner.balance != record_balance)
-
                 if partner.balance != record_balance:
                    test_result.append(f"Грешка в баланса на {partner.name}")
 

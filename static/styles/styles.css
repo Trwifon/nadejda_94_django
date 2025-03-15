@@ -6,7 +6,7 @@ body {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    width: 30%;
+    width: 50%;
     min-width: 400px;
     margin: 20px auto;
     padding: 10px 10px;
@@ -15,7 +15,7 @@ body {
 }
 
 .form-space {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .info {
@@ -32,11 +32,13 @@ body {
 }
 
 .table-glass {
-    display: grid;
-    align-items: center;
-    margin: auto;
-    padding: 20px 30px;
-    width: 50%;
+    margin: 10px 20px 10px 10px;
+    text-align: center;
+}
+
+.table-columns {
+    padding-right: 5px;
+    padding-left: 5px;
     text-align: center;
 }
 
@@ -48,7 +50,12 @@ body {
     font-size: 14px;
 }
 
-
 .highlight {
     background-color: lightgray;
 }
+
+.message {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+

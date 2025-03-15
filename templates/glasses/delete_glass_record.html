@@ -11,7 +11,7 @@
             <div class="mb-3">
                 <h4>{{ orders.first.record.partner }}</h4>
                 <hr>
-                <h5>Поръчка: {{ orders.first.record.order }}</h5>
+                <h5>Поръчка за стъклопакети: {{ orders.first.record.order }}</h5>
             </div>
 
             <form method="post">
@@ -23,5 +23,8 @@
             </form>
         </div>
     </div>
-    {% include 'glasses/glass_table.html' %}
+    <div style="display: flex; justify-content: center">
+        {% include 'glasses/glass_table.html' %}
+    </div>
+    
 {% endblock content %}

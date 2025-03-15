@@ -2,6 +2,7 @@ from django.db import models
 
 
 class GlassChoices(models.TextChoices):
+    NONE = '', ''
     FOUR = '4', '4'
     K = 'K', 'K'
     MF = '4S', '4S'

@@ -37,7 +37,7 @@ class Glasses(models.Model):
     )
 
     number = models.PositiveIntegerField(
-        validators=[MinValueValidator(1)],
+        validators=[MinValueValidator(0)],
     )
 
     unit_price = models.DecimalField(
@@ -71,6 +71,17 @@ class Glasses(models.Model):
     price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
+    )
+
+    module = models.PositiveIntegerField(
+        validators=[MinValueValidator(1),],
+        null=True,
+        blank=True,
+    )
+
+    supplement = models.PositiveIntegerField(
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
