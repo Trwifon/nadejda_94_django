@@ -1,86 +1,81 @@
 {% load static %}
 {% load user_info %}
 
-<nav class="navbar navbar-expand-lg bg-info-subtle" style="background-color: rgba(2, 255, 209, 0.32);">
-    <div class="container-fluid">
-        <a href="{% url 'dashboard' %}">
-            <img src="{% static 'logo-nadejda.bmp' %}" alt="logo" width="120" height="50" class="d-inline-block align-text-top">
-        </a>
-        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'create_report' %}">
-            Отчети
-        </a>
-        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'glass_production' %}">
-            За производство
-        </a>
-    
-        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-            {% if current_path == '/' %}
-                <ul class="navbar-nav fs-6">
-                    <li  class="nav-item px-5">
-                        <form class="d-flex" method="Post">
-                            <span class="pt-1 me-1 bg-info-subtle fs-6">
-                                {% csrf_token %}
-                                {{ create_form }}
-                            </span>
-                            <button name="create" class="btn btn-info btn-sm mx-1 fs-6" type="submit">Избери</button>
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                        <form class="d-flex" method="Post">
-                            <span class="pt-1 me-2 bg-info-subtle fs-6">
-                                {% csrf_token %}
-                                {{ search_form }}
-                            </span>
-                            <button name="search" class="btn btn-info fs-6" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="submit">
-                                Търси
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+<div class="navbar">
+    <ul class="navbar-left">
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'logo-nadejda.bmp' %}" alt="logo" width="120" height="40">
+            </a>
+        </li>
+        <li>
+            <a class="link-nav" href="{% url 'create_report' %}">
+                Отчети
+            </a>
+        </li>
+        <li>
+            <a class="link-nav" href="{% url 'glass_production' %}">
+                За производство
+            </a>
+        </li>
+        {% if current_path == '/' %}
+            <li>
+                <form class="d-flex" method="Post">
+                    {% csrf_token %}
+                    <span style="margin-top: 3px">
+                        {{ create_form }}    
+                    </span>
+                    
+                    <button name="create" class="btn btn-info btn-sm mx-1" type="submit">Избери</button>
+                </form>
+            </li>
+            <li>
+                <form class="d-flex" method="Post">
+                    {% csrf_token %}
+                    {{ search_form }}
+                    <button name="search" class="btn btn-info btn-sm mx-1" type="submit">Търси</button>
+                </form>
+            </li>
+        {% endif %}
+    </ul>
+    <ul class="navbar-right">
+        {% if user.is_authenticated %}
+            <li>
+                <a class="link-nav" href="{% url 'errors_test' %}">
+                    Тест
+                </a>
+            </li>
+            <li>
+                <a class="link-nav" href="{% url 'partner_create' %}">
+                    Нова фирма
+                </a>
+            </li>
+            {% if user.is_staff %}
+                <li>
+                    <a class="link-nav" href="{% url 'cash_report' %}">
+                      <span>Каса</span>
+                    </a>
+                </li>
             {% endif %}
-        </div>
-    
-        <div class="collapse navbar-collapse d-flex justify-content-end">
-            <ul class="navbar-nav fs-6">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'errors_test' %}">
-                            Тест
-                        </a>
-                    </li>                      
-                    <li class="nav-item">
-                        <a class="nav-link fs-6 mx-3" aria-current="page" href="{% url 'partner_create' %}">
-                            Нова фирма
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        {% if user.is_staff %}
-                            <a class="nav-link pt-2" href="{% url 'cash_report' %}">
-                              <span>Каса</span>
-                            </a>
-                        {% endif %}
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pt-2" href="{% url 'profile_details' user.pk %}">
-                          <span>{{ user.username }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <form id = "logout-form" action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                        </form>
-                        <a class="nav-link pt-2" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <span>Изход</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
+            <li>
+                <a class="link-nav" href="{% url 'profile_details' user.pk %}">
+                    <span>{{ user.username }}</span>
+                </a>
+            </li>
+            <li>
+                <form id = "logout-form" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                </form>
+                <a class="link-nav" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span>Изход</span>
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a class="link-nav" href="{% url 'login' %}">Вход</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
 
 

@@ -2,14 +2,58 @@ body {
     background: rgba(92, 239, 208, 0.13) !important;
 }
 
+.navbar {
+    background-color: rgba(2, 255, 209, 0.32);
+}
+
+.navbar-left {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-left li {
+    display: inline-block;
+    padding-left: 20px;
+}
+
+.navbar-right {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-right li {
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.link-nav {
+    text-decoration: none;
+    font-size: 17px;
+    color: black;
+}
+
+.hr {
+    margin: 0;
+}
+
+.info-text {
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
 .form-group {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
     width: 50%;
-    min-width: 400px;
-    margin: 20px auto;
-    padding: 10px 10px;
+    min-width: 370px;
+    margin: 5px auto;
+    padding: 5px 5px;
     text-align: center;
     color: darkblue;
 }
@@ -28,7 +72,12 @@ body {
 .form-table {
     display: grid;
     place-items: center;
-    padding: 20px 30px;
+    padding: 0 10px 10px 10px;
+}
+
+.max-height-report {
+    height: 90vh;
+    overflow-y: scroll;
 }
 
 .table-glass {
@@ -37,8 +86,8 @@ body {
 }
 
 .table-columns {
-    padding-right: 5px;
-    padding-left: 5px;
+    padding-right: 20px;
+    padding-left: 20px;
     text-align: center;
 }
 
@@ -59,3 +108,6 @@ body {
     font-weight: 600;
 }
 
+.two-containers {
+    height: auto;
+}

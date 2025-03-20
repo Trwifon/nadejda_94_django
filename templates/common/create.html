@@ -2,30 +2,11 @@
 {% load static %}    
 
 {% block content %}
-    
-    <script>
-        // JavaScript function to move to the next input field
-        function handleEnter(event) {
-            // Check if Enter key (key code 13) is pressed
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent form submission
-                let form = event.target.form; // Get the form element
-                let index = Array.prototype.indexOf.call(form, event.target); // Find the current field index
-                let nextField = form.elements[index + 1]; // Move to the next field
-                if (nextField) {
-                    nextField.focus();
-                    if (nextField.tagName === 'INPUT' || nextField.tagName === 'TEXTAREA') {
-                        nextField.select(); // Select the text inside the input/textarea
-                    }
-                }
-            }
-        }
-    </script>   
-    
-    <div class="container-fluid text-center">
+    <script src="{% static 'enter_instead_tab_script.js' %}"></script>
+    <div class="container-fluid text-center two-containers">
         <div class="row">
             <div class="col-4">
-                <h5>Поръчка на стъклопакети</h5>
+                <h5>Поръчка</h5>
                 <div class="form-group">
                     <div class="mb-3">
                         <h4>{{ partner.name }}</h4>
@@ -35,13 +16,7 @@
                         {% endif %}
                         <hr>
                     </div>
-                
-                    <script>
-                        window.onload = function() {
-                        document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
-                         };
-                    </script>
-                
+                    <script src="{% static 'start_field_focus.js' %}"></script>
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -69,11 +44,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.querySelectorAll('input, textarea').forEach(field => {
-            field.addEventListener('keydown', handleEnter);
-        });
-    </script>
-    
+    <script src="{% static 'event_listener.js' %}"></script>
 {% endblock content %}

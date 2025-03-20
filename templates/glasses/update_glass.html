@@ -2,28 +2,10 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid text-center">
-        <script>
-            // JavaScript function to move to the next input field
-            function handleEnter(event) {
-                // Check if Enter key (key code 13) is pressed
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Prevent form submission
-                    let form = event.target.form; // Get the form element
-                    let index = Array.prototype.indexOf.call(form, event.target); // Find the current field index
-                    let nextField = form.elements[index + 1]; // Move to the next field
-                    if (nextField) {
-                        nextField.focus();
-                        if (nextField.tagName === 'INPUT' || nextField.tagName === 'TEXTAREA') {
-                            nextField.select(); // Select the text inside the input/textarea
-                        }
-                    }
-                }
-            }
-        </script>   
-    
+    <div class="container-fluid text-center">    
+        <script src="{% static 'enter_instead_tab_script.js' %}"></script>
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <h5>Редакция на поръчка за стъклопакети</h5>
                 <div class="form-group">
                     <div class="mb-1">
@@ -31,13 +13,7 @@
                         <h5>Поръчка: {{ orders.first.record.order }}</h5>
                     </div>
                     <hr>
-                
-                    <script>
-                        window.onload = function() {
-                        document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
-                         };
-                    </script>
-                
+                    <script src="{% static 'start_field_focus.js' %}"></script>
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -69,27 +45,21 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <button name="save" class="btn btn-info mt-4">Запис</button>
+                        <button name="save" class="btn btn-info mt-2">Запис</button>
                     </form>
                 </div>
             </div>
-            <div class="col-8 border">
+            <div class="col-9 border">
                 <p style="font-size:1.2em; font-weight:600">
                     <span>Брой: {{ glass_data.total_number }}</span>
                     <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
                     <span>Стойност на стъклопакетите: {{ glass_data.total_price }} лв</span>
                 </p>
-                <div style="padding-left: 60px">
+                <div style="padding-left: 5px">
                     {% include 'glasses/glass_table.html' %}
                 </div>
             </div>
         </div>
     </div>
-    
-    <script>
-        document.querySelectorAll('input, textarea').forEach(field => {
-            field.addEventListener('keydown', handleEnter);
-        });
-    </script>    
-    
+    <script src="{% static 'event_listener.js' %}"></script>
 {% endblock content %}

@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.db.models import Sum, F, ExpressionWrapper, FloatField, Case, When
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
-from openpyxl.styles.builtins import total
+from openpyxl import load_workbook
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
@@ -308,7 +308,10 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = {}
 
-        orders = Glasses.objects.filter(prepared_for_working=False).order_by('record__order', 'pk')
+        orders = (Glasses.objects
+                  .filter(prepared_for_working=False)
+                  .filter(number__gt=0)
+                  .order_by('record__order', 'pk'))
         labels = sorted(set([label.record.order for label in orders]))
         choices = [(el, el) for el in labels]
 
@@ -324,6 +327,7 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
         production_orders = (Glasses.objects
                              .filter(prepared_for_working=True)
                              .filter(sent_for_working = None)
+                             .filter(number__gt=0)
                              .order_by('pk'))
         total_number = production_orders.aggregate(numbers=Sum('number'))['numbers']
         context['total_number'] = total_number
@@ -346,6 +350,7 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
         glasses_to_produce = (Glasses.objects
                    .filter(prepared_for_working=True)
                    .filter(sent_for_working=None)
+                   .filter(number__gt=0)
                    .order_by('pk'))
 
         if 'ok' in request.POST:
@@ -358,7 +363,6 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
 
             return redirect('glass_excel', sent_time=sent_time)
 
-        # if 'glass_submit' or 'production_glass_submit' in request.POST:
         choice = request.POST['order_choice']
         orders = Glasses.objects.filter(record__order=choice).order_by('pk')
         for order in orders:
@@ -438,23 +442,19 @@ class ExcelGlassView(TemplateView):
 
         df = pd.DataFrame(glass_order)
         str_sent_time = str(sent_time).replace(':', '_')
-        name = f"d:/paketi/Линия {str_sent_time}.xlsx"
-
+        # name = f"d:/paketi/Линия {str_sent_time}.xlsx"
+        name = f"d:/paketi/Червена линия D 18.xlsx"
         df.to_excel(name, index=False, header=False)
+
+        wb = load_workbook('d:/paketi/Червена линия D 18.xlsx')
+        ws = wb.active
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 13
+        ws.column_dimensions['H'].width = 13
+        wb.save('d:/paketi/Червена линия D 18.xlsx')
 
         return redirect('dashboard')
 
-
-# class GlassAdditionalPriceView(TemplateView):
-#     template_name = 'glasses/glass_additional_price.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#
-#         current_record = Record.objects.get(pk=context['record_pk'])
-#         context['record'] = current_record
-#
-#         return context
 
 
 

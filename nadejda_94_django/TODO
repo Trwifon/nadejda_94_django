@@ -1,10 +1,5 @@
-records - amount -zero - required
-
 reset pass
-
-Price in p glasses, unit_price disabled
 remove client from partner in glass production
-add new value to choice field?
 scroll in glasses
 
 

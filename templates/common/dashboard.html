@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block content %}
-    <hr>
-    <h5 class="text-center m-3">
+    <hr class="hr">
+    <p class="info-text">
         Дневен отчет: 
         {% if total_sum %}
             {{ total_sum }}
@@ -11,9 +11,7 @@
             0
         {% endif %}
         лв
-    </h5>
-    
-    <hr>
+    </p>
     <div class="form-table">
         {% include 'common/report.html' %}
     </div>
