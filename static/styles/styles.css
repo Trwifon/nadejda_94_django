@@ -50,10 +50,10 @@ body {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    width: 50%;
     min-width: 370px;
-    margin: 5px auto;
-    padding: 5px 5px;
+    max-width: 200px;
+    margin: 5px;
+    padding: 5px;
     text-align: center;
     color: darkblue;
 }
@@ -72,7 +72,6 @@ body {
 .form-table {
     display: grid;
     place-items: center;
-    padding: 0 10px 10px 10px;
 }
 
 .max-height-report {

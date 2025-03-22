@@ -250,8 +250,10 @@ class GlassUpdateView(TemplateView):
             else:
                 total_difference = int(price_before_edit - current_record.amount)
 
-                return redirect( 'record_price_increase', record_pk=record_pk, diff=total_difference, to_update=False)
+                if total_difference != 0:
+                    return redirect( 'record_price_increase', record_pk=record_pk, diff=total_difference, to_update=False)
 
+                return redirect('dashboard')
 
 class RecordPriceIncreaseView(TemplateView):
     template_name = 'glasses/record_price_increase.html'
