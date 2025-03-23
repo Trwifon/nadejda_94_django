@@ -2,43 +2,87 @@ body {
     background: rgba(92, 239, 208, 0.13) !important;
 }
 
+.navbar {
+    background-color: rgba(2, 255, 209, 0.32);
+}
+
+.navbar-left {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-left li {
+    display: inline-block;
+    padding-left: 20px;
+}
+
+.navbar-right {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-right li {
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.link-nav {
+    text-decoration: none;
+    font-size: 17px;
+    color: black;
+}
+
+.logo {
+    border: 1px solid darkblue;
+    border-radius: 5px;
+}
+
+.hr {
+    margin: 0;
+}
+
+.info-text {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: black;
+    margin: 5px;
+
+}
+
 .form-group {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    width: 50%;
-    min-width: 400px;
-    margin: 20px auto;
-    padding: 10px 10px;
+    min-width: 300px;
+    max-width: 350px;
+    margin: 10px auto;
+    padding: 5px;
     text-align: center;
     color: darkblue;
 }
 
 .form-space {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .info {
     display: flex;
     align-items: center;
-    margin: 25px 15px;
+    margin: 15px 15px;
     font-size: 20px;
 }
 
-.form-table {
-    display: grid;
-    place-items: center;
-    padding: 20px 30px;
-}
-
-.table-glass {
-    margin: 10px 20px 10px 10px;
-    text-align: center;
+.max-height-report {
+    height: 90vh;
+    overflow-y: scroll;
 }
 
 .table-columns {
-    padding-right: 5px;
-    padding-left: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
     text-align: center;
 }
 
@@ -47,7 +91,7 @@ body {
     align-items: center;
     width: 100%;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .highlight {
@@ -57,5 +101,25 @@ body {
 .message {
     font-size: 1.2em;
     font-weight: 600;
+}
+
+.orders {
+    display: flex;
+    justify-content: center;
+}
+
+.record-container {
+    min-width: 350px;
+    text-align: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.production-container{
+    min-width: 100px;
+    border: 1px solid lightskyblue;
+    text-align: center;
+    padding: 5px;
+    flex-grow: 1;
 }
 

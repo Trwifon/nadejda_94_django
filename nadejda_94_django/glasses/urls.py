@@ -12,7 +12,6 @@ urlpatterns = [
         re_path(r'record-price-increase/(?P<diff>-?[0-9]+)/(?P<to_update>[^/]+)$',
                 RecordPriceIncreaseView.as_view(),
                 name='record_price_increase'),
-        # path('glass-additional-price', GlassAdditionalPriceView.as_view(), name='glass_additional_price'),
     ])),
     path('production/', GlassProductionView.as_view(), name='glass_production'),
     path('excel/<str:sent_time>/', ExcelGlassView.as_view(), name='glass_excel'),

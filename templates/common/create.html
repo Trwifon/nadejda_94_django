@@ -2,78 +2,41 @@
 {% load static %}    
 
 {% block content %}
-    
-    <script>
-        // JavaScript function to move to the next input field
-        function handleEnter(event) {
-            // Check if Enter key (key code 13) is pressed
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent form submission
-                let form = event.target.form; // Get the form element
-                let index = Array.prototype.indexOf.call(form, event.target); // Find the current field index
-                let nextField = form.elements[index + 1]; // Move to the next field
-                if (nextField) {
-                    nextField.focus();
-                    if (nextField.tagName === 'INPUT' || nextField.tagName === 'TEXTAREA') {
-                        nextField.select(); // Select the text inside the input/textarea
-                    }
-                }
-            }
-        }
-    </script>   
-    
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col-4">
-                <h5>Поръчка на стъклопакети</h5>
-                <div class="form-group">
-                    <div class="mb-3">
-                        <h4>{{ partner.name }}</h4>
-                        <h5>Баланс: {{ partner.balance }} лв</h5>
-                        {% if record.order %}
-                            <h5>По поръчка {{ record.order }}</h5>                            
-                        {% endif %}
-                        <hr>
-                    </div>
+    <script src="{% static 'enter_instead_tab_script.js' %}"></script>
+    <div class="orders">
+        <div class="record-container">
+            <p class="info-text">Поръчка</p>
+            <div class="form-group">
+                    <h4>{{ partner.name }}</h4>
+                    <h5>Баланс: {{ partner.balance }} лв</h5>
+                    {% if record.order %}
+                        <h5>По поръчка {{ record.order }}</h5>                            
+                    {% endif %}
+                    <hr>
+                <script src="{% static 'start_field_focus.js' %}"></script>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-space">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.help_text }}
+                            {{ field.error }}
+                            <br>
+                        </div>
+                    {% endfor %}
                 
-                    <script>
-                        window.onload = function() {
-                        document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
-                         };
-                    </script>
+                    {% block extra_buttons %}
+                    {% endblock %}
                 
-                    <form method="post">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-space">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {{ field.help_text }}
-                                {{ field.error }}
-                                <br>
-                            </div>
-                        {% endfor %}
-                    
-                        {% block extra_buttons %}
-                        {% endblock %}
-                    
-                        <button name="save" class="btn btn-info mt-1">Запис</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-8 border">
-                <div class="form-table">
-                    {% block table %}
-                    {% endblock table %}
-                </div>
+                    <button name="save" class="btn btn-info mt-1">Запис</button>
+                </form>
             </div>
         </div>
+        <div class="record-container">
+            {% block table %}
+            {% endblock table %}
+        </div>
     </div>
-
-    <script>
-        document.querySelectorAll('input, textarea').forEach(field => {
-            field.addEventListener('keydown', handleEnter);
-        });
-    </script>
-    
+    <script src="{% static 'event_listener.js' %}"></script>
 {% endblock content %}

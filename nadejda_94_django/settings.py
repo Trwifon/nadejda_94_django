@@ -121,6 +121,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static/styles/',
     BASE_DIR / 'static/images/',
+    BASE_DIR / 'static/scripts/',
 ]
 
 
