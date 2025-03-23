@@ -2,87 +2,84 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col-1 border">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    {% if orders %}
-                        <button class="btn btn-info" type="submit" name="glass_submit">За цеха</button>
-                    {% endif %}
-                </form>
-            </div>
-            <div class="col-5 border">
-                <div class="mt-2">
-                    <h5>Потвърдени поръчки</h5>
-                </div>
-                <div class='production-table-glass'>
-                    <table>
-                        <tr class="text-center">
-                            <th>Поръчка</th>
-                            <th>Фирма</th>
-                            <th>Вид стъклопакет</th>
-                            <th>Ширина</th>
-                            <th>Височина</th>
-                            <th>Количество</th>
+    <div class="orders">
+        <div class="production-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if orders %}
+                    <button class="btn btn-info" type="submit" name="glass_submit">За цеха</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="production-container">
+            <p class="info-text">
+                Потвърдени поръчки
+            <div class='production-table-glass'>
+                <table>
+                    <tr>
+                        <th class="table-columns">Поръчка</th>
+                        <th class="table-columns">Фирма</th>
+                        <th class="table-columns">Вид пакет</th>
+                        <th class="table-columns">Ширина</th>
+                        <th class="table-columns">Височина</th>
+                        <th class="table-columns">Количество</th>
+                    </tr>
+                    {% for order in orders %}
+                        <tr class="{% if order.id == pk %}highlight{% endif %}">
+                            <td>{{order.record.order}}</td>
+                            <td>{{order.record.partner.name}}</td>
+                            <td>{{order.kind}}</td>
+                            <td>{{order.width}}</td>
+                            <td>{{order.height}}</td>
+                            <td>{{order.number}}</td>
                         </tr>
-                        {% for order in orders %}
-                            <tr class="{% if order.id == pk %}highlight{% endif %}">
-                                <td>{{order.record.order}}</td>
-                                <td>{{order.record.partner.name}}</td>
-                                <td>{{order.kind}}</td>
-                                <td>{{order.width}}</td>
-                                <td>{{order.height}}</td>
-                                <td>{{order.number}}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
+                    {% endfor %}
+                </table>
             </div>
-        
-            <div class="col-5 border">
-                <div class="mt-2">
-                    <h5>Поръчки за производство - брой пакети: {{ total_number }}</h5>
-                </div>
-                <div class='production-table-glass'>
-                    <table>
-                        <tr class="text-center">
-                            <th>Поръчка</th>
-                            <th>Фирма</th>
-                            <th>Вид стъклопакет</th>
-                            <th>Ширина</th>
-                            <th>Височина</th>
-                            <th>Количество</th>
+        </div>
+    
+        <div class="production-container">
+            <p class="info-text">
+                Поръчки за производство - брой пакети: {{ total_number }}
+            </p>
+            <div class='production-table-glass'>
+                <table>
+                    <tр>
+                        <th class="table-columns">Поръчка</th>
+                        <th class="table-columns">Фирма</th>
+                        <th class="table-columns">Вид пакет</th>
+                        <th class="table-columns">Ширина</th>
+                        <th class="table-columns">Височина</th>
+                        <th class="table-columns">Количество</th>
+                    </tр>
+                    {% for order in production_orders %}
+                        <tr class="{% if order.id == pk %}highlight{% endif %}">
+                            <td>{{order.record.order}}</td>
+                            <td>{{order.record.partner.name}}</td>
+                            <td>{{order.kind}}</td>
+                            <td>{{order.width}}</td>
+                            <td>{{order.height}}</td>
+                            <td>{{order.number}}</td>
                         </tr>
-                        {% for order in production_orders %}
-                            <tr class="{% if order.id == pk %}highlight{% endif %}">
-                                <td>{{order.record.order}}</td>
-                                <td>{{order.record.partner.name}}</td>
-                                <td>{{order.kind}}</td>
-                                <td>{{order.width}}</td>
-                                <td>{{order.height}}</td>
-                                <td>{{order.number}}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>  
-            </div>
-            <div class="col-1 border">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ production_form.as_p }}
-                    {% if production_orders %}
-                        <button class="btn btn-info" type="submit" name="production_submit">Върни</button>
-                    {% endif %}
-                </form>
-                <form method="post">
-                    {% csrf_token %}
-                    {% if production_orders %}
-                        <button class="btn btn-info mt-2" type="submit" name="ok">OK</button>
-                    {% endif %}
-                </form>
-            </div>
+                    {% endfor %}
+                </table>
+            </div>  
+        </div>
+        <div class="production-container">
+            <form method="post">
+                {% csrf_token %}
+                {{ production_form.as_p }}
+                {% if production_orders %}
+                    <button class="btn btn-info" type="submit" name="production_submit">Отказ</button>
+                {% endif %}
+            </form>
+            <form method="post">
+                {% csrf_token %}
+                {% if production_orders %}
+                    <button class="btn btn-info mt-2" type="submit" name="ok">OK</button>
+                {% endif %}
+            </form>
         </div>
     </div>
 {% endblock content %}

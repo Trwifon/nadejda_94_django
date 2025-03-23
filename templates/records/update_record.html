@@ -2,22 +2,26 @@
 {% load static %}
 
 {% block content %}
-    <form method="post" class="form-group">
-        <h4>Редакция на запис</h4>
-        <hr>
-        {% if current_record %}
-            <h5>Фирмa: {{ current_record.partner.name }}</h5>
-            <h5>Склад: {{ current_record.get_warehouse_display }}</h5>
-        {% endif %}
-        <br>
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-space">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.error }}
-            </div>
-        {% endfor %}
-        <button class="btn btn-info">Редактирай</button>
-    </form>
+    <div class="orders">
+        <div class="record-container">
+            <form method="post" class="form-group">
+                <h4>Редакция на запис</h4>
+                <hr>
+                {% if current_record %}
+                    <h5>Фирмa: {{ current_record.partner.name }}</h5>
+                    <h5>Склад: {{ current_record.get_warehouse_display }}</h5>
+                {% endif %}
+                <br>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-space">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.error }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-info">Редактирай</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}  

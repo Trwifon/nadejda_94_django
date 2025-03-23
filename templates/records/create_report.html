@@ -2,12 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <form class="form-group mb-3 " method="post">
-        <h4>Отчети</h4>
+    <form class="form-group" method="post">
+        <p class="info-text">
+            Отчети
+        </p>
         <hr>
         {% csrf_token %}
         {% for field in form %}
-            <div class="mb-4">
+            <div class="form-space">
                 {{ field.label }}
                 {{ field }}
             </div>

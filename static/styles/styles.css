@@ -34,44 +34,45 @@ body {
     color: black;
 }
 
+.logo {
+    border: 1px solid darkblue;
+    border-radius: 5px;
+}
+
 .hr {
     margin: 0;
 }
 
 .info-text {
     text-align: center;
-    font-size: 20px;
+    font-size: 1.2em;
+    font-weight: 600;
     color: black;
-    margin-bottom: 2px;
-    margin-top: 2px;
+    margin: 5px;
+
 }
 
 .form-group {
     border: 1px solid #58b0e8;
     border-radius: 10px;
     background-color:#cff4fc;
-    min-width: 370px;
-    max-width: 200px;
-    margin: 5px;
+    min-width: 300px;
+    max-width: 350px;
+    margin: 10px auto;
     padding: 5px;
     text-align: center;
     color: darkblue;
 }
 
 .form-space {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .info {
     display: flex;
     align-items: center;
-    margin: 25px 15px;
+    margin: 15px 15px;
     font-size: 20px;
-}
-
-.form-table {
-    display: grid;
-    place-items: center;
 }
 
 .max-height-report {
@@ -79,14 +80,9 @@ body {
     overflow-y: scroll;
 }
 
-.table-glass {
-    margin: 10px 20px 10px 10px;
-    text-align: center;
-}
-
 .table-columns {
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
     text-align: center;
 }
 
@@ -95,7 +91,7 @@ body {
     align-items: center;
     width: 100%;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .highlight {
@@ -107,6 +103,23 @@ body {
     font-weight: 600;
 }
 
-.two-containers {
-    height: auto;
+.orders {
+    display: flex;
+    justify-content: center;
 }
+
+.record-container {
+    min-width: 350px;
+    text-align: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.production-container{
+    min-width: 100px;
+    border: 1px solid lightskyblue;
+    text-align: center;
+    padding: 5px;
+    flex-grow: 1;
+}
+
