@@ -11,8 +11,8 @@ python manage.py runserver 'myhost':8000
 
 get last version to server
 
-git pull origin master
+git pull origin main
 git stash
-git pull origin master
+git pull origin main
 :qa
 python manage.py migrate
