@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
@@ -443,19 +444,24 @@ class ExcelGlassView(TemplateView):
         ])
 
         df = pd.DataFrame(glass_order)
-        str_sent_time = str(sent_time).replace(':', '_')
+        # str_sent_time = str(sent_time).replace(':', '_')
         # name = f"d:/paketi/Линия {str_sent_time}.xlsx"
-        name = f"d:/paketi/Червена линия D 18.xlsx"
-        df.to_excel(name, index=False, header=False)
+        # name = f'd:/paketi/D 19-a.xlsx'
+        # df.to_excel(name, index=False, header=False, engine='openpyxl')
+        #
+        # wb = load_workbook('d:/paketi/D 19-a.xlsx')
+        # ws = wb.active
+        # ws.column_dimensions['A'].width = 20
+        # ws.column_dimensions['B'].width = 13
+        # ws.column_dimensions['H'].width = 13
+        # wb.save('d:/paketi/D 19-b.xlsx')
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=D 19-c.xlsx'
 
-        wb = load_workbook('d:/paketi/Червена линия D 18.xlsx')
-        ws = wb.active
-        ws.column_dimensions['A'].width = 20
-        ws.column_dimensions['B'].width = 13
-        ws.column_dimensions['H'].width = 13
-        wb.save('d:/paketi/Червена линия D 18.xlsx')
+        df.to_excel(response, index=False, header=False, engine='openpyxl')
+        return response
 
-        return redirect('dashboard')
+        # return redirect('dashboard')
 
 
 
