@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pandas as pd
+from openpyxl import load_workbook
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -287,7 +288,7 @@ class RecordPriceIncreaseView(TemplateView):
 
         else:
             if 'cancel' in request.POST:
-                current_record.amount -= difference
+                current_record.amount += difference
                 current_record.save()
 
                 current_record.partner.balance -= difference
@@ -444,11 +445,10 @@ class ExcelGlassView(TemplateView):
         ])
 
         df = pd.DataFrame(glass_order)
-        # str_sent_time = str(sent_time).replace(':', '_')
-        # name = f"d:/paketi/Линия {str_sent_time}.xlsx"
+        str_sent_time = str(sent_time).replace(':', '_')
+        name = f"For cutting {str_sent_time}.xlsx"
         # name = f'd:/paketi/D 19-a.xlsx'
         # df.to_excel(name, index=False, header=False, engine='openpyxl')
-        #
         # wb = load_workbook('d:/paketi/D 19-a.xlsx')
         # ws = wb.active
         # ws.column_dimensions['A'].width = 20
@@ -456,9 +456,10 @@ class ExcelGlassView(TemplateView):
         # ws.column_dimensions['H'].width = 13
         # wb.save('d:/paketi/D 19-b.xlsx')
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=D 19-c.xlsx'
+        response['Content-Disposition'] = f"inline; filename={name}"
 
         df.to_excel(response, index=False, header=False, engine='openpyxl')
+
         return response
 
         # return redirect('dashboard')

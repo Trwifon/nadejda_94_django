@@ -1,0 +1,7 @@
+{% load static %}
+
+<p class="info-text">
+    <span>Брой: {{ glass_data.total_number }}</span>
+    <span class="mx-5">Площ: {{ glass_data.total_area|floatformat:2 }} кв.м</span>
+    <span>Стойност на стъклопакетите: {{ glass_data.total_price|floatformat:2 }} лв</span>
+</p>
