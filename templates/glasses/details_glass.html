@@ -6,11 +6,7 @@
         <h5 class="text-center mt-4">
             Детайли на поръчка за стъклопакети {{ orders.first.record.order }} на фирма {{ orders.first.record.partner }}
         </h5>
-        <p style="font-size:1.2em; font-weight:600">
-            <span>Брой: {{ glass_data.total_number }}</span>
-            <span class="mx-5">Площ: {{ glass_data.total_area }} кв.м</span>
-            <span>Стойност на стъклопакетите: {{ glass_data.total_price }} лв</span>
-        </p>
+        {% include 'glasses/glass_info.html' %}
         {% if not orders.first.sent_for_working %}
             <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
                 <button class="btn btn-info my-3">Редактирай</button>

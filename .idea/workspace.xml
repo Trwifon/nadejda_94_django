@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="" />
+    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/details_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/details_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/update_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/update_glass.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -167,6 +174,8 @@
       <workItem from="1739450969163" duration="43227000" />
       <workItem from="1742410262519" duration="10079000" />
       <workItem from="1742499227032" duration="138000" />
+      <workItem from="1742585704513" duration="55351000" />
+      <workItem from="1743270643826" duration="3378000" />
     </task>
     <servers />
   </component>
