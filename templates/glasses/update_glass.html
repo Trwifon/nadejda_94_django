@@ -3,7 +3,6 @@
 
 {% block content %}
     <div class="container-fluid text-center">    
-        <script src="{% static 'enter_instead_tab_script.js' %}"></script>
         <div class="row">
             <div class="col-3">
                 <h5>Редакция на поръчка за стъклопакети</h5>
@@ -13,7 +12,6 @@
                         <h5>Поръчка: {{ orders.first.record.order }}</h5>
                     </div>
                     <hr>
-                    <script src="{% static 'start_field_focus.js' %}"></script>
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
@@ -57,5 +55,7 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'enter_instead_tab_script.js' %}"></script>
+    <script src="{% static 'start_field_focus.js' %}"></script>
     <script src="{% static 'event_listener.js' %}"></script>
 {% endblock content %}

@@ -1,3 +1,6 @@
+from openpyxl.reader.excel import load_workbook
+from openpyxl.styles import Alignment, Font
+
 def calculate_area(width, height, number):
     MIN_AREA = 0.3
 
@@ -49,7 +52,6 @@ def get_glass_kind(order):
     else:
         kind = (f"ед.стъкло"
                 f"-{order.first_glass} ")
-                # f"{order.module}")
 
     if order.module:
         kind += f"{order.module}"
@@ -57,6 +59,45 @@ def get_glass_kind(order):
     return kind
 
 
+def format_excel(name):
+    current_name = f"d:\paketi\{name}"
+    wb = load_workbook(current_name)
+    ws = wb.active
+    ws.column_dimensions['A'].width = 25
+    ws.column_dimensions['B'].width = 13
+    ws.column_dimensions['C'].width = 6
+    ws.column_dimensions['D'].width = 6
+    ws.column_dimensions['E'].width = 3
+    ws.column_dimensions['F'].width = 4
+    ws.column_dimensions['G'].width = 4
+    ws.column_dimensions['H'].width = 13
+    ws.column_dimensions['I'].width = 5
 
+    for cell in ws['C']:
+        cell.font = Font(bold=True)
+    for cell in ws['D']:
+        cell.font = Font(bold=True)
+    for cell in ws['I']:
+        cell.font = Font(bold=True)
 
+    for cell in ws['C']:
+        cell.alignment = Alignment(horizontal='center')
+    for cell in ws['D']:
+        cell.alignment = Alignment(horizontal='center')
+    for cell in ws['E']:
+        cell.alignment = Alignment(horizontal='center')
+    for cell in ws['F']:
+        cell.alignment = Alignment(horizontal='center')
+    for cell in ws['G']:
+        cell.alignment = Alignment(horizontal='center')
+    for cell in ws['H']:
+        cell.alignment = Alignment(horizontal='center')
 
+    ws['J1'].alignment = Alignment(horizontal='right')
+    ws['K1'].alignment = Alignment(horizontal='left')
+    ws['L1'].alignment = Alignment(horizontal='right')
+    ws['M1'].alignment = Alignment(horizontal='left')
+
+    wb.save(current_name)
+
+    return None
