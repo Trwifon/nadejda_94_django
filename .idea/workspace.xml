@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/glasses/glass_info.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/details_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/details_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/excel_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/excel_glass.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/glasses/update_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/update_glass.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +175,12 @@
       <workItem from="1742410262519" duration="10079000" />
       <workItem from="1742499227032" duration="138000" />
       <workItem from="1742585704513" duration="55351000" />
-      <workItem from="1743270643826" duration="3378000" />
+      <workItem from="1743270643826" duration="12745000" />
+      <workItem from="1743532229071" duration="116000" />
+      <workItem from="1744437249536" duration="20063000" />
+      <workItem from="1744830184559" duration="4452000" />
+      <workItem from="1744896636348" duration="6456000" />
+      <workItem from="1744962530128" duration="7605000" />
     </task>
     <servers />
   </component>

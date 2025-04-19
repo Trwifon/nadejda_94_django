@@ -1,15 +1,14 @@
 from datetime import datetime, timedelta
 import pandas as pd
-from openpyxl import load_workbook
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
-from openpyxl import load_workbook
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
-from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data
+from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data, \
+    format_excel
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
@@ -282,9 +281,10 @@ class RecordPriceIncreaseView(TemplateView):
                 current_record.partner.balance += difference
                 current_record.partner.save()
 
-                glass_pk = Glasses.objects.filter(record_id=current_record.pk).first().pk
-                old_total_price = current_record.amount
-                return redirect('glass_update', record_pk=current_record.pk, pk=glass_pk, old_total=int(old_total_price))
+            glass_pk = Glasses.objects.filter(record_id=current_record.pk).first().pk
+            old_total_price = current_record.amount
+
+            return redirect('glass_update', record_pk=current_record.pk, pk=glass_pk, old_total=int(old_total_price))
 
         else:
             if 'cancel' in request.POST:
@@ -382,11 +382,16 @@ class ExcelGlassView(TemplateView):
     form_class = GlassProductionForm
 
     def post(self, request, *args, **kwargs):
-        if 'dashboard' in request.POST:
-            return redirect('dashboard')
-
         sent_time_str = kwargs['sent_time']
         sent_time = datetime.strptime(sent_time_str, '%Y-%m-%d %H:%M:%S')
+        str_sent_time = str(sent_time).replace(':', '_')
+        name = f"Glass {str_sent_time}.xlsx"
+
+        if 'confirm' in request.POST:
+            format_excel(name)
+
+
+            return redirect('dashboard')
 
         glasses = Glasses.objects.filter(sent_for_working__in=[
             sent_time - timedelta(seconds=3),
@@ -400,10 +405,11 @@ class ExcelGlassView(TemplateView):
 
         number_of_glasses = glasses.aggregate(sum=Sum('number'))
         total_area = 0.0
-
         glass_order = []
+        dist_order = []
         row = 0
         old_order = ''
+        order_area = 0
 
         for glass in glasses:
             current_order = glass.record.order
@@ -412,6 +418,12 @@ class ExcelGlassView(TemplateView):
                 row += 1
             else:
                 row = 1
+                order_area = 0
+                record_glasses = glasses.filter(record__order=current_order).order_by('pk')
+
+                for record_glass in record_glasses:
+                    area = calculate_area(record_glass.width, record_glass.height, record_glass.number)
+                    order_area += area
 
             old_order = current_order
 
@@ -422,7 +434,6 @@ class ExcelGlassView(TemplateView):
                     first_column = f"{glass.record.note} / {quantity['sum']}"
                 else:
                     first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity['sum']}"
-
             glass_order.append([
                 first_column,
                 f"{current_order} {row}",
@@ -434,7 +445,13 @@ class ExcelGlassView(TemplateView):
                 get_glass_kind(glass),
             ])
 
+            if row == 1:
+                glass_order[-1].extend([order_area])
+
             total_area += calculate_area(glass.width, glass.height, glass.number)
+
+            dist_row = f"{glass.width},{glass.height},5,{glass.number}"
+            dist_order.append(dist_row)
 
         glass_order[0].extend([
             'Брой:',
@@ -444,25 +461,18 @@ class ExcelGlassView(TemplateView):
             'кв.м'
         ])
 
-        df = pd.DataFrame(glass_order)
-        str_sent_time = str(sent_time).replace(':', '_')
-        name = f"For cutting {str_sent_time}.xlsx"
-        # name = f'd:/paketi/D 19-a.xlsx'
-        # df.to_excel(name, index=False, header=False, engine='openpyxl')
-        # wb = load_workbook('d:/paketi/D 19-a.xlsx')
-        # ws = wb.active
-        # ws.column_dimensions['A'].width = 20
-        # ws.column_dimensions['B'].width = 13
-        # ws.column_dimensions['H'].width = 13
-        # wb.save('d:/paketi/D 19-b.xlsx')
+        df_glass = pd.DataFrame(glass_order)
+        df_dist = pd.DataFrame(dist_order)
+
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = f"inline; filename={name}"
 
-        df.to_excel(response, index=False, header=False, engine='openpyxl')
+        with pd.ExcelWriter(response, engine='openpyxl') as writer:
+            df_glass.to_excel(writer, index=False, header=False, sheet_name='Glass')
+            df_dist.to_excel(writer, index=False, header=False, sheet_name='Dist')
 
         return response
 
-        # return redirect('dashboard')
 
 
 
