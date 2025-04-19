@@ -1,8 +1,9 @@
+import os
 from datetime import datetime, timedelta
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
@@ -378,7 +379,7 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
 
 class ExcelGlassView(TemplateView):
     template_name = 'glasses/excel_glass.html'
-    success_url = reverse_lazy('/glasses/dashboard.html')
+    success_url = reverse_lazy('glasses_excel')
     form_class = GlassProductionForm
 
     def post(self, request, *args, **kwargs):
@@ -386,11 +387,9 @@ class ExcelGlassView(TemplateView):
         sent_time = datetime.strptime(sent_time_str, '%Y-%m-%d %H:%M:%S')
         str_sent_time = str(sent_time).replace(':', '_')
         name = f"Glass {str_sent_time}.xlsx"
+        file_path = os.path.join('d:\paketi', name)
 
-        if 'confirm' in request.POST:
-            format_excel(name)
-
-
+        if 'cancel' in request.POST:
             return redirect('dashboard')
 
         glasses = Glasses.objects.filter(sent_for_working__in=[
@@ -464,16 +463,30 @@ class ExcelGlassView(TemplateView):
         df_glass = pd.DataFrame(glass_order)
         df_dist = pd.DataFrame(dist_order)
 
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f"inline; filename={name}"
+        for filename in os.listdir('d:\paketi'):
+            file_path_to_remove = os.path.join('d:\paketi', filename)
 
-        with pd.ExcelWriter(response, engine='openpyxl') as writer:
+            if os.path.isfile(file_path_to_remove):
+                os.remove(file_path_to_remove)
+
+        with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
             df_glass.to_excel(writer, index=False, header=False, sheet_name='Glass')
             df_dist.to_excel(writer, index=False, header=False, sheet_name='Dist')
 
+        format_excel(file_path)
+
+        if not os.path.exists(file_path):
+            return HttpResponseNotFound('File not found.')
+
+        response = FileResponse(open(file_path, 'rb'),
+                                content_type='application/vnd'
+                                             '.openxmlformats-officedocument'
+                                             '.spreadsheetml'
+                                             '.sheet')
+        response['Content-Disposition'] = (f'attachment; '
+                                           f'filename="{os.path.basename(file_path)}"')
+
         return response
-
-
 
 
 

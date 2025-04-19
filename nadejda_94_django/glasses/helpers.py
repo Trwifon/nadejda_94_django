@@ -59,9 +59,8 @@ def get_glass_kind(order):
     return kind
 
 
-def format_excel(name):
-    current_name = f"d:\paketi\{name}"
-    wb = load_workbook(current_name)
+def format_excel(file_path):
+    wb = load_workbook(file_path)
     ws = wb.active
     ws.column_dimensions['A'].width = 25
     ws.column_dimensions['B'].width = 13
@@ -98,6 +97,6 @@ def format_excel(name):
     ws['L1'].alignment = Alignment(horizontal='right')
     ws['M1'].alignment = Alignment(horizontal='left')
 
-    wb.save(current_name)
+    wb.save(file_path)
 
     return None
