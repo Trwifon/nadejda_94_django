@@ -73,8 +73,7 @@ class Glasses(models.Model):
         decimal_places=2,
     )
 
-    module = models.PositiveIntegerField(
-        validators=[MinValueValidator(1),],
+    module = models.CharField(
         null=True,
         blank=True,
     )

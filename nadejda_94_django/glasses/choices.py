@@ -44,6 +44,11 @@ class GlassChoices(models.TextChoices):
 
 
 class ThicknessChoices(models.IntegerChoices):
+    FOUR = 4, '4'
+    FIVE = 5, '5'
+    SIX = 6, '6'
+    EIGHT = 8, '8'
+    TEN = 10, '10'
     TWELVE = 12, '12'
     FOURTEEN = 14, '14'
     SIXTEEN = 16, '16'
