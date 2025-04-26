@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/excel_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/excel_glass.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +181,9 @@
       <workItem from="1744830184559" duration="4452000" />
       <workItem from="1744896636348" duration="6456000" />
       <workItem from="1744962530128" duration="8549000" />
-      <workItem from="1745042795600" duration="4308000" />
+      <workItem from="1745042795600" duration="5006000" />
+      <workItem from="1745380996638" duration="232000" />
+      <workItem from="1745653606615" duration="5373000" />
     </task>
     <servers />
   </component>

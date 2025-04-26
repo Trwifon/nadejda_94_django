@@ -470,7 +470,7 @@ class ExcelGlassView(TemplateView):
                 os.remove(file_path_to_remove)
 
         with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-            df_glass.to_excel(writer, index=False, header=False, sheet_name='Glass')
+            df_glass.to_excel(writer, index=False, header=False, sheet_name='Sheet1')
             df_dist.to_excel(writer, index=False, header=False, sheet_name='Dist')
 
         format_excel(file_path)
