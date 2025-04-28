@@ -15,13 +15,18 @@ from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
 from nadejda_94_django.records.views import OrderCreateView
 
+ALL_ORDERS_TRIFON = []
+ALL_ORDERS_TSONKA = []
+ALL_ORDERS_NADYA = []
 ALL_ORDERS = []
 
 class GlassCreateView(OrderCreateView):
     model = Glasses
     template_name = 'glasses/create_glass.html'
     permission_required = 'glasses.add_glasses'
-    ALL_ORDERS = []
+    ALL_ORDERS_TRIFON = []
+    ALL_ORDERS_TSONKA = []
+    ALL_ORDERS_NADYA = []
 
     def get_context_data(self, **kwargs):
         form = GlassCreateForm(self.request.POST)
@@ -52,44 +57,87 @@ class GlassCreateView(OrderCreateView):
             current_order = form.cleaned_data
             current_order['supplement'] = 0
 
-            if 'order' in request.POST:
-                ALL_ORDERS.append(current_order)
-                context['orders'] = ALL_ORDERS
-                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+            print(request.user.username)
+            if request.user.username == 'Tsonka':
+                if 'order' in request.POST:
 
-                return render(request, 'glasses/create_glass.html', context)
+                    ALL_ORDERS_TSONKA.append(current_order)
+                    context['orders'] = ALL_ORDERS_TSONKA
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
 
-            if 'save' in request.POST:
-                order = get_order('G')
-                current_amount = sum(item['price'] for item in ALL_ORDERS)
+                    return render(request, 'glasses/create_glass.html', context)
 
-                record = Record(
-                    warehouse = users_dict[request.user.username],
-                    order_type = 'G',
-                    amount = current_amount,
-                    order = order,
-                    note = context['note'],
-                    partner = current_partner
-                )
-                current_partner.balance = get_close_balance(current_pk, 'G', current_amount)
-                current_partner.save()
-                record.save()
+                if 'save' in request.POST:
+                    order = get_order('G')
+                    current_amount = sum(item['price'] for item in ALL_ORDERS_TSONKA)
 
-                for element in ALL_ORDERS:
-                    element['record'] = record
+                    record = Record(
+                        warehouse = users_dict[request.user.username],
+                        order_type = 'G',
+                        amount = current_amount,
+                        order = order,
+                        note = context['note'],
+                        partner = current_partner
+                    )
+                    current_partner.balance = get_close_balance(current_pk, 'G', current_amount)
+                    current_partner.save()
+                    record.save()
 
-                element_instances = [Glasses(**element) for element in ALL_ORDERS]
-                Glasses.objects.bulk_create(element_instances)
-                glass_pk = Glasses.objects.filter(record=record).first().pk
+                    for element in ALL_ORDERS_TSONKA:
+                        element['record'] = record
 
-                ALL_ORDERS.clear()
+                    element_instances = [Glasses(**element) for element in ALL_ORDERS_TSONKA]
+                    Glasses.objects.bulk_create(element_instances)
+                    glass_pk = Glasses.objects.filter(record=record).first().pk
 
-                return redirect('glass_update', record_pk=record.pk, pk=glass_pk, old_total=int(current_amount))
+                    ALL_ORDERS_TSONKA.clear()
 
-            if 'cancel' in request.POST:
-                ALL_ORDERS.clear()
+                    return redirect('glass_update', record_pk=record.pk, pk=glass_pk, old_total=int(current_amount))
 
-                return redirect('dashboard')
+                if 'cancel' in request.POST:
+                    ALL_ORDERS_TSONKA.clear()
+
+                    return redirect('dashboard')
+
+            elif request.user.username == 'Nadya':
+                if 'order' in request.POST:
+                    ALL_ORDERS_NADYA.append(current_order)
+                    context['orders'] = ALL_ORDERS_NADYA
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_NADYA)
+
+                    return render(request, 'glasses/create_glass.html', context)
+
+                if 'save' in request.POST:
+                    order = get_order('G')
+                    current_amount = sum(item['price'] for item in ALL_ORDERS_NADYA)
+
+                    record = Record(
+                        warehouse=users_dict[request.user.username],
+                        order_type='G',
+                        amount=current_amount,
+                        order=order,
+                        note=context['note'],
+                        partner=current_partner
+                    )
+                    current_partner.balance = get_close_balance(current_pk, 'G', current_amount)
+                    current_partner.save()
+                    record.save()
+
+                    for element in ALL_ORDERS_NADYA:
+                        element['record'] = record
+
+                    element_instances = [Glasses(**element) for element in ALL_ORDERS_NADYA]
+                    Glasses.objects.bulk_create(element_instances)
+                    glass_pk = Glasses.objects.filter(record=record).first().pk
+
+                    ALL_ORDERS_NADYA.clear()
+
+                    return redirect('glass_update', record_pk=record.pk, pk=glass_pk, old_total=int(current_amount))
+
+                if 'cancel' in request.POST:
+                    ALL_ORDERS_NADYA.clear()
+
+                    return redirect('dashboard')
 
 
 class PGlassCreateView(PermissionRequiredMixin, CreateView):
@@ -98,7 +146,9 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
     permission_required = 'glasses.add_glasses'
     success_url = reverse_lazy('dashboard')
     form_class = PGlassCreateForm
-    ALL_ORDERS = []
+    ALL_ORDERS_TRIFON = []
+    ALL_ORDERS_TSONKA = []
+    ALL_ORDERS_NADYA = []
 
     def get(self, request, *args, **kwargs):
         record_pk = self.kwargs.get('record_pk')
@@ -127,39 +177,67 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = GlassCreateForm(request.POST)
-
         context = self.get_context_data()
 
         if form.is_valid():
             current_order = form.cleaned_data
             current_order['supplement'] = 0
 
-            if 'order' in request.POST:
-                ALL_ORDERS.append(current_order)
-                context['orders'] = ALL_ORDERS
-                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+            if request.user.username == 'Tsonka':
+                if 'order' in request.POST:
+                    ALL_ORDERS_TSONKA.append(current_order)
+                    context['orders'] = ALL_ORDERS_TSONKA
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
 
-                return render(request, 'glasses/create_glass.html', context)
+                    return render(request, 'glasses/create_glass.html', context)
 
-            if 'save' in request.POST:
-                record_pk = self.kwargs.get('record_pk')
-                current_record = Record.objects.get(pk=record_pk)
-                all_glass_price = sum(item['price'] for item in ALL_ORDERS)
-                difference = -int(all_glass_price)
+                if 'save' in request.POST:
+                    record_pk = self.kwargs.get('record_pk')
+                    current_record = Record.objects.get(pk=record_pk)
+                    all_glass_price = sum(item['price'] for item in ALL_ORDERS_TSONKA)
+                    difference = -int(all_glass_price)
 
-                for order in ALL_ORDERS:
-                    order['record'] = current_record
+                    for order in ALL_ORDERS_TSONKA:
+                        order['record'] = current_record
 
-                order_instances = [Glasses(**order) for order in ALL_ORDERS]
-                Glasses.objects.bulk_create(order_instances)
-                ALL_ORDERS.clear()
+                    order_instances = [Glasses(**order) for order in ALL_ORDERS_TSONKA]
+                    Glasses.objects.bulk_create(order_instances)
+                    ALL_ORDERS_TSONKA.clear()
 
-                return redirect('record_price_increase', record_pk=current_record.pk, diff=difference, to_update=True)
+                    return redirect('record_price_increase', record_pk=current_record.pk, diff=difference, to_update=True)
 
-            if 'cancel' in request.POST:
-                ALL_ORDERS.clear()
+                if 'cancel' in request.POST:
+                    ALL_ORDERS_TSONKA.clear()
 
-                return redirect('dashboard')
+                    return redirect('dashboard')
+            if request.user.username == 'Nadya':
+                if 'order' in request.POST:
+                    ALL_ORDERS_NADYA.append(current_order)
+                    context['orders'] = ALL_ORDERS_NADYA
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_NADYA)
+
+                    return render(request, 'glasses/create_glass.html', context)
+
+                if 'save' in request.POST:
+                    record_pk = self.kwargs.get('record_pk')
+                    current_record = Record.objects.get(pk=record_pk)
+                    all_glass_price = sum(item['price'] for item in ALL_ORDERS_NADYA)
+                    difference = -int(all_glass_price)
+
+                    for order in ALL_ORDERS_NADYA:
+                        order['record'] = current_record
+
+                    order_instances = [Glasses(**order) for order in ALL_ORDERS_NADYA]
+                    Glasses.objects.bulk_create(order_instances)
+                    ALL_ORDERS_NADYA.clear()
+
+                    return redirect('record_price_increase', record_pk=current_record.pk, diff=difference,
+                                    to_update=True)
+
+                if 'cancel' in request.POST:
+                    ALL_ORDERS_NADYA.clear()
+
+                    return redirect('dashboard')
 
 
 class GlassListView(ListView):

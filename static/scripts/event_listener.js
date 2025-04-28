@@ -1,3 +1,3 @@
-document.querySelectorAll('input, textarea').forEach(field => {
+document.querySelectorAll('input, textarea, select').forEach(field => {
     field.addEventListener('keydown', handleEnter);
 });
