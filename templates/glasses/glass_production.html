@@ -28,7 +28,11 @@
                     {% for order in orders %}
                         <tr class="{% if order.id == pk %}highlight{% endif %}">
                             <td>{{order.record.order}}</td>
-                            <td>{{order.record.partner.name}}</td>
+                            {% if order.record.partner.name != 'Клиент' %}
+                                <td>{{order.record.partner.name}}</td>
+                            {% else %}
+                                <td>кл-{{order.record.note}}</td>
+                            {% endif %}
                             <td>{{order.kind}}</td>
                             <td>{{order.width}}</td>
                             <td>{{order.height}}</td>
