@@ -8,8 +8,8 @@
                 <h5>Редакция на поръчка за стъклопакети</h5>
                 <div class="form-group">
                     <div class="mb-1">
-                        <h4>{{ orders.first.record.partner }}</h4>
-                        <h5>Поръчка: {{ orders.first.record.order }}</h5>
+                        <h4>{{ partner }}</h4>
+                        <h5>Поръчка: {{ order }}</h5>
                     </div>
                     <hr>
                     <form method="post">
@@ -50,7 +50,7 @@
             <div class="col-9 border">
                 {% include 'glasses/glass_info.html' %}
                 <div style="padding-left: 5px">
-                    {% include 'glasses/glass_table.html' %}
+                    {% include 'glasses/glass_table_excel_view.html' %}
                 </div>
             </div>
         </div>

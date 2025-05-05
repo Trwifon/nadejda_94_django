@@ -1,0 +1,45 @@
+{% load static %}
+
+<table>
+    <tr>
+        <th class="table-columns">Клиент</th>
+        <th class="table-columns">|</th>
+        <th class="table-columns">Поръчка</th>
+        <th class="table-columns">Шир.</th>
+        <th class="table-columns">Вис.</th>
+        <th class="table-columns">Брой</th>
+        <th class="table-columns">Вид</th>
+        <th class="table-columns">|</th>
+        <th class="table-columns">ЕЦ</th>
+        <th class="table-columns">Площ</th>
+{#        <th class="table-columns">ЦБ</th>#}
+{#        <th class="table-columns">КЦ</th>#}
+        <th class="table-columns">ЦО</th>
+        <th class="table-columns">Доб</th>
+        <th class="table-columns">КРЦ</th>
+        <th class="table-columns">ЦН</th>
+
+    </tr>
+    {% for order in orders %}
+        <tr class="{% if order.8 == pk %}highlight{% endif %}">
+            <td>{{ order.0 }}</td>
+            <td>|</td>
+            <td>{{ order.1 }}</td>
+            <td>{{ order.2 }}</td>
+            <td>{{ order.3 }}</td>
+            <td>{{ order.5 }}</td>
+            <td>{{ order.7 }}</td>
+            <td>|</td>
+            <td>{{ order.9|floatformat:2 }}</td>
+            <td>{{ order.10|floatformat:2 }}</td>
+{#            <td>{{ order.11|floatformat:2 }}</td>#}
+{#            <td>{{ order.12|floatformat:2 }}</td>#}
+            <td>{{ order.13|floatformat:2 }}</td>
+            <td>{{ order.14|floatformat:2 }}</td>
+            <td>{{ order.15|floatformat:2 }}</td>
+            <td>{{ order.16|floatformat:2 }}</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
