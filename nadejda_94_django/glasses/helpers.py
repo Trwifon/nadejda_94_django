@@ -212,6 +212,9 @@ def format_excel(file_path):
     ws['L1'].alignment = Alignment(horizontal='right')
     ws['M1'].alignment = Alignment(horizontal='left')
 
+    for row in range(1, ws.max_row + 1):
+        ws[f'G{row}'] = f'=F{row}'
+
     wb.save(file_path)
 
     return None
