@@ -3,8 +3,8 @@
 
 {% block content %}
     <script src="{% static 'enter_instead_tab_script.js' %}"></script>
-    <div class="orders">
-        <div class="record-container">
+    <div class="record-container">
+        <div>
             <p class="info-text">Поръчка</p>
             <div class="form-group">
                     <h4>{{ partner.name }}</h4>
@@ -33,7 +33,7 @@
                 </form>
             </div>
         </div>
-        <div class="record-container">
+        <div>
             {% block table %}
             {% endblock table %}
         </div>

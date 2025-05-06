@@ -2,16 +2,16 @@
 
 <table>
     <tr>
-        <th class="table-columns">Стъкло I</th>
-        <th class="table-columns">Стъкло II</th>
-        <th class="table-columns">Стъкло III</th>
-        <th class="table-columns">Дебелина</th>
-        <th class="table-columns">Цена</th>
-        <th class="table-columns">Широчина</th>
-        <th class="table-columns">Височина</th>
-        <th class="table-columns">Количество</th>
-        <th class="table-columns">Добавка</th>
-        <th class="table-columns">Сума</th>
+        <th>Стъкло I</th>
+        <th>Стъкло II</th>
+        <th>Стъкло III</th>
+        <th>Дебелина</th>
+        <th>Цена</th>
+        <th>Широчина</th>
+        <th>Височина</th>
+        <th>Количество</th>
+        <th>Добавка</th>
+        <th>Сума</th>
     </tr>
     {% for order in orders %}
         <tr class="{% if order.id == pk %}highlight{% endif %}">

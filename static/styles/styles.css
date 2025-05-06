@@ -39,6 +39,12 @@ body {
     border-radius: 5px;
 }
 
+td, th{
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+}
+
 .hr {
     margin: 0;
 }
@@ -80,12 +86,6 @@ body {
     overflow-y: scroll;
 }
 
-.table-columns {
-    padding-right: 10px;
-    padding-left: 10px;
-    text-align: center;
-}
-
 .production-table-glass {
     display: grid;
     align-items: center;
@@ -109,10 +109,16 @@ body {
 }
 
 .record-container {
-    min-width: 350px;
+    display: flex;
+    justify-content: space-around;
+
+    min-width: 800px;
     text-align: center;
-    justify-content: center;
-    flex-grow: 1;
+}
+
+.glass-container {
+    display: flex;
+    justify-content: space-around;
 }
 
 .production-container{

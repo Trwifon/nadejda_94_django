@@ -46,14 +46,11 @@ class PGlassCreateForm(GlassBaseForm):
 class GlassUpdateForm(GlassBaseForm):
 
     class Meta(GlassBaseForm.Meta):
-        module = forms.Form(
-
-        )
-
         fields = GlassBaseForm.Meta.fields + [
             'module',
             'supplement',
         ]
+
         labels = GlassBaseForm.Meta.labels | {
             'module': 'Модул',
             'supplement': 'Добавка',

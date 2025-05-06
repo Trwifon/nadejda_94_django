@@ -18,17 +18,21 @@
             <div class='production-table-glass'>
                 <table>
                     <tr>
-                        <th class="table-columns">Поръчка</th>
-                        <th class="table-columns">Фирма</th>
-                        <th class="table-columns">Вид пакет</th>
-                        <th class="table-columns">Ширина</th>
-                        <th class="table-columns">Височина</th>
-                        <th class="table-columns">Количество</th>
+                        <th>Поръчка</th>
+                        <th>Фирма</th>
+                        <th>Вид пакет</th>
+                        <th>Ширина</th>
+                        <th>Височина</th>
+                        <th>Количество</th>
                     </tr>
                     {% for order in orders %}
                         <tr class="{% if order.id == pk %}highlight{% endif %}">
                             <td>{{order.record.order}}</td>
-                            <td>{{order.record.partner.name}}</td>
+                            {% if order.record.partner.name != 'Клиент' %}
+                                <td>{{order.record.partner.name}}</td>
+                            {% else %}
+                                <td>кл-{{order.record.note}}</td>
+                            {% endif %}
                             <td>{{order.kind}}</td>
                             <td>{{order.width}}</td>
                             <td>{{order.height}}</td>
@@ -56,7 +60,11 @@
                     {% for order in production_orders %}
                         <tr class="{% if order.id == pk %}highlight{% endif %}">
                             <td>{{order.record.order}}</td>
-                            <td>{{order.record.partner.name}}</td>
+                            {% if order.record.partner.name != 'Клиент' %}
+                                <td>{{order.record.partner.name}}</td>
+                            {% else %}
+                                <td>кл-{{order.record.note}}</td>
+                            {% endif %}
                             <td>{{order.kind}}</td>
                             <td>{{order.width}}</td>
                             <td>{{order.height}}</td>

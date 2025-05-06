@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
 from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data, \
-    format_excel
+    format_excel, excel_glass_view
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
@@ -269,7 +269,15 @@ class GlassUpdateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = Glasses.objects.filter(record=self.kwargs.get('record_pk')).order_by('pk')
-        context['orders'] = orders
+
+        partner = orders.first().record.partner
+        context['partner'] = partner
+
+        order = orders.first()
+        context['order'] = order
+
+        excel_view = excel_glass_view(orders)
+        context['orders'] = excel_view['glass_order_with_additional_fields']
 
         ALL_ORDERS = list(orders.values())
         glass_data = calculate_glass_data(ALL_ORDERS)
@@ -480,66 +488,10 @@ class ExcelGlassView(TemplateView):
             sent_time + timedelta(seconds=3),
         ]).order_by('pk')
 
-        number_of_glasses = glasses.aggregate(sum=Sum('number'))
-        total_area = 0.0
-        glass_order = []
-        dist_order = []
-        row = 0
-        old_order = ''
-        order_area = 0
+        excel_view = excel_glass_view(glasses)
 
-        for glass in glasses:
-            current_order = glass.record.order
-            quantity = glasses.filter(record__order=current_order).aggregate(sum=Sum('number'))
-            if current_order == old_order:
-                row += 1
-            else:
-                row = 1
-                order_area = 0
-                record_glasses = glasses.filter(record__order=current_order).order_by('pk')
-
-                for record_glass in record_glasses:
-                    area = calculate_area(record_glass.width, record_glass.height, record_glass.number)
-                    order_area += area
-
-            old_order = current_order
-
-            if glass.record.note == 'None' or not glass.record.note:
-                first_column = f"{glass.record.partner.name} / {quantity['sum']}"
-            else:
-                if glass.record.partner.name == 'Клиент':
-                    first_column = f"{glass.record.note} / {quantity['sum']}"
-                else:
-                    first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity['sum']}"
-            glass_order.append([
-                first_column,
-                f"{current_order} {row}",
-                glass.width,
-                glass.height,
-                'R',
-                glass.number,
-                glass.number,
-                get_glass_kind(glass),
-            ])
-
-            if row == 1:
-                glass_order[-1].extend([order_area])
-
-            total_area += calculate_area(glass.width, glass.height, glass.number)
-
-            dist_row = f"{glass.width},{glass.height},5,{glass.number}"
-            dist_order.append(dist_row)
-
-        glass_order[0].extend([
-            'Брой:',
-            number_of_glasses['sum'],
-            'Площ:',
-            total_area,
-            'кв.м'
-        ])
-
-        df_glass = pd.DataFrame(glass_order)
-        df_dist = pd.DataFrame(dist_order)
+        df_glass = pd.DataFrame(excel_view['glass_order_list'])
+        df_dist = pd.DataFrame(excel_view['dist_order_list'])
 
         for filename in os.listdir('d:\paketi'):
             file_path_to_remove = os.path.join('d:\paketi', filename)
