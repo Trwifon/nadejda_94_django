@@ -1,35 +1,35 @@
 {% load static %}
 
 <table>
-    <tr>
-        <th class="table-columns">Клиент</th>
-        <th class="table-columns">|</th>
-        <th class="table-columns">Поръчка</th>
-        <th class="table-columns">Шир.</th>
-        <th class="table-columns">Вис.</th>
-        <th class="table-columns">Брой</th>
-        <th class="table-columns">Вид</th>
-        <th class="table-columns">|</th>
-        <th class="table-columns">ЕЦ</th>
-        <th class="table-columns">Площ</th>
-{#        <th class="table-columns">ЦБ</th>#}
-{#        <th class="table-columns">КЦ</th>#}
-        <th class="table-columns">ЦО</th>
-        <th class="table-columns">Доб</th>
-        <th class="table-columns">КРЦ</th>
+    <tr class="text-center">
+        <th>Клиент</th>
+{#        <th>|</th>#}
+        <th>Поръчка</th>
+        <th>Шир.</th>
+        <th>Вис.</th>
+        <th>Брой</th>
+        <th>Вид</th>
+{#        <th>|</th>#}
+        <th>ЕЦ</th>
+        <th>Площ</th>
+{#        <th>ЦБ</th>#}
+{#        <th>КЦ</th>#}
+        <th>ЦО</th>
+        <th>Доб</th>
+        <th>КРЦ</th>
         <th class="table-columns">ЦН</th>
 
     </tr>
     {% for order in orders %}
         <tr class="{% if order.8 == pk %}highlight{% endif %}">
             <td>{{ order.0 }}</td>
-            <td>|</td>
+{#            <td>|</td>#}
             <td>{{ order.1 }}</td>
             <td>{{ order.2 }}</td>
             <td>{{ order.3 }}</td>
             <td>{{ order.5 }}</td>
             <td>{{ order.7 }}</td>
-            <td>|</td>
+{#            <td>|</td>#}
             <td>{{ order.9|floatformat:2 }}</td>
             <td>{{ order.10|floatformat:2 }}</td>
 {#            <td>{{ order.11|floatformat:2 }}</td>#}
@@ -40,6 +40,5 @@
             <td>{{ order.16|floatformat:2 }}</td>
         </tr>
     {% endfor %}
-
 </table>
 

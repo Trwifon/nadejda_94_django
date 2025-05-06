@@ -6,6 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/styles/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_production.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_table_excel_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_table_excel_view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/update_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/update_glass.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/records/firm_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/firm_report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/records/show_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/records/show_report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +35,7 @@
         <option value="SQL File" />
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -59,7 +74,8 @@
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/nadejda_94_django/nadejda_94_django&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/nadejda_94_django/nadejda_94_django/templates/glasses&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -75,6 +91,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\nadejda_94_django\nadejda_94_django\templates\glasses" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\nadejda_94_django\nadejda_94_django\nadejda_94_django\common" />
       <recent name="D:\nadejda_94_django\nadejda_94_django\nadejda_94_django" />
@@ -182,6 +201,8 @@
       <workItem from="1745733121217" duration="299000" />
       <workItem from="1745756434351" duration="2735000" />
       <workItem from="1745846729366" duration="7043000" />
+      <workItem from="1745913526633" duration="53072000" />
+      <workItem from="1746524746313" duration="1523000" />
     </task>
     <servers />
   </component>

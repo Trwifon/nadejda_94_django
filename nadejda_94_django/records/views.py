@@ -72,6 +72,20 @@ class RecordCreateView(OrderCreateView):
 
             return redirect(self.success_url)
 
+        else:
+            form = RecordCreateForm(instance=form.instance)
+
+            if current_pk in (1, 2):
+                firm_report = []
+            else:
+                firm_report = create_firm_report(current_partner)
+
+            return render(request, 'records/create_record.html', {
+                    'form': form,
+                    'partner': current_partner,
+                    'report': firm_report,
+                })
+
 
 class RecordUpdateView(PermissionRequiredMixin, UpdateView):
     model = Record

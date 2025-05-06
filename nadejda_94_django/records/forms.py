@@ -20,6 +20,19 @@ class RecordCreateForm(ModelForm):
             'note': 'Забележка'
         }
 
+        widgets = {
+            'note': forms.TextInput(attrs = {
+                'placeholder': 'Не използвай "/"'
+            }
+        )}
+
+    def clean_note(self):
+        note = self.cleaned_data['note']
+        if note:
+            for letter in note:
+                if letter == '/':
+                    raise forms.ValidationError("Полето не трябва да съдържа символа '//'")
+
 
 class RecordUpdateForm(ModelForm):
     class Meta:

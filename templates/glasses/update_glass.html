@@ -2,56 +2,54 @@
 {% load static %}
 
 {% block content %}
-    <div class="container-fluid text-center">    
-        <div class="row">
-            <div class="col-3">
-                <h5>Редакция на поръчка за стъклопакети</h5>
-                <div class="form-group">
-                    <div class="mb-1">
-                        <h4>{{ partner }}</h4>
-                        <h5>Поръчка: {{ order }}</h5>
-                    </div>
-                    <hr>
-                    <form method="post">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="form-space">
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {{ field.help_text }}
-                                {{ field.error }}
-                                <br>
-                            </div>
-                        {% endfor %}
-                        <div class="row justify-content-center">
-                            <div class="col-4">
-                                {% if prev_order %}
-                                    <a href="{% url 'glass_update' record_pk prev_order old_total %}">
-                                        <button name="Previous" class="btn btn-info">
-                                            Предишен
-                                        </button>
-                                    </a>
-                                {% endif %}
-                            </div>
-                            <div class="col-4">
-                                {% if next_order %}
-                                    <a href="{% url 'glass_update' record_pk next_order old_total %}">
-                                        <button name="Next" class="btn btn-info">
-                                            Следващ
-                                        </button>
-                                    </a>
-                                {% endif %}
-                            </div>
+    <div class="glass-container">
+        <div>
+            <h5>Редакция на поръчка за стъклопакети</h5>
+            <div class="form-group">
+                <div class="mb-1">
+                    <h4>{{ partner }}</h4>
+                    <h5>Поръчка: {{ order }}</h5>
+                </div>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-space">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.help_text }}
+                            {{ field.error }}
+                            <br>
                         </div>
-                        <button name="save" class="btn btn-info mt-2">Запис</button>
-                    </form>
-                </div>
+                    {% endfor %}
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            {% if prev_order %}
+                                <a href="{% url 'glass_update' record_pk prev_order old_total %}">
+                                    <button name="Previous" class="btn btn-info">
+                                        Предишен
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="col-4">
+                            {% if next_order %}
+                                <a href="{% url 'glass_update' record_pk next_order old_total %}">
+                                    <button name="Next" class="btn btn-info">
+                                        Следващ
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button name="save" class="btn btn-info mt-2">Запис</button>
+                </form>
             </div>
-            <div class="col-9 border">
-                {% include 'glasses/glass_info.html' %}
-                <div style="padding-left: 5px">
-                    {% include 'glasses/glass_table_excel_view.html' %}
-                </div>
+        </div>
+        <div>
+            {% include 'glasses/glass_info.html' %}
+            <div>
+                {% include 'glasses/glass_table_excel_view.html' %}
             </div>
         </div>
     </div>

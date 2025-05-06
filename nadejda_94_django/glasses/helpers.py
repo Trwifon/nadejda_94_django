@@ -178,7 +178,7 @@ def format_excel(file_path):
     wb = load_workbook(file_path)
     ws = wb.active
     ws.column_dimensions['A'].width = 25
-    ws.column_dimensions['B'].width = 13
+    ws.column_dimensions['B'].width = 18
     ws.column_dimensions['C'].width = 6
     ws.column_dimensions['D'].width = 6
     ws.column_dimensions['E'].width = 3
@@ -205,7 +205,7 @@ def format_excel(file_path):
     for cell in ws['G']:
         cell.alignment = Alignment(horizontal='center')
     for cell in ws['H']:
-        cell.alignment = Alignment(horizontal='center')
+        cell.alignment = Alignment(horizontal='left')
 
     ws['J1'].alignment = Alignment(horizontal='right')
     ws['K1'].alignment = Alignment(horizontal='left')
