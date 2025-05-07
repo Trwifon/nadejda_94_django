@@ -12,7 +12,7 @@ class GlassChoices(models.TextChoices):
     MAT = 'мат', 'мат'
     GREY = 'сиво', 'сиво'
     LIGHT_GREEN = 'св.зел.', 'св.зел.'
-    DARK_GREEN = 'тъмно зел.', 'тъмно зел.'
+    DARK_GREEN = 'т. зел.', 'т. зел.'
     BRONZE = 'бронзе', 'бронзе'
     BLUE = 'синьо', 'синьо'
     GREY_STS = 'сиво_стс', 'сиво_стс'

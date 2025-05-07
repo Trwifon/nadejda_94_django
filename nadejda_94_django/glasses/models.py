@@ -78,7 +78,7 @@ class Glasses(models.Model):
         blank=True,
     )
 
-    supplement = models.PositiveIntegerField(
+    supplement = models.IntegerField(
         null=True,
         blank=True,
     )

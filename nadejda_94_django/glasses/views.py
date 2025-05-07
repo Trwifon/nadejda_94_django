@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
-from django.http import HttpResponse, HttpResponseNotFound, FileResponse
+from django.http import HttpResponseNotFound, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
@@ -57,7 +57,6 @@ class GlassCreateView(OrderCreateView):
             current_order = form.cleaned_data
             current_order['supplement'] = 0
 
-            print(request.user.username)
             if request.user.username == 'Tsonka':
                 if 'order' in request.POST:
 

@@ -1,6 +1,4 @@
 from datetime import datetime
-from lib2to3.fixes.fix_input import context
-
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
