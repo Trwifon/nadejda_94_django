@@ -130,7 +130,7 @@ def excel_glass_view(glasses):
             if glass.record.partner.name == 'Клиент':
                 first_column = f"{glass.record.note} / {quantity['sum']}"
             else:
-                first_column = f"{glass.record.partner.name} / {glass.record.note} / {quantity['sum']}"
+                first_column = f"{glass.record.partner.name} / {quantity['sum']}"
 
         glass_order_new_row = [
             first_column,
@@ -178,13 +178,13 @@ def format_excel(file_path):
     wb = load_workbook(file_path)
     ws = wb.active
     ws.column_dimensions['A'].width = 25
-    ws.column_dimensions['B'].width = 18
+    ws.column_dimensions['B'].width = 16
     ws.column_dimensions['C'].width = 6
     ws.column_dimensions['D'].width = 6
     ws.column_dimensions['E'].width = 3
     ws.column_dimensions['F'].width = 4
     ws.column_dimensions['G'].width = 4
-    ws.column_dimensions['H'].width = 13
+    ws.column_dimensions['H'].width = 15
     ws.column_dimensions['I'].width = 5
 
     for cell in ws['C']:
@@ -214,6 +214,8 @@ def format_excel(file_path):
 
     for row in range(1, ws.max_row + 1):
         ws[f'G{row}'] = f'=F{row}'
+
+    ws.sheet_view.zoomScale = 130
 
     wb.save(file_path)
 

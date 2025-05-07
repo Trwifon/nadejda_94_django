@@ -27,12 +27,12 @@ class RecordCreateForm(ModelForm):
         )}
 
     def clean_note(self):
-        note = self.cleaned_data['note']
-        if note:
-            for letter in note:
+        current_note = self.cleaned_data.get('note')
+        if current_note:
+            for letter in current_note:
                 if letter == '/':
                     raise forms.ValidationError("Полето не трябва да съдържа символа '//'")
-
+        return current_note
 
 class RecordUpdateForm(ModelForm):
     class Meta:
