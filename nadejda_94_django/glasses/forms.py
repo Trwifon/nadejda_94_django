@@ -33,6 +33,7 @@ class GlassBaseForm(forms.ModelForm):
         self.fields['height'].widget.attrs['min'] = 8
         self.fields['height'].widget.attrs['max'] = 3210
         self.fields['number'].widget.attrs['min'] = 1
+        self.fields['number'].widget.attrs['id'] = 'id_number'
 
 
 class GlassCreateForm(GlassBaseForm):

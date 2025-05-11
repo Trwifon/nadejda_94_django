@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/records/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/records/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/common/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/scripts/start_field_focus.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/scripts/start_field_focus.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_production.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_production.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +192,8 @@
       <workItem from="1745756434351" duration="2735000" />
       <workItem from="1745846729366" duration="7043000" />
       <workItem from="1745913526633" duration="53072000" />
-      <workItem from="1746524746313" duration="20488000" />
+      <workItem from="1746524746313" duration="25470000" />
+      <workItem from="1746786544987" duration="18261000" />
     </task>
     <servers />
   </component>
