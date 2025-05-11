@@ -1,3 +1,4 @@
 window.onload = function() {
-document.getElementById("id_unit_price").focus(); // Focus on the 'name' field
+document.getElementById("id_unit_price").focus();
+document.getElementById('id_number').value=1;
  };

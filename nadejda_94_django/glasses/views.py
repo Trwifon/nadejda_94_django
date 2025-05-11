@@ -20,6 +20,7 @@ ALL_ORDERS_TSONKA = []
 ALL_ORDERS_NADYA = []
 ALL_ORDERS = []
 
+
 class GlassCreateView(OrderCreateView):
     model = Glasses
     template_name = 'glasses/create_glass.html'
@@ -30,6 +31,8 @@ class GlassCreateView(OrderCreateView):
 
     def get_context_data(self, **kwargs):
         form = GlassCreateForm(self.request.POST)
+
+
         note = self.kwargs.get('note')
         current_pk = self.kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
@@ -402,6 +405,10 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
                   .filter(prepared_for_working=False)
                   .filter(number__gt=0)
                   .order_by('record__order', 'pk'))
+
+        order_numbers = orders.aggregate(number=Sum('number'))['number']
+        context['order_numbers'] = order_numbers
+
         labels = sorted(set([label.record.order for label in orders]))
         choices = [(el, el) for el in labels]
 
