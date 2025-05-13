@@ -18,12 +18,12 @@
             <div class='production-table-glass'>
                 <table>
                     <tr>
-                        <th>Поръчка</th>
+                        <th>Пор.</th>
                         <th>Фирма</th>
-                        <th>Вид пакет</th>
-                        <th>Ширина</th>
-                        <th>Височина</th>
-                        <th>Количество</th>
+                        <th>Вид</th>
+                        <th>Шир.</th>
+                        <th>Вис.</th>
+                        <th>Кол.</th>
                     </tr>
                     {% for order in orders %}
                         <tr class="{% if order.id == pk %}highlight{% endif %}">
@@ -50,12 +50,12 @@
             <div class='production-table-glass'>
                 <table>
                     <tр>
-                        <th class="table-columns">Поръчка</th>
+                        <th class="table-columns">Пор.</th>
                         <th class="table-columns">Фирма</th>
-                        <th class="table-columns">Вид пакет</th>
-                        <th class="table-columns">Ширина</th>
-                        <th class="table-columns">Височина</th>
-                        <th class="table-columns">Количество</th>
+                        <th class="table-columns">Вид</th>
+                        <th class="table-columns">Шир.</th>
+                        <th class="table-columns">Вис.</th>
+                        <th class="table-columns">Кол.</th>
                     </tр>
                     {% for order in production_orders %}
                         <tr class="{% if order.id == pk %}highlight{% endif %}">

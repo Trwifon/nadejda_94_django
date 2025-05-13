@@ -2,6 +2,10 @@
 {% load static %}
 
 {% block table %}
+    <script src="{% static 'enter_instead_tab_script.js' %}"></script>
+    <script src="{% static 'event_listener.js' %}"></script>
+
+    
     <div class="max-height-report">
         {% include 'common/report.html' %}
     </div>
