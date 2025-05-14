@@ -2,7 +2,6 @@
 {% load static %}    
 
 {% block content %}
-    <script src="{% static 'enter_instead_tab_script.js' %}"></script>
     <div class="record-container">
         <div>
             <p class="info-text">Поръчка</p>
@@ -13,7 +12,6 @@
                         <h5>По поръчка {{ record.order }}</h5>                            
                     {% endif %}
                     <hr>
-                <script src="{% static 'start_field_focus.js' %}"></script>
                 <form method="post">
                     {% csrf_token %}
                     {% for field in form %}
@@ -38,5 +36,4 @@
             {% endblock table %}
         </div>
     </div>
-    <script src="{% static 'event_listener.js' %}"></script>
 {% endblock content %}
