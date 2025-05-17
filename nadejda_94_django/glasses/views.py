@@ -1,3 +1,4 @@
+import math
 import os
 from datetime import datetime, timedelta
 import pandas as pd
@@ -71,12 +72,13 @@ class GlassCreateView(OrderCreateView):
 
                 if 'save' in request.POST:
                     order = get_order('G')
+                    print(ALL_ORDERS_TSONKA)
                     current_amount = sum(item['price'] for item in ALL_ORDERS_TSONKA)
 
                     record = Record(
                         warehouse = users_dict[request.user.username],
                         order_type = 'G',
-                        amount = current_amount,
+                        amount = math.ceil(current_amount),
                         order = order,
                         note = context['note'],
                         partner = current_partner
@@ -116,7 +118,7 @@ class GlassCreateView(OrderCreateView):
                     record = Record(
                         warehouse=users_dict[request.user.username],
                         order_type='G',
-                        amount=current_amount,
+                        amount = math.ceil(current_amount),
                         order=order,
                         note=context['note'],
                         partner=current_partner
@@ -197,6 +199,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     record_pk = self.kwargs.get('record_pk')
                     current_record = Record.objects.get(pk=record_pk)
                     all_glass_price = sum(item['price'] for item in ALL_ORDERS_TSONKA)
+                    all_glass_price = math.ceil(all_glass_price)
                     difference = -int(all_glass_price)
 
                     for order in ALL_ORDERS_TSONKA:
@@ -224,6 +227,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     record_pk = self.kwargs.get('record_pk')
                     current_record = Record.objects.get(pk=record_pk)
                     all_glass_price = sum(item['price'] for item in ALL_ORDERS_NADYA)
+                    all_glass_price = math.ceil(all_glass_price)
                     difference = -int(all_glass_price)
 
                     for order in ALL_ORDERS_NADYA:
@@ -322,6 +326,7 @@ class GlassUpdateView(TemplateView):
             difference = old_total_price['amount'] - new_total_price['amount']
 
             current_record.amount -= difference
+            current_record.amount = math.ceil(current_record.amount)
             current_record.save()
 
             partner = Partner.objects.get(pk=current_record.partner.pk)
