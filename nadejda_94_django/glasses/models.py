@@ -43,7 +43,7 @@ class Glasses(models.Model):
     unit_price = models.DecimalField(
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(5)],
+        validators=[MinValueValidator(0)],
     )
 
     created_at = models.DateTimeField(

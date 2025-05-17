@@ -9,7 +9,7 @@ class GlassChoices(models.TextChoices):
     DELTA = 'орн.', 'орн.'
     KRIZET = 'кризет', 'кризет'
     MIRROR = 'огл', 'огл'
-    MAT = 'мат', 'мат'
+    MAT = 'хим.мат', 'хим.мат'
     GREY = 'сиво', 'сиво'
     LIGHT_GREEN = 'св.зел.', 'св.зел.'
     DARK_GREEN = 'т. зел.', 'т. зел.'

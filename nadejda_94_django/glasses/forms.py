@@ -27,7 +27,7 @@ class GlassBaseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GlassBaseForm, self).__init__(*args, **kwargs)
-        self.fields['unit_price'].widget.attrs['min'] = 5
+        self.fields['unit_price'].widget.attrs['min'] = 0
         self.fields['width'].widget.attrs['min'] = 8
         self.fields['width'].widget.attrs['max'] = 3210
         self.fields['height'].widget.attrs['min'] = 8
