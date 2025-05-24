@@ -72,13 +72,13 @@ class GlassCreateView(OrderCreateView):
 
                 if 'save' in request.POST:
                     order = get_order('G')
-                    print(ALL_ORDERS_TSONKA)
                     current_amount = sum(item['price'] for item in ALL_ORDERS_TSONKA)
+                    current_amount = math.ceil(current_amount)
 
                     record = Record(
                         warehouse = users_dict[request.user.username],
                         order_type = 'G',
-                        amount = math.ceil(current_amount),
+                        amount = current_amount,
                         order = order,
                         note = context['note'],
                         partner = current_partner
@@ -114,11 +114,12 @@ class GlassCreateView(OrderCreateView):
                 if 'save' in request.POST:
                     order = get_order('G')
                     current_amount = sum(item['price'] for item in ALL_ORDERS_NADYA)
+                    current_amount = math.ceil(current_amount)
 
                     record = Record(
                         warehouse=users_dict[request.user.username],
                         order_type='G',
-                        amount = math.ceil(current_amount),
+                        amount = current_amount,
                         order=order,
                         note=context['note'],
                         partner=current_partner
@@ -323,10 +324,10 @@ class GlassUpdateView(TemplateView):
             instance.save()
 
             new_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
-            difference = old_total_price['amount'] - new_total_price['amount']
+            new_total_price = math.ceil(new_total_price['amount'])
+            difference = old_total_price['amount'] - new_total_price
 
             current_record.amount -= difference
-            current_record.amount = math.ceil(current_record.amount)
             current_record.save()
 
             partner = Partner.objects.get(pk=current_record.partner.pk)
