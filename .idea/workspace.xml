@@ -6,13 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/scripts/update_glass.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glasses/update_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/update_glass.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +194,9 @@
       <workItem from="1746786544987" duration="21625000" />
       <workItem from="1747072944928" duration="871000" />
       <workItem from="1747073851654" duration="7723000" />
-      <workItem from="1747458878871" duration="1984000" />
+      <workItem from="1747458878871" duration="4013000" />
+      <workItem from="1747800099556" duration="8000" />
+      <workItem from="1748076837981" duration="1173000" />
     </task>
     <servers />
   </component>
