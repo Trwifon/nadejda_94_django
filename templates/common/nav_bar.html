@@ -18,22 +18,23 @@
                 За производство
             </a>
         </li>
+    </ul>
+    <ul class="navbar-center">
         {% if current_path == '/' %}
             <li>
-                <form class="d-flex" method="Post">
+                <form method="Post">
                     {% csrf_token %}
-                    <span style="margin-top: 3px">
+                    <span>
                         {{ create_form }}    
                     </span>
-                    
-                    <button name="create" class="btn btn-info btn-sm mx-1" type="submit">Избери</button>
+                    <button name="create" class="buttons type="submit">Избери</button>
                 </form>
             </li>
             <li>
-                <form class="d-flex" method="Post">
+                <form method="Post">
                     {% csrf_token %}
                     {{ search_form }}
-                    <button name="search" class="btn btn-info btn-sm mx-1" type="submit">Търси</button>
+                    <button name="search" class="buttons" type="submit">Търси</button>
                 </form>
             </li>
         {% endif %}

@@ -16,10 +16,12 @@
 
             <form method="post">
                 {% csrf_token %}
-                <button name="delete" class="btn btn-danger mx-3">Изтрий</button>
-                <a href="{% url 'dashboard' %}">
-                    <div class="text-right btn btn-info my-3">Откажи</div>
-                </a>
+                <div class = "buttons-group">
+                    <button name="delete" class="buttons buttons-danger">Изтрий</button>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="buttons">Откажи</div>
+                    </a>                    
+                </div>
             </form>
         </div>
     </div>

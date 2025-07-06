@@ -8,12 +8,15 @@
         </h5>
         {% include 'glasses/glass_info.html' %}
         {% if not orders.first.sent_for_working %}
-            <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
-                <button class="btn btn-info my-3">Редактирай</button>
-            </a>
-            <a href="{% url 'record_glass_delete' record_pk %}">
-                <button class="text-right btn btn-info my-3">Изтрий</button>
-            </a>
+            <div class="buttons-group">
+                <a href="{% url 'glass_update' record_pk orders.first.pk old_total %}">
+                    <button class="buttons">Редактирай</button>
+                </a>
+                <a href="{% url 'record_glass_delete' record_pk %}">
+                    <button class="buttons">Изтрий</button>
+                </a>            
+            </div>
+
         {% else %}
             <a href="{% url 'glass_excel' orders.first.sent_for_working %}">
                 <h5>В производство: {{ orders.first.sent_for_working|date:"Y-m-d H:i:s" }}</h5>
