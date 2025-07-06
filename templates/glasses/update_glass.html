@@ -23,27 +23,27 @@
                             <br>
                         </div>
                     {% endfor %}
-                    <div class="row justify-content-center">
+                    <div class="buttons-group">
                         <div class="col-4">
                             {% if prev_order %}
                                 <a href="{% url 'glass_update' record_pk prev_order old_total %}">
-                                    <button name="Previous" class="btn btn-info">
+                                    <button name="Previous" class="buttons">
                                         Предишен
                                     </button>
                                 </a>
-                            {% endif %}
+                            {% endif %} 
                         </div>
                         <div class="col-4">
                             {% if next_order %}
                                 <a href="{% url 'glass_update' record_pk next_order old_total %}">
-                                    <button name="Next" class="btn btn-info">
+                                    <button name="Next" class="buttons">
                                         Следващ
                                     </button>
                                 </a>
                             {% endif %}
                         </div>
                     </div>
-                    <button name="save" class="btn btn-info mt-2">Запис</button>
+                    <button name="save" class="buttons">Запис</button>
                 </form>
             </div>
         </div>

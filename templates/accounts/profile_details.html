@@ -9,7 +9,6 @@
             <h4 class="text-center pt-5">Детайли за потребител</h4>
             <hr>
         </div>
-    
         <span class="info">
             First name: {{ profile.first_name }}
         </span>
@@ -19,20 +18,17 @@
         <span class="info">
             Email: {{ profile.email }}
         </span>
-        
-        <article class="buttons">
+        <article class="warning">
             {% if request.user == profile %}
                 <a href="{% url 'profile_update' request.user.pk %}">
-                    <button class="btn btn-info btn-spacing">Редактирай</button>
+                    <button class="buttons">Редактирай</button>
                 </a>
             {% endif %}    
             {% if request.user == profile %}
                 <a href="{% url 'profile_delete' request.user.pk %}">
-                    <button class="btn btn-info">Изтрий</button>
+                    <button class="buttons">Изтрий</button>
                 </a>
             {% endif %}
         </article>
-
     </section>
-
 {% endblock %}

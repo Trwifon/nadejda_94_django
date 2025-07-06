@@ -8,7 +8,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 {% if orders %}
-                    <button class="btn btn-info" type="submit" name="glass_submit">За цеха</button>
+                    <button class="buttons" type="submit" name="glass_submit">За цеха</button>
                 {% endif %}
             </form>
         </div>
@@ -79,13 +79,13 @@
                 {% csrf_token %}
                 {{ production_form.as_p }}
                 {% if production_orders %}
-                    <button class="btn btn-info" type="submit" name="production_submit">Отказ</button>
+                    <button class="buttons" type="submit" name="production_submit">Отказ</button>
                 {% endif %}
             </form>
             <form method="post">
                 {% csrf_token %}
                 {% if production_orders %}
-                    <button class="btn btn-info mt-2" type="submit" name="ok">OK</button>
+                    <button class="buttons" type="submit" name="ok">OK</button>
                 {% endif %}
             </form>
         </div>

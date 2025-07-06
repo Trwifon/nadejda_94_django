@@ -34,7 +34,7 @@
             <td>
                 {% if record.order %}
                     {% if record.order|startswith:"C" %}
-                        {% if record.amount != 0 %}
+                        {% if record.amount != 0 or record.partner.name == 'Клиент' %}
                             <a href='{% url 'glass_details' record.id %}'>
                                 {{record.order}}
                             </a>
