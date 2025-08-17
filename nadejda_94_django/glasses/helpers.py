@@ -8,7 +8,7 @@ CORRECTION = 1.5
 
 def calculate_area(width, height, number):
 
-    area = width * height / 1000000
+    area = round(width * height / 1000000, 2)
 
     if area < MIN_AREA:
         area = MIN_AREA
@@ -17,7 +17,7 @@ def calculate_area(width, height, number):
 
     area *= number
 
-    return round(area, 2)
+    return area
 
 
 def calculate_price(area, unit_price, supplement):
@@ -40,6 +40,7 @@ def calculate_glass_data(ALL_ORDERS):
 
         glass_data['total_number'] += order['number']
         glass_data['total_area'] += area
+
         glass_data['total_price'] += order['price']
 
     return glass_data
@@ -67,16 +68,8 @@ def get_glass_kind(order):
 
 
 def get_additional_fields(glass, price_with_accumulation):
-    simple_area = glass.width * glass.height / 1000000
-    simple_area = MIN_AREA if simple_area < MIN_AREA else simple_area
-
-    price_per_unit = simple_area * float(glass.unit_price)
-
-    price_per_unit_after_corection = price_per_unit \
-        if simple_area <= MAX_AREA \
-        else price_per_unit * CORRECTION
-
-    price_for_all_units = price_per_unit_after_corection * glass.number
+    simple_area = calculate_area(glass.width, glass.height, glass.number)
+    price_for_all_units = simple_area * float(glass.unit_price)
 
     total_price_for_glass = price_for_all_units + glass.supplement
 
@@ -86,8 +79,6 @@ def get_additional_fields(glass, price_with_accumulation):
         glass.id,
         glass.unit_price,
         simple_area,
-        price_per_unit,
-        price_per_unit_after_corection,
         price_for_all_units,
         glass.supplement,
         total_price_for_glass,
