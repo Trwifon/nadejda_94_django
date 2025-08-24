@@ -42,6 +42,11 @@ class GlassChoices(models.TextChoices):
     FOUR_FOUR_ONE_MAT = '441_мат', '441_мат'
     FOUR_FOUR_ONE_GREY = '441_сиво', '441_сиво'
     FOUR_FOUR_ONE_BRONZE = '44_бронзе', '44_бронзе'
+    REINFORCED = 'армирано', 'армирано'
+    MIRROR_BRONZE = 'огл_бронзе', 'огл_бронзе'
+    ARGON = 'аргон', 'аргон'
+    KANT = 'кант', 'кант'
+    EMPTY = '.....', '.....'
 
 
 class ThicknessChoices(models.IntegerChoices):
@@ -66,11 +71,12 @@ class ThicknessChoices(models.IntegerChoices):
     THIRTY_FOUR = 34, '34'
     THIRTY_SIX = 36, '36'
     THIRTY_EIGHT = 38, '38'
-    FORTY = '40', '40'
+    FORTY = 40, '40'
     FORTY_TWO = 42, '42'
     FORTY_FOUR = 44, '44'
-
-
+    FORTY_SIX = 46, '46'
+    FORTY_EIGHT= 48, '48'
+    FIFTY = 50, '50'
 
 
 

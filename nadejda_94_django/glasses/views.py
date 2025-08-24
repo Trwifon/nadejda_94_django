@@ -1,6 +1,6 @@
-import math
 import os
 from datetime import datetime, timedelta
+
 import pandas as pd
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
@@ -32,8 +32,6 @@ class GlassCreateView(OrderCreateView):
 
     def get_context_data(self, **kwargs):
         form = GlassCreateForm(self.request.POST)
-
-
         note = self.kwargs.get('note')
         current_pk = self.kwargs.get('partner_pk')
         current_partner = Partner.objects.get(pk=current_pk)
@@ -63,7 +61,6 @@ class GlassCreateView(OrderCreateView):
 
             if request.user.username == 'Tsonka':
                 if 'order' in request.POST:
-
                     ALL_ORDERS_TSONKA.append(current_order)
                     context['orders'] = ALL_ORDERS_TSONKA
                     context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
@@ -73,7 +70,8 @@ class GlassCreateView(OrderCreateView):
                 if 'save' in request.POST:
                     order = get_order('G')
                     current_amount = sum(item['price'] for item in ALL_ORDERS_TSONKA)
-                    current_amount = math.ceil(current_amount)
+
+                    current_amount = int(round(current_amount, 0))
 
                     record = Record(
                         warehouse = users_dict[request.user.username],
@@ -114,7 +112,7 @@ class GlassCreateView(OrderCreateView):
                 if 'save' in request.POST:
                     order = get_order('G')
                     current_amount = sum(item['price'] for item in ALL_ORDERS_NADYA)
-                    current_amount = math.ceil(current_amount)
+                    current_amount = int(round(current_amount, 0))
 
                     record = Record(
                         warehouse=users_dict[request.user.username],
@@ -199,9 +197,10 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                 if 'save' in request.POST:
                     record_pk = self.kwargs.get('record_pk')
                     current_record = Record.objects.get(pk=record_pk)
-                    all_glass_price = sum(item['price'] for item in ALL_ORDERS_TSONKA)
-                    all_glass_price = math.ceil(all_glass_price)
-                    difference = -int(all_glass_price)
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
+                    all_glass_price = context['glass_data']['total_price']
+
+                    difference = int(round(all_glass_price, 0))
 
                     for order in ALL_ORDERS_TSONKA:
                         order['record'] = current_record
@@ -216,6 +215,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     ALL_ORDERS_TSONKA.clear()
 
                     return redirect('dashboard')
+
             if request.user.username == 'Nadya':
                 if 'order' in request.POST:
                     ALL_ORDERS_NADYA.append(current_order)
@@ -227,9 +227,11 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                 if 'save' in request.POST:
                     record_pk = self.kwargs.get('record_pk')
                     current_record = Record.objects.get(pk=record_pk)
-                    all_glass_price = sum(item['price'] for item in ALL_ORDERS_NADYA)
-                    all_glass_price = math.ceil(all_glass_price)
-                    difference = -int(all_glass_price)
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS_NADYA)
+                    all_glass_price = context['glass_data']['total_price']
+
+                    difference = int(round(all_glass_price, 0))
+
 
                     for order in ALL_ORDERS_NADYA:
                         order['record'] = current_record
@@ -238,7 +240,9 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     Glasses.objects.bulk_create(order_instances)
                     ALL_ORDERS_NADYA.clear()
 
-                    return redirect('record_price_increase', record_pk=current_record.pk, diff=difference,
+                    return redirect('record_price_increase',
+                                    record_pk=current_record.pk,
+                                    diff=difference,
                                     to_update=True)
 
                 if 'cancel' in request.POST:
@@ -263,8 +267,8 @@ class GlassListView(ListView):
         glass_data = calculate_glass_data(ALL_ORDERS)
         context['glass_data'] = glass_data
 
-        old_total_price = Record.objects.get(pk=record_pk).amount
-        context['old_total'] = int(old_total_price)
+        old_total_price = context['glass_data']['total_price']
+        context['old_total'] = int(round(old_total_price, 0))
 
         return context
 
@@ -275,7 +279,7 @@ class GlassUpdateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = Glasses.objects.filter(record=self.kwargs.get('record_pk')).order_by('pk')
+        orders = Glasses.objects.filter(record=context['record_pk']).order_by('pk')
 
         partner = orders.first().record.partner
         context['partner'] = partner
@@ -307,11 +311,14 @@ class GlassUpdateView(TemplateView):
     def post(self, request, record_pk, pk, **kwargs):
         order = get_object_or_404(Glasses, pk=pk)
         form = GlassUpdateForm(request.POST, instance=order)
-        price_before_edit = kwargs.get('old_total')
+        old_total_price = kwargs.get('old_total')
+
 
         if form.is_valid():
             current_record = Record.objects.get(pk=record_pk)
-            old_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
+            price_before_edit = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
+            price_before_edit = int(round(price_before_edit['amount'], 0))
+
 
             instance = form.save(commit=False)
             area = calculate_area(instance.width, instance.height, instance.number)
@@ -323,30 +330,32 @@ class GlassUpdateView(TemplateView):
             )
             instance.save()
 
-            new_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
-            new_total_price = math.ceil(new_total_price['amount'])
-            difference = old_total_price['amount'] - new_total_price
+            price_after_edit = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
+            price_after_edit = int(round(price_after_edit['amount'], 0))
+            difference = price_after_edit - price_before_edit
+            total_difference = price_after_edit - old_total_price
 
-            current_record.amount -= difference
+            print(price_after_edit, price_before_edit, old_total_price, total_difference)
+
+            current_record.amount += difference
             current_record.save()
 
             partner = Partner.objects.get(pk=current_record.partner.pk)
-            partner.balance += difference
+            partner.balance -= difference
             partner.save()
 
             if 'Next' in request.POST:
-                return redirect('glass_update', record_pk=record_pk, pk=pk+1, old_total=price_before_edit)
+                return redirect('glass_update', record_pk=record_pk, pk=pk+1, old_total=old_total_price)
 
             if 'Previous' in request.POST:
-                return redirect('glass_update', record_pk=record_pk, pk=pk-1, old_total=price_before_edit)
+                return redirect('glass_update', record_pk=record_pk, pk=pk-1, old_total=old_total_price)
 
             if current_record.order.startswith('C'):
                 return redirect('dashboard')
 
             else:
-                total_difference = int(price_before_edit - current_record.amount)
-
                 if total_difference != 0:
+                    print(f"update_diff: {difference}")
                     return redirect( 'record_price_increase', record_pk=record_pk, diff=total_difference, to_update=False)
 
                 return redirect('dashboard')
@@ -367,29 +376,35 @@ class RecordPriceIncreaseView(TemplateView):
         current_record = Record.objects.get(pk=kwargs['record_pk'])
         to_update = kwargs.get('to_update')
         difference = int(kwargs.get('diff'))
+        print(f"diff: {difference}")
 
         if to_update == 'True':
+
             if 'ok' in request.POST:
+
+                current_record.amount += difference
+                current_record.save()
+                print(f"amount: {current_record.amount}")
+
+                current_record.partner.balance -= difference
+                current_record.partner.save()
+
+            glass_pk = Glasses.objects.filter(record_id=current_record.pk).first().pk
+            old_total_price = Glasses.objects.filter(record=current_record).aggregate(amount=Sum('price'))
+            old_total_price = int(round(old_total_price['amount'], 0))
+
+            return redirect('glass_update', record_pk=current_record.pk, pk=glass_pk, old_total=int(old_total_price))
+
+        else:
+            if 'cancel' in request.POST:
                 current_record.amount -= difference
                 current_record.save()
 
                 current_record.partner.balance += difference
                 current_record.partner.save()
 
-            glass_pk = Glasses.objects.filter(record_id=current_record.pk).first().pk
-            old_total_price = current_record.amount
-
-            return redirect('glass_update', record_pk=current_record.pk, pk=glass_pk, old_total=int(old_total_price))
-
-        else:
-            if 'cancel' in request.POST:
-                current_record.amount += difference
-                current_record.save()
-
-                current_record.partner.balance -= difference
-                current_record.partner.save()
-
         return redirect('dashboard')
+
 
 
 class GlassDeleteView(DeleteView):

@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/helpers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/glass_table_excel_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/glass_table_excel_view.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,8 +143,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.views" />
       <item itemvalue="Django Server.nadejda_94_django" />
+      <item itemvalue="Python.views" />
     </list>
     <recent_temporary>
       <list>
@@ -200,6 +204,15 @@
       <workItem from="1751710753241" duration="13116000" />
       <workItem from="1751777599491" duration="578000" />
       <workItem from="1751778195978" duration="16000" />
+      <workItem from="1751807725401" duration="655000" />
+      <workItem from="1751911187214" duration="762000" />
+      <workItem from="1752209371433" duration="659000" />
+      <workItem from="1753889039913" duration="3000" />
+      <workItem from="1754576729555" duration="535000" />
+      <workItem from="1754923617277" duration="5566000" />
+      <workItem from="1755097940243" duration="5720000" />
+      <workItem from="1755150723893" duration="1394000" />
+      <workItem from="1755181151046" duration="41150000" />
     </task>
     <servers />
   </component>
