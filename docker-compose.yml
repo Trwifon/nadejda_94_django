@@ -1,0 +1,30 @@
+services:
+  pg:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: Proba123+
+    volumes:
+      - nadejda_db:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - nadejda_net
+  python:
+    image: django_app
+    build: .
+    depends_on:
+      - pg
+    ports:
+      - "8000:8000"
+    networks:
+      - nadejda_net
+networks:
+  nadejda_net:
+    external: true
+    name: nadejda_net
+    driver: bridge
+volumes:
+  nadejda_db:
+    external: true
+    name: nadejda_db
+
