@@ -168,6 +168,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
         record_pk = self.kwargs.get('record_pk')
         record = Record.objects.get(pk=record_pk)
         partner = record.partner
+        print(record.order)
 
         context = {
             'form': form,
@@ -193,6 +194,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
 
                     return render(request, 'glasses/create_glass.html', context)
+
 
                 if 'save' in request.POST:
                     record_pk = self.kwargs.get('record_pk')

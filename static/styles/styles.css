@@ -15,8 +15,13 @@ body {
     }
 }
 
-.buttons-danger {
+.buttons--danger {
     background-color: red;
+}
+
+.buttons--excel {
+    background-color: orange;
+    margin: 0.5em 0em;
 }
 
 .buttons-group {

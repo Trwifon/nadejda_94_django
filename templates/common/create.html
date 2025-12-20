@@ -28,6 +28,10 @@
                     {% endblock %}
                 
                     <button name="save" class="buttons">Запис</button>
+                    {% if "P" in record.order %}
+                        <button name="import" class="buttons buttons--excel">Вземи от Excel</button>
+                    {% endif %}
+
                 </form>
             </div>
         </div>

@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dump_db.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/update_db.bat" afterDir="false" />
+    <list default="true" id="12c750f7-e1a6-43c1-b269-d62bf47bb733" name="Changes" comment="Added dump and restore bat files">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/nadejda_94_django.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/nadejda_94_django/glasses/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/styles/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/common/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/glasses/create_glass.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glasses/create_glass.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +42,11 @@
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -170,6 +180,14 @@
       <workItem from="1755150723893" duration="1394000" />
       <workItem from="1755181151046" duration="41150000" />
     </task>
+    <task id="LOCAL-00001" summary="Added dump and restore bat files">
+      <created>1766253004700</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1766253004700</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +204,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added dump and restore bat files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added dump and restore bat files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
