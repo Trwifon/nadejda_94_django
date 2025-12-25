@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
-
 import pandas as pd
+import openpyxl
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponseNotFound, FileResponse
@@ -152,6 +152,7 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
     ALL_ORDERS_TRIFON = []
     ALL_ORDERS_TSONKA = []
     ALL_ORDERS_NADYA = []
+    ALL_ORDERS = []
 
     def get(self, request, *args, **kwargs):
         record_pk = self.kwargs.get('record_pk')
@@ -168,7 +169,6 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
         record_pk = self.kwargs.get('record_pk')
         record = Record.objects.get(pk=record_pk)
         partner = record.partner
-        print(record.order)
 
         context = {
             'form': form,
@@ -183,6 +183,55 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
         form = GlassCreateForm(request.POST)
         context = self.get_context_data()
 
+        if 'import' in request.POST:
+            ALL_ORDERS = []
+            # dlg = win32ui.CreateFileDialog(1, None, None, 0, "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls|All Files (*.*)|*.*||")
+            # dlg.DoModal()
+            # file_path = dlg.GetPathName()
+            file = 'd:/test.xlsx'
+
+            wrkbk = openpyxl.load_workbook(file)
+            sh = wrkbk.active
+
+            for row in sh.iter_rows(min_row=6, min_col=1, max_row=11, max_col=11):
+                row_list = [cell.value for cell in row]
+
+                print(row_list)
+
+                kind = row_list[0].split(' ')
+                tickness = kind[0]
+
+                glasses_list = kind[1].split('/')
+                first_glass = glasses_list[0]
+                second_glass = glasses_list[1] if len(glasses_list) > 1 else None
+                third_glass = glasses_list[2] if len(glasses_list) > 2 else None
+
+                unit_price = row_list[10]
+                width = row_list[2]
+                heigth = row_list[3]
+                number = row_list[6]
+
+                order = row_list[5].split('_')[0]
+                module = row_list[5].split('_')[1]
+
+                current_order = {
+                    'first_glass': first_glass,
+                    'second_glass': second_glass,
+                    'third_glass': third_glass,
+                    'thickness': tickness,
+                    'unit_price': float(unit_price),
+                    'width': width,
+                    'height': heigth,
+                    'number': number,
+                    'supplement': 0,
+                }
+
+                ALL_ORDERS.append(current_order)
+                context['orders'] = ALL_ORDERS
+                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+
+            return render(request, 'glasses/create_glass.html', context)
+
         if form.is_valid():
             current_order = form.cleaned_data
             current_order['supplement'] = 0
@@ -194,7 +243,6 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     context['glass_data'] = calculate_glass_data(ALL_ORDERS_TSONKA)
 
                     return render(request, 'glasses/create_glass.html', context)
-
 
                 if 'save' in request.POST:
                     record_pk = self.kwargs.get('record_pk')
@@ -362,6 +410,7 @@ class GlassUpdateView(TemplateView):
 
                 return redirect('dashboard')
 
+
 class RecordPriceIncreaseView(TemplateView):
     template_name = 'glasses/record_price_increase.html'
     permission_required = 'glasses.add_glasses'
@@ -406,7 +455,6 @@ class RecordPriceIncreaseView(TemplateView):
                 current_record.partner.save()
 
         return redirect('dashboard')
-
 
 
 class GlassDeleteView(DeleteView):

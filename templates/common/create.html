@@ -28,10 +28,13 @@
                     {% endblock %}
                 
                     <button name="save" class="buttons">Запис</button>
+
+                </form>
+                <form method="post">
+                    {% csrf_token %}
                     {% if "P" in record.order %}
                         <button name="import" class="buttons buttons--excel">Вземи от Excel</button>
                     {% endif %}
-
                 </form>
             </div>
         </div>
