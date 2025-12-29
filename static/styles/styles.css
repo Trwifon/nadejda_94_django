@@ -8,6 +8,7 @@ body {
     border-radius: 2em;
     color: #fff;
     padding: 0.3em 1em;
+    margin: 0.5em 0em;
 
     &:hover {
         background-color: dodgerblue;
@@ -15,8 +16,12 @@ body {
     }
 }
 
-.buttons-danger {
+.buttons--danger {
     background-color: red;
+}
+
+.buttons--excel {
+    background-color: #FF7F50;
 }
 
 .buttons-group {

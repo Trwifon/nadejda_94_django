@@ -28,6 +28,13 @@
                     {% endblock %}
                 
                     <button name="save" class="buttons">Запис</button>
+
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if 'P' in record.order or 'A' in record.order%}
+                        <button name="import" class="buttons buttons--excel">SkyGlazing Excel</button>
+                    {% endif %}
                 </form>
             </div>
         </div>
