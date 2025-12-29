@@ -32,8 +32,8 @@
                 </form>
                 <form method="post">
                     {% csrf_token %}
-                    {% if "P" in record.order %}
-                        <button name="import" class="buttons buttons--excel">Вземи от Excel</button>
+                    {% if 'P' in record.order or 'A' in record.order%}
+                        <button name="import" class="buttons buttons--excel">SkyGlazing Excel</button>
                     {% endif %}
                 </form>
             </div>

@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta
 import pandas as pd
 import openpyxl
+import win32ui
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponseNotFound, FileResponse
@@ -19,8 +20,6 @@ from nadejda_94_django.records.views import OrderCreateView
 ALL_ORDERS_TRIFON = []
 ALL_ORDERS_TSONKA = []
 ALL_ORDERS_NADYA = []
-ALL_ORDERS = []
-
 
 class GlassCreateView(OrderCreateView):
     model = Glasses
@@ -29,6 +28,7 @@ class GlassCreateView(OrderCreateView):
     ALL_ORDERS_TRIFON = []
     ALL_ORDERS_TSONKA = []
     ALL_ORDERS_NADYA = []
+    ALL_ORDERS = []
 
     def get_context_data(self, **kwargs):
         form = GlassCreateForm(self.request.POST)
@@ -152,7 +152,6 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
     ALL_ORDERS_TRIFON = []
     ALL_ORDERS_TSONKA = []
     ALL_ORDERS_NADYA = []
-    ALL_ORDERS = []
 
     def get(self, request, *args, **kwargs):
         record_pk = self.kwargs.get('record_pk')
@@ -185,52 +184,76 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
 
         if 'import' in request.POST:
             ALL_ORDERS = []
-            # dlg = win32ui.CreateFileDialog(1, None, None, 0, "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls|All Files (*.*)|*.*||")
-            # dlg.DoModal()
-            # file_path = dlg.GetPathName()
-            file = 'd:/test.xlsx'
 
-            wrkbk = openpyxl.load_workbook(file)
-            sh = wrkbk.active
+            dlg = win32ui.CreateFileDialog(
+                1,
+                None,
+                None,
+                0,
+                "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls||"
+            )
 
-            for row in sh.iter_rows(min_row=6, min_col=1, max_row=11, max_col=11):
+            dlg.DoModal()
+
+            file_path = dlg.GetPathName()
+            work_book = openpyxl.load_workbook(file_path)
+            sheet = work_book.active
+
+            for row in sheet.iter_rows(min_row=6, min_col=1, max_row=306, max_col=11):
                 row_list = [cell.value for cell in row]
+                if row_list[0] is not None:
+                    kind = row_list[0].split(' ')
+                    thickness = kind[0]
 
-                print(row_list)
+                    glasses_list = kind[1].split('/')
+                    first_glass = glasses_list[0]
+                    second_glass = glasses_list[1] if len(glasses_list) > 1 else None
+                    third_glass = glasses_list[2] if len(glasses_list) > 2 else None
 
-                kind = row_list[0].split(' ')
-                tickness = kind[0]
+                    unit_price = row_list[10]
+                    width = row_list[2]
+                    heigth = row_list[3]
+                    number = row_list[6]
+                    module = row_list[5].split('_')[1]
 
-                glasses_list = kind[1].split('/')
-                first_glass = glasses_list[0]
-                second_glass = glasses_list[1] if len(glasses_list) > 1 else None
-                third_glass = glasses_list[2] if len(glasses_list) > 2 else None
+                    current_order = {
+                        'first_glass': first_glass,
+                        'second_glass': second_glass,
+                        'third_glass': third_glass,
+                        'thickness': thickness,
+                        'unit_price': float(unit_price),
+                        'width': width,
+                        'height': heigth,
+                        'number': number,
+                        'supplement': 0,
+                        'module': module,
+                    }
 
-                unit_price = row_list[10]
-                width = row_list[2]
-                heigth = row_list[3]
-                number = row_list[6]
+                    ALL_ORDERS.append(current_order)
+                    context['orders'] = ALL_ORDERS
+                    context['glass_data'] = calculate_glass_data(ALL_ORDERS)
 
-                order = row_list[5].split('_')[0]
-                module = row_list[5].split('_')[1]
+            record_pk = self.kwargs.get('record_pk')
+            current_record = Record.objects.get(pk=record_pk)
+            context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+            all_glass_price = context['glass_data']['total_price']
 
-                current_order = {
-                    'first_glass': first_glass,
-                    'second_glass': second_glass,
-                    'third_glass': third_glass,
-                    'thickness': tickness,
-                    'unit_price': float(unit_price),
-                    'width': width,
-                    'height': heigth,
-                    'number': number,
-                    'supplement': 0,
-                }
+            difference = int(round(all_glass_price, 0))
 
-                ALL_ORDERS.append(current_order)
-                context['orders'] = ALL_ORDERS
-                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+            for order in ALL_ORDERS:
+                order['record'] = current_record
 
-            return render(request, 'glasses/create_glass.html', context)
+            order_instances = [Glasses(**order) for order in ALL_ORDERS]
+            Glasses.objects.bulk_create(order_instances)
+            ALL_ORDERS.clear()
+
+            return redirect(
+                'record_price_increase',
+                record_pk=current_record.pk,
+                diff=difference,
+                to_update=True
+            )
+
 
         if form.is_valid():
             current_order = form.cleaned_data
@@ -259,7 +282,12 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     Glasses.objects.bulk_create(order_instances)
                     ALL_ORDERS_TSONKA.clear()
 
-                    return redirect('record_price_increase', record_pk=current_record.pk, diff=difference, to_update=True)
+                    return redirect(
+                        'record_price_increase',
+                        record_pk=current_record.pk,
+                        diff=difference,
+                        to_update=True
+                    )
 
                 if 'cancel' in request.POST:
                     ALL_ORDERS_TSONKA.clear()
@@ -385,8 +413,6 @@ class GlassUpdateView(TemplateView):
             difference = price_after_edit - price_before_edit
             total_difference = price_after_edit - old_total_price
 
-            print(price_after_edit, price_before_edit, old_total_price, total_difference)
-
             current_record.amount += difference
             current_record.save()
 
@@ -405,7 +431,6 @@ class GlassUpdateView(TemplateView):
 
             else:
                 if total_difference != 0:
-                    print(f"update_diff: {difference}")
                     return redirect( 'record_price_increase', record_pk=record_pk, diff=total_difference, to_update=False)
 
                 return redirect('dashboard')
@@ -427,7 +452,6 @@ class RecordPriceIncreaseView(TemplateView):
         current_record = Record.objects.get(pk=kwargs['record_pk'])
         to_update = kwargs.get('to_update')
         difference = int(kwargs.get('diff'))
-        print(f"diff: {difference}")
 
         if to_update == 'True':
 
@@ -435,7 +459,6 @@ class RecordPriceIncreaseView(TemplateView):
 
                 current_record.amount += difference
                 current_record.save()
-                print(f"amount: {current_record.amount}")
 
                 current_record.partner.balance -= difference
                 current_record.partner.save()
