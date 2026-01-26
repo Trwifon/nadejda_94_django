@@ -2,14 +2,14 @@ import os
 from datetime import datetime, timedelta
 import pandas as pd
 import openpyxl
-import win32ui
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponseNotFound, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView, FormView, CreateView
-from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm
+from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, GlassProductionForm, PGlassCreateForm, \
+    ExcelUploadForm
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data, \
     format_excel, excel_glass_view
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
@@ -183,77 +183,14 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
         context = self.get_context_data()
 
         if 'import' in request.POST:
-            ALL_ORDERS = []
-
-            dlg = win32ui.CreateFileDialog(
-                1,
-                None,
-                None,
-                0,
-                "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls||"
-            )
-
-            dlg.DoModal()
-
-            file_path = dlg.GetPathName()
-            work_book = openpyxl.load_workbook(file_path)
-            sheet = work_book.active
-
-            for row in sheet.iter_rows(min_row=6, min_col=1, max_row=306, max_col=11):
-                row_list = [cell.value for cell in row]
-                if row_list[0] is not None:
-                    kind = row_list[0].split(' ')
-                    thickness = kind[0]
-
-                    glasses_list = kind[1].split('/')
-                    first_glass = glasses_list[0]
-                    second_glass = glasses_list[1] if len(glasses_list) > 1 else None
-                    third_glass = glasses_list[2] if len(glasses_list) > 2 else None
-
-                    unit_price = row_list[10]
-                    width = row_list[2]
-                    heigth = row_list[3]
-                    number = row_list[6]
-                    module = row_list[5].split('_')[1]
-
-                    current_order = {
-                        'first_glass': first_glass,
-                        'second_glass': second_glass,
-                        'third_glass': third_glass,
-                        'thickness': thickness,
-                        'unit_price': float(unit_price),
-                        'width': width,
-                        'height': heigth,
-                        'number': number,
-                        'supplement': 0,
-                        'module': module,
-                    }
-
-                    ALL_ORDERS.append(current_order)
-                    context['orders'] = ALL_ORDERS
-                    context['glass_data'] = calculate_glass_data(ALL_ORDERS)
-
             record_pk = self.kwargs.get('record_pk')
             current_record = Record.objects.get(pk=record_pk)
-            context['glass_data'] = calculate_glass_data(ALL_ORDERS)
-            all_glass_price = context['glass_data']['total_price']
-
-            difference = int(round(all_glass_price, 0))
-
-            for order in ALL_ORDERS:
-                order['record'] = current_record
-
-            order_instances = [Glasses(**order) for order in ALL_ORDERS]
-            Glasses.objects.bulk_create(order_instances)
-            ALL_ORDERS.clear()
 
             return redirect(
-                'record_price_increase',
+                'p_glass_import',
                 record_pk=current_record.pk,
-                diff=difference,
-                to_update=True
+                note = current_record.note
             )
-
 
         if form.is_valid():
             current_order = form.cleaned_data
@@ -310,7 +247,6 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
 
                     difference = int(round(all_glass_price, 0))
 
-
                     for order in ALL_ORDERS_NADYA:
                         order['record'] = current_record
 
@@ -327,6 +263,76 @@ class PGlassCreateView(PermissionRequiredMixin, CreateView):
                     ALL_ORDERS_NADYA.clear()
 
                     return redirect('dashboard')
+
+
+class ImportGlassView(TemplateView, FormView):
+    template_name = 'glasses/import_glass.html'
+    form_class = ExcelUploadForm
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+
+        ALL_ORDERS = []
+
+        excel_file = form.cleaned_data['excel_file']
+
+        workbook = openpyxl.load_workbook(excel_file, data_only=True)
+        sheet = workbook.active
+
+        for row in sheet.iter_rows(min_row=6, min_col=1, max_row=306, max_col=11):
+            row_list = [cell.value for cell in row]
+            if row_list[0] is not None:
+                kind = row_list[0].split(' ')
+                thickness = kind[0]
+
+                glasses_list = kind[1].split('/')
+                first_glass = glasses_list[0]
+                second_glass = glasses_list[1] if len(glasses_list) > 1 else None
+                third_glass = glasses_list[2] if len(glasses_list) > 2 else None
+
+                unit_price = row_list[10]
+                width = row_list[2]
+                height = row_list[3]
+                number = row_list[6]
+                module = row_list[5].split('_')[1]
+
+                current_order = {
+                    'first_glass': first_glass,
+                    'second_glass': second_glass,
+                    'third_glass': third_glass,
+                    'thickness': thickness,
+                    'unit_price': float(unit_price),
+                    'width': width,
+                    'height': height,
+                    'number': number,
+                    'supplement': 0,
+                    'module': module,
+                }
+
+                ALL_ORDERS.append(current_order)
+                context['orders'] = ALL_ORDERS
+                context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+
+        record_pk = self.kwargs.get('record_pk')
+        current_record = Record.objects.get(pk=record_pk)
+        context['glass_data'] = calculate_glass_data(ALL_ORDERS)
+        all_glass_price = context['glass_data']['total_price']
+
+        difference = int(round(all_glass_price, 0))
+
+        for order in ALL_ORDERS:
+            order['record'] = current_record
+
+        order_instances = [Glasses(**order) for order in ALL_ORDERS]
+        Glasses.objects.bulk_create(order_instances)
+        ALL_ORDERS.clear()
+
+        return redirect(
+            'record_price_increase',
+            record_pk=current_record.pk,
+            diff=difference,
+            to_update=True
+        )
 
 
 class GlassListView(ListView):

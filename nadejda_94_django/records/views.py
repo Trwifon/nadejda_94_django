@@ -196,7 +196,7 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                     return render(request, 'records/firm_report.html', context)
 
                 name_report = (f"Отчет за фирма {current_partner}"
-                               f" с баланс: {balance if balance is not None else 0} лв")
+                               f" с баланс: {balance if balance is not None else 0} €")
 
                 context['report'] = create_firm_report(current_partner)[:MAX_ROWS]
 
@@ -211,7 +211,7 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
 
                 turnover = day_report.filter(order_type='C').aggregate(total=Sum('amount'))
                 name_report = (f"Отчет за {current_date} с дневен касов оборот "
-                               f"{turnover['total'] if turnover['total'] is not None else 0} лв")
+                               f"{turnover['total'] if turnover['total'] is not None else 0} €")
 
                 context['report'] = day_report
 
@@ -227,7 +227,7 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
 
                 turnover = month_report.filter(order_type='C').aggregate(total=Sum('amount'))
                 name_report = (f"Отчет за месец {current_date.month} с касов оборот "
-                               f"{turnover['total'] if turnover['total'] is not None else 0} лв")
+                               f"{turnover['total'] if turnover['total'] is not None else 0} €")
                 context['report'] = month_report
 
             context['name_report'] = name_report

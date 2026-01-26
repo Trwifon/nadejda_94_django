@@ -77,3 +77,8 @@ class GlassProductionForm(forms.Form):
 
 class RecordsPriceIncrease(forms.Form):
     pass
+
+
+class ExcelUploadForm(forms.Form):
+    excel_file = forms.FileField()
+

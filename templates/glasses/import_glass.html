@@ -1,0 +1,20 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post" class="form-group" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h5>
+            Импорт на файл с размери
+        </h5>
+        <hr>
+        <input type="file" name="excel_file" accept=".xls,.xlsx" required>
+        <br><br>
+        <button type="submit" class="buttons">Избери</button>
+    </form>
+{% endblock content %}
+
+
+
+
+
