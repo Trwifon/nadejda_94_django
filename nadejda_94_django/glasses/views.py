@@ -21,6 +21,7 @@ ALL_ORDERS_TRIFON = []
 ALL_ORDERS_TSONKA = []
 ALL_ORDERS_NADYA = []
 
+
 class GlassCreateView(OrderCreateView):
     model = Glasses
     template_name = 'glasses/create_glass.html'
@@ -503,6 +504,7 @@ class GlassProductionView(PermissionRequiredMixin, FormView):
 
         orders = (Glasses.objects
                   .filter(prepared_for_working=False)
+                  .filter(sent_for_working=None)
                   .filter(number__gt=0)
                   .order_by('record__order', 'pk'))
 

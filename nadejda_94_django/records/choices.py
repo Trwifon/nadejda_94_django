@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import TextChoices
 
 
-users_dict = {'Trifon': 'M', 'Tsonka': 'O', 'Elena': 'A', 'Diana': 'P', 'Nadya': 'G'}
+users_dict = {'Trifon': 'M', 'Tsonka': 'O', 'Elena': 'A', 'Diana': 'P', 'Nadya': 'G', 'Anton': 'B'}
 
 
 class WarehouseChoices(models.TextChoices):
@@ -11,6 +11,7 @@ class WarehouseChoices(models.TextChoices):
     Diana = 'P', 'PVC'
     Tsonka = 'O', 'Поръчки'
     Trifon = 'M', 'Управител'
+    Anton = 'B', 'Съдружник'
 
 
 class OrderTypeChoices(TextChoices):
