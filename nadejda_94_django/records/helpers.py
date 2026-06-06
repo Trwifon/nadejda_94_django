@@ -70,10 +70,17 @@ def errors_test():
     for partner in partners:
         if partner.id not in (1, 2):
             firm_report = create_firm_report(partner)
+
             if firm_report:
                 record_balance = firm_report.first().balance
-                if partner.balance != record_balance:
-                   test_result.append(f"Грешка в баланса на {partner.name}")
+                difference = partner.balance - record_balance
+
+                if difference != 0 and -1 <= difference <= 1:
+                    partner.balance = record_balance
+                    partner.save()
+                    test_result.append(f"Корекция в баланса на {partner.name}")
+                elif difference > 1 or difference < -1:
+                    test_result.append(f"Грешка в баланса на {partner.name}: {difference} лв.")
 
     if not test_result:
         test_result.append('Няма грешки')
