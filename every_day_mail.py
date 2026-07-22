@@ -1,7 +1,6 @@
 import os
 import smtplib
 import schedule
-import time
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -21,15 +20,25 @@ def send_email():
 
     msg.attach(MIMEText(body, 'plain'))
 
-    filename = "dump_records.sql"  # Specify your file path
-    attachment = open("d:\postgre_dump\dump_records.sql", "rb")
+    files = [
+        r"d:\postgre_dump\dump_records.sql",
+        r"d:\postgre_dump\dump_salary.sql"
+    ]
 
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', f"attachment; filename= {filename}")
+    for file_path in files:
+        filename = os.path.basename(file_path)
 
-    msg.attach(part)
+        with open(file_path, "rb") as attachment:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(attachment.read())
+
+        encoders.encode_base64(part)
+        part.add_header(
+            'Content-Disposition',
+            f'attachment; filename="{filename}"'
+        )
+
+        msg.attach(part)
 
     server = smtplib.SMTP_SSL('smtp.abv.bg', 465)
     server.login(sender_email, password)
@@ -49,9 +58,8 @@ def dump_postgre_db():
 
     return
 
-schedule.every().day.at("17:30").do(dump_postgre_db) #make dump
-schedule.every().day.at("17:31").do(send_email) # send_email
-
+schedule.every().day.at("13:34").do(dump_postgre_db) #make dump
+schedule.every().day.at("13:34").do(send_email) # send_email
 
 while True:
     schedule.run_pending()

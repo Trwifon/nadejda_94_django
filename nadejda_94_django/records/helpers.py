@@ -80,7 +80,7 @@ def errors_test():
                     partner.save()
                     test_result.append(f"Корекция в баланса на {partner.name}")
                 elif difference > 1 or difference < -1:
-                    test_result.append(f"Грешка в баланса на {partner.name}: {difference} лв.")
+                    test_result.append(f"Грешка в баланса на {partner.name}: {difference} €")
 
     if not test_result:
         test_result.append('Няма грешки')
