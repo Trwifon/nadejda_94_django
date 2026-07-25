@@ -15,6 +15,7 @@ from nadejda_94_django.records.models import Record, Partner
 MAX_ROWS = 200
 SUPPLIER = 1
 
+
 class OrderCreateView(PermissionRequiredMixin, CreateView):
     context_object_name = 'form'
 
@@ -26,13 +27,14 @@ class OrderCreateView(PermissionRequiredMixin, CreateView):
         if current_pk in (1, 2):
             firm_report = []
         else:
-            firm_report = create_firm_report(current_partner)
+            firm_report = create_firm_report(current_partner)[:MAX_ROWS]
 
         return self.render_to_response({
                 'form': form,
                 'partner': current_partner,
                 'report': firm_report,
             })
+
 
 class RecordCreateView(OrderCreateView):
     model = Record
@@ -70,19 +72,20 @@ class RecordCreateView(OrderCreateView):
 
             return redirect(self.success_url)
 
-        else:
-            form = RecordCreateForm(instance=form.instance)
-
-            if current_pk in (1, 2):
-                firm_report = []
-            else:
-                firm_report = create_firm_report(current_partner)
-
-            return render(request, 'records/create_record.html', {
-                    'form': form,
-                    'partner': current_partner,
-                    'report': firm_report,
-                })
+        # else:
+        #     form = RecordCreateForm(instance=form.instance)
+        #
+        #     if current_pk in (1, 2):
+        #         firm_report = []
+        #     else:
+        #         firm_report = create_firm_report(current_partner)
+        #         print('test')
+        #
+        #     return render(request, 'records/create_record.html', {
+        #             'form': form,
+        #             'partner': current_partner,
+        #             'report': firm_report,
+        #         })
 
 
 class RecordUpdateView(PermissionRequiredMixin, UpdateView):
@@ -198,9 +201,10 @@ class ReportsCreateView(PermissionRequiredMixin, TemplateView, FormView):
                 name_report = (f"Отчет за фирма {current_partner}"
                                f" с баланс: {balance if balance is not None else 0} €")
 
-                context['report'] = create_firm_report(current_partner)[:MAX_ROWS]
+                context['report'] = create_firm_report(current_partner)
 
             elif current_report == 'DR':
+
                 day_report = (Record.objects
                               .filter(created_at=current_date)
                               .exclude(warehouse='M')
