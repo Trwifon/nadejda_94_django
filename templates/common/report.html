@@ -27,7 +27,11 @@
             </th>
             <td>{{record.created_at}}</td>
             <td>{{record.get_warehouse_display}}</td>
-            <td>{{record.partner.name}}</td>
+            <td>
+                <a href="{% url 'record_create' record.partner.id %}">
+                    {{record.partner.name}}
+                </a>
+            </td>
             <td>{{record.get_order_type_display}}</td>
             <td>{{record.amount}}</td>
             <td>{{record.balance}}</td>
