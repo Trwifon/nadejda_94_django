@@ -58,8 +58,8 @@ def dump_postgre_db():
 
     return
 
-schedule.every().day.at("13:34").do(dump_postgre_db) #make dump
-schedule.every().day.at("13:34").do(send_email) # send_email
+schedule.every().day.at("17:25").do(dump_postgre_db) #make dump
+schedule.every().day.at("17:30").do(send_email) # send_email
 
 while True:
     schedule.run_pending()
