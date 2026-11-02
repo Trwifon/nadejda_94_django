@@ -13,6 +13,7 @@ from nadejda_94_django.glasses.forms import GlassCreateForm, GlassUpdateForm, Gl
 from nadejda_94_django.glasses.helpers import calculate_price, get_glass_kind, calculate_area, calculate_glass_data, \
     format_excel, excel_glass_view
 from nadejda_94_django.glasses.models import Glasses, Partner, Record
+from nadejda_94_django.glasses.importing import parse_glass_kind
 from nadejda_94_django.records.choices import users_dict
 from nadejda_94_django.records.helpers import get_order, get_close_balance
 from nadejda_94_django.records.views import OrderCreateView
@@ -283,13 +284,7 @@ class ImportGlassView(TemplateView, FormView):
         for row in sheet.iter_rows(min_row=6, min_col=1, max_row=306, max_col=11):
             row_list = [cell.value for cell in row]
             if row_list[0] is not None:
-                kind = row_list[0].split(' ')
-                thickness = kind[0]
-
-                glasses_list = kind[1].split('/')
-                first_glass = glasses_list[0]
-                second_glass = glasses_list[1] if len(glasses_list) > 1 else None
-                third_glass = glasses_list[2] if len(glasses_list) > 2 else None
+                thickness, first_glass, second_glass, third_glass = parse_glass_kind(row_list[0])
 
                 unit_price = row_list[10]
                 width = row_list[2]
